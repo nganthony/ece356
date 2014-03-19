@@ -15,11 +15,9 @@
     	http://www.springframework.org/schema/task 
 		http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:annotation-driven />
-	<context:component-scan base-package="com.anonymous" />
-
-	<task:annotation-driven executor="executor" />
-	<task:executor id="executor" pool-size="7" />
+	<context:component-scan base-package="com.ece356" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
