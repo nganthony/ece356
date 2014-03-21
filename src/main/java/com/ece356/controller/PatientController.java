@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.ece356.dao.CurrentHealthDao;
 import com.ece356.dao.PatientDao;
@@ -33,7 +36,8 @@ public class PatientController {
 	PatientDao patientDao;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getCreatePage(Model model) {
+	public String getCreatePage(Model model,
+			@ModelAttribute("patient") Patient patient) {
 		List<User> doctors = userDao.getAllDoctors();
 		Map<Integer, String> doctorsMap = new HashMap<Integer, String>();
 		for (User user : doctors) {
@@ -43,18 +47,22 @@ public class PatientController {
 		model.addAttribute("doctors", doctorsMap);
 		model.addAttribute("currentHealthMap",
 				currentHealthDao.getCurrentHealths());
-		return new ModelAndView("patientCreate", "patient", new Patient());
+		model.addAttribute("patient", patient);
+		return "patientCreate";
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String submit(@ModelAttribute("Patient") Patient patient,
-			BindingResult result) {
-		Date now = new Date();
-		patient.setLastVisitDate(new Timestamp(now.getTime()));
-		patientDao.insert(patient);
-		return "welcome";
-
+	public String submit(@Valid @ModelAttribute("patient") Patient patient,
+			BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return getCreatePage(model, patient);
+		} else {
+			Date now = new Date();
+			patient.setLastVisitDate(new Timestamp(now.getTime()));
+			patientDao.insert(patient);
+			return ("welcome");
+		}
 	}
 
 }

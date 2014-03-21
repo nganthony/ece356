@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ece356.domain.Patient;
+
 @Repository
 public class PatientDao {
 
@@ -66,21 +67,11 @@ public class PatientDao {
 			if (rs.next()) {
 				patient = new Patient();
 				try {
-					patient.map( rs);
+					patient.map(rs);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				patient.setHealthCard(healthCard);
-				patient.setFirstName(rs.getString("first_name"));
-				patient.setLastName(rs.getString("last_name"));
-				patient.setPassword(rs.getString("password"));
-				patient.setSin(rs.getString("sin"));
-				patient.setLastVisitDate(rs.getTimestamp("last_visit_date"));
-				patient.setDefaultDoctorId(rs.getInt("defualt_doctor_id"));
-				patient.setCurrentHealthID(rs.getInt("current_health_id"));
-				patient.setDeleted(rs.getBoolean("deleted"));
-
 			}
 			rs.close();
 			ps.close();

@@ -2,14 +2,26 @@ package com.ece356.domain;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.ece356.dao.BaseEntity;
 
 public class Patient extends BaseEntity {
-
+	@Max(9)
 	String sin;
+	@NotNull(message="Must enter a value")
+	@Max(30)
 	String firstName;
+	@NotNull
+	@Max(30)
 	String lastName;
+	@NotNull
+	@Size(min=6, message="must be at least 6 characters")
 	String password;
+	@NotNull
 	String healthCard;
 	private int currentHealthID;
 	private int defaultDoctorId;
