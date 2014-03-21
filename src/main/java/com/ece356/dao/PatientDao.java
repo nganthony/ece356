@@ -65,6 +65,12 @@ public class PatientDao {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				patient = new Patient();
+				try {
+					patient.map( rs);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				patient.setHealthCard(healthCard);
 				patient.setFirstName(rs.getString("first_name"));
 				patient.setLastName(rs.getString("last_name"));

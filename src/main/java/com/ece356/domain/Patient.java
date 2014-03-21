@@ -2,7 +2,9 @@ package com.ece356.domain;
 
 import java.sql.Timestamp;
 
-public class Patient {
+import com.ece356.dao.BaseEntity;
+
+public class Patient extends BaseEntity {
 
 	String sin;
 	String firstName;

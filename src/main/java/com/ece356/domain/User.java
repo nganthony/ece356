@@ -1,8 +1,10 @@
 package com.ece356.domain;
 
-public class User {
+import com.ece356.dao.BaseEntity;
+
+public class User extends BaseEntity {
 	private String firstName, LastName, password;
-	private int role_id, user_id;
+	private int roleId, id;
 	private boolean deleted;
 
 	public String getFirstName() {
@@ -29,20 +31,20 @@ public class User {
 		this.password = password;
 	}
 
-	public int getRole_id() {
-		return role_id;
+	public int getRoleId() {
+		return roleId;
 	}
 
-	public void setRole_id(int role_id) {
-		this.role_id = role_id;
+	public void setRoleId(int role_id) {
+		this.roleId = role_id;
 	}
 
-	public int getUser_id() {
-		return user_id;
+	public int getId() {
+		return id;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setId(int user_id) {
+		this.id = user_id;
 	}
 
 	public boolean isDeleted() {

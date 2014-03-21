@@ -32,12 +32,11 @@ public class UserDao {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				User user = new User();
-				user.setRole_id(1);
-				user.setFirstName(rs.getString("first_name"));
-				user.setLastName(rs.getString("last_name"));
-				user.setPassword(rs.getString("password"));
-				user.setDeleted(rs.getBoolean("deleted"));
-				user.setUser_id(rs.getInt("id"));
+				try {
+					user.map(rs);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				doctors.add(user);
 			}
 			rs.close();

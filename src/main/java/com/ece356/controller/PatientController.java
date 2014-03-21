@@ -37,7 +37,7 @@ public class PatientController {
 		List<User> doctors = userDao.getAllDoctors();
 		Map<Integer, String> doctorsMap = new HashMap<Integer, String>();
 		for (User user : doctors) {
-			doctorsMap.put(user.getUser_id(),
+			doctorsMap.put(user.getId(),
 					user.getLastName() + ", " + user.getFirstName());
 		}
 		model.addAttribute("doctors", doctorsMap);
