@@ -58,8 +58,17 @@ public class PatientController {
 		} else {
 			Date now = new Date();
 			patient.setLastVisitDate(new Timestamp(now.getTime()));
-			patientDao.insert(patient);
-			return ("welcome");
+			Patient existingPatient = patientDao.findByHealthCard(patient
+					.getHealthCard());
+			if (existingPatient == null) {
+				patientDao.insert(patient);
+				return ("welcome");
+			} else {
+				result.rejectValue("healthCard", "error.patient",
+						"This Patient already exists");
+				return getCreatePage(model, patient);
+			}
+
 		}
 	}
 

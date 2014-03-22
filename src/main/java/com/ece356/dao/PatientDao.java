@@ -22,7 +22,7 @@ public class PatientDao {
 	public void insert(Patient patient) {
 
 		String sql = "INSERT INTO patient "
-				+ "(`sin`,`first_name`, `last_name`, `password`, last_visit_date, health_card , defualt_doctor_id, current_health_id, deleted ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "(`sin`,`first_name`, `last_name`, `password`, last_visit_date, health_card , default_doctor_id, current_health_id, deleted ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		jdbcTemplate.update(
 				sql,
