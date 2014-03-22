@@ -10,12 +10,21 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ece356.domain.User;
+import com.ece356.jdbc.UserRowMapper;
 
 @Repository
 public class UserDao {
+
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
 
 	@Autowired
 	private DataSource dataSource;
@@ -54,4 +63,24 @@ public class UserDao {
 		}
 	}
 
+	/**
+	 * Gets user by id
+	 * @param id Id of user
+	 * @return User with specified id
+	 */
+	public User getUser(String id) {
+		User user = null;
+
+		String sql = "SELECT * FROM user WHERE id = ?";
+
+		try {
+			user = jdbcTemplate.queryForObject(sql, new Object[] {id}, new UserRowMapper());
+		}
+		catch (Exception e) {
+			// No user was found with the specified id, return null
+			return null;
+		}
+		
+		return user;
+	}
 }

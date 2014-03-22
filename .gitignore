@@ -4,4 +4,11 @@
 *.jar
 *.war
 *.ear
-/target
+
+# OS X #
+.DS_Store
+
+# Eclipse #
+.classpath
+.project
+target
