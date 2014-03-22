@@ -3,25 +3,23 @@ package com.ece356.domain;
 import java.sql.Timestamp;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.ece356.dao.BaseEntity;
-
 public class Patient extends BaseEntity {
-	@Max(9)
+	@Size(max = 9, message = "Must be smaller than 9 characters")
 	String sin;
-	@NotNull(message="Must enter a value")
-	@Max(30)
+	@NotNull(message = "Must enter a value")
+	@Size(max = 30, min = 1, message = "Must be between 1 and 30 characters")
 	String firstName;
 	@NotNull
-	@Max(30)
+	@Size(max = 30, min = 1, message = "Must be between 1 and 30 characters")
 	String lastName;
 	@NotNull
-	@Size(min=6, message="must be at least 6 characters")
+	@Size(min = 6, max=255, message = "must be at least 6 characters")
 	String password;
 	@NotNull
+	@Size(min = 1, max=12, message = "must be between 1 and 12 characters")
 	String healthCard;
 	private int currentHealthID;
 	private int defaultDoctorId;

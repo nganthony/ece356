@@ -1,6 +1,5 @@
 package com.ece356.domain;
 
-import com.ece356.dao.BaseEntity;
 
 public class User extends BaseEntity {
 	private String firstName, LastName, password;

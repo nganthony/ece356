@@ -1,4 +1,4 @@
-package com.ece356.dao;
+package com.ece356.domain;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
