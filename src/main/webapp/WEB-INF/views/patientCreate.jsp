@@ -16,7 +16,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<fieldset>
-					<form:form class="form-horizontal" action="/patient"
+					<form:form class="form-horizontal" action="/patientCreate"
 						modelAttribute="patient">
 						<div class="control-group">
 							<form:label path="sin">SIN</form:label>

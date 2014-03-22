@@ -1,5 +1,8 @@
 package com.ece356.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,18 @@ public class PatientDao {
 			return null;
 		}
 
+	}
+
+	public List<Patient> getAllPatients() {
+		String sql = "SELECT * FROM patient";
+		List<Patient> patients = new ArrayList<Patient>();
+		try {
+			patients = jdbcTemplate.query(sql, new PatientRowMapper());
+			return patients;
+		} catch (Exception e) {
+			// No user was found with the specified id, return null
+			return patients;
+		}
 	}
 
 }
