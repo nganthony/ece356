@@ -86,11 +86,11 @@ public class UserController {
 			map.put("errorMessage", "Logged in as user");
 			
 			if(user.getRoleId() == 1) {
-				// Show doctor page
+				return new ModelAndView("redirect:/doctor/" + user.getId() + "/patients");
 				
 			}
 			else if(user.getRoleId() == 2) {
-				// Show staff page
+				
 			}
 		} else {
 			map.put("errorMessage", "Logged in as patient");
