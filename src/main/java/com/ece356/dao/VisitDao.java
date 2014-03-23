@@ -46,7 +46,7 @@ public class VisitDao {
 
 	}
 	
-	public int createVisit(Visit visit) {
+	public void createVisit(Visit visit) {
 		final String sql = "INSERT INTO visit (diagnosis,surgery, treatment, comment, start, end , user_id, duration, health_card ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		final Object[] params = new Object[] { visit.getDiagnosis(), visit.getSurgery(),
@@ -55,24 +55,7 @@ public class VisitDao {
 				visit.getUser_id(),
 				visit.getDuration(), visit.getHealth_card() };
 		
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-
-		jdbcTemplate.update(
-				new PreparedStatementCreator() {
-					@Override
-					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-						PreparedStatement statement = connection.prepareStatement(sql, new String[] {"id"});
-						int index = 1;
-						for(Object object: params) {
-							statement.setObject(index, object);
-							index++;
-						}
-						return statement;
-					}
-				},
-				keyHolder);
-
-		return keyHolder.getKey().intValue();	
+		jdbcTemplate.update(sql, params);	
 	}
 	
 	public void update(Visit visit) {

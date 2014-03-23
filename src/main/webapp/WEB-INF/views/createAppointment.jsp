@@ -18,7 +18,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<fieldset>
-					<form:form class="form-horizontal" method = "post" action='create/appointment'
+					<form:form class="form-horizontal" method = "post" action='/staffnavigation/create/appointment/${visit.user_id}'
 						modelAttribute="visit">
 						
 						<div class="control-group">
