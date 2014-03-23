@@ -11,5 +11,7 @@ public interface PatientService {
 	void delete(Patient patient);
 	void insert(Patient patient);
 	List<Patient> getAllPatients();
+	List<Patient> getAllPatients(int defaultDoctorId);
+	List<Patient> getAllPatients(int defaultDoctorId, String search);
 	
 }

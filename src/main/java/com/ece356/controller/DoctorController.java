@@ -31,8 +31,25 @@ public class DoctorController {
 		User user = (User)session.getAttribute("user");
 		model.addAttribute(user);
 		
-		List<Patient> patients = patientService.getAllPatients();
+		List<Patient> patients = patientService.getAllPatients(user.getId());
 		model.addAttribute("patients", patients);
+		
+		return "doctorPatients";
+	}
+	
+	@RequestMapping(value = "{doctorId}/patients", method= RequestMethod.POST)
+	public String showFilteredPatientsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
+			HttpServletResponse response, HttpSession session, Model model) throws Exception {
+		
+		User user = (User)session.getAttribute("user");
+		model.addAttribute(user);
+		
+		String search = request.getParameter("search");
+		
+		List<Patient> patients = patientService.getAllPatients(user.getId(), search);
+		model.addAttribute("patients", patients);
+		
+		model.addAttribute("search", search);
 		
 		return "doctorPatients";
 	}
