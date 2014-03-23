@@ -83,19 +83,25 @@ public class UserController {
 			return new ModelAndView("userLogin", map);
 		}
 
-		
-
 		if (user != null && user.getPassword().equals(password)) {
 			map.put("errorMessage", "Logged in as user");
 			Role role = userService.getRole(user);
 			session.setAttribute("role", role.getName());
 			session.setAttribute("user", user);
 			// Check role to determine which page the user should be directed to
+			if(user.getRoleId() == 1) {
+				return new ModelAndView("redirect:/doctor/" + user.getId() + "/patients");
+				
+			}
+			else if(user.getRoleId() == 2) {
+				
+			}
 		} else if (patient != null && patient.getPassword().equals(password)){
 			map.put("errorMessage", "Logged in as patient");
 			session.setAttribute("role", "patient");
 			session.setAttribute("patient", patient);
 		}
+
 		return new ModelAndView("userLogin", map);
 	}
 
