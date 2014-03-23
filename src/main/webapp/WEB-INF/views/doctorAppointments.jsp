@@ -20,15 +20,15 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Anthony Ng</a>
+			<a class="navbar-brand" href="#">${user.firstName} ${user.lastName}</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="doctor/1/patients">Patients</a></li>
-				<li class="active"><a href="doctor/1/appointments">Appointments</a></li>
+				<li><a href="patients">Patients</a></li>
+				<li class="active"><a href="appointments">Appointments</a></li>
 			</ul>
 		</div>
 	</div>
