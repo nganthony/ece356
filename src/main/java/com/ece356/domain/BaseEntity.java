@@ -1,4 +1,4 @@
-package com.ece356.dao;
+package com.ece356.domain;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +49,7 @@ public abstract class BaseEntity {
 				} else if (fieldType.endsWith("timestamp")) {
 					Method method = cls.getDeclaredMethod("set" + name,
 							new Class[] { Timestamp.class });
-					method.invoke(this, rs.getInt(dbName));
+					method.invoke(this, rs.getTimestamp(dbName));
 				} else {
 					throw new UnexpectedInputException(
 							"The generic mapper does not deal with: "

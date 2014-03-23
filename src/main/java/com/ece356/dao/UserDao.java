@@ -1,9 +1,5 @@
 package com.ece356.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,47 +24,25 @@ public class UserDao {
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-
-	@Autowired
-	private DataSource dataSource;
-
+	
+	
 	public List<User> getAllDoctors() {
-
 		String sql = "SELECT * FROM `user` where role_id=1;";
 
-		Connection conn = null;
+		List<User> doctors = new ArrayList<User>();
 		try {
-			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			List<User> doctors = new ArrayList<User>();
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				User user = new User();
-				try {
-					user.map(rs);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				doctors.add(user);
-			}
-			rs.close();
-			ps.close();
+			doctors = jdbcTemplate.query(sql, new UserRowMapper());
 			return doctors;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
+		} catch (Exception e) {
+			return doctors;
 		}
 	}
 
 	/**
 	 * Gets user by id
-	 * @param id Id of user
+	 * 
+	 * @param id
+	 *            Id of user
 	 * @return User with specified id
 	 */
 	public User getUser(String id) {
@@ -77,13 +51,13 @@ public class UserDao {
 		String sql = "SELECT * FROM user WHERE id = ?";
 
 		try {
-			user = jdbcTemplate.queryForObject(sql, new Object[] {id}, new UserRowMapper());
-		}
-		catch (Exception e) {
+			user = jdbcTemplate.queryForObject(sql, new Object[] { id },
+					new UserRowMapper());
+		} catch (Exception e) {
 			// No user was found with the specified id, return null
 			return null;
 		}
-		
+
 		return user;
 	}
 	

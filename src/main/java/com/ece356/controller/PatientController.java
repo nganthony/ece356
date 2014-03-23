@@ -13,10 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.ece356.dao.CurrentHealthDao;
 import com.ece356.dao.PatientDao;
@@ -25,7 +24,7 @@ import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 
 @Controller
-@RequestMapping("/patient")
+@RequestMapping()
 public class PatientController {
 
 	@Autowired
@@ -35,7 +34,7 @@ public class PatientController {
 	@Autowired
 	PatientDao patientDao;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/patientCreate", method = RequestMethod.GET)
 	public String getCreatePage(Model model,
 			@ModelAttribute("patient") Patient patient) {
 		List<User> doctors = userDao.getAllDoctors();
@@ -52,7 +51,7 @@ public class PatientController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/patientCreate", method = RequestMethod.POST)
 	public String submit(@Valid @ModelAttribute("patient") Patient patient,
 			BindingResult result, Model model) {
 		if (result.hasErrors()) {
@@ -60,9 +59,32 @@ public class PatientController {
 		} else {
 			Date now = new Date();
 			patient.setLastVisitDate(new Timestamp(now.getTime()));
-			patientDao.insert(patient);
-			return ("welcome");
+			Patient existingPatient = patientDao.findByHealthCard(patient
+					.getHealthCard());
+			if (existingPatient == null) {
+				patientDao.insert(patient);
+				return ("welcome");
+			} else {
+				result.rejectValue("healthCard", "error.patient",
+						"This Patient already exists");
+				return getCreatePage(model, patient);
+			}
+
 		}
+	}
+
+	@RequestMapping(value = "/patientView", method = RequestMethod.GET)
+	public String getView(Model model) {
+		List<Patient> patients = patientDao.getAllPatients();
+		model.addAttribute("patients", patients);
+		return "patientView";
+	}
+
+	@RequestMapping(value = "/patientEdit/{healthCard}")
+	public String editPatient(@PathVariable String healthCard, Model model) {
+		Patient patient = patientDao.findByHealthCard(healthCard);
+
+		return getCreatePage(model, patient);
 	}
 
 }

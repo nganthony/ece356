@@ -1,90 +1,65 @@
 package com.ece356.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ece356.domain.Patient;
+import com.ece356.jdbc.PatientRowMapper;
 
 @Repository
 public class PatientDao {
 
+	private JdbcTemplate jdbcTemplate;
+
 	@Autowired
-	private DataSource dataSource;
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
 
 	public void insert(Patient patient) {
 
 		String sql = "INSERT INTO patient "
-				+ "(`sin`,`first_name`, `last_name`, `password`, last_visit_date, health_card , defualt_doctor_id, current_health_id, deleted ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Connection conn = null;
+				+ "(`sin`,`first_name`, `last_name`, `password`, last_visit_date, health_card , default_doctor_id, current_health_id, deleted ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		try {
-			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, patient.getSin());
-			ps.setString(2, patient.getFirstName());
-			ps.setString(3, patient.getLastName());
-			ps.setString(4, patient.getPassword());
-			ps.setTimestamp(5, patient.getLastVisitDate());
-			ps.setString(6, patient.getHealthCard());
-			ps.setInt(7, patient.getDefaultDoctorId());
-			ps.setInt(8, patient.getCurrentHealthID());
-			ps.setBoolean(9, patient.isDeleted());
-			ps.executeUpdate();
-			ps.close();
+		jdbcTemplate.update(
+				sql,
+				new Object[] { patient.getSin(), patient.getFirstName(),
+						patient.getLastName(), patient.getPassword(),
+						patient.getLastVisitDate(), patient.getHealthCard(),
+						patient.getDefaultDoctorId(),
+						patient.getCurrentHealthID(), patient.isDeleted() });
 
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
 	}
 
 	public Patient findByHealthCard(String healthCard) {
-
 		String sql = "SELECT * FROM patient WHERE health_card = ?";
-
-		Connection conn = null;
-
+		Patient patient;
 		try {
-			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, healthCard);
-			Patient patient = null;
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				patient = new Patient();
-				try {
-					patient.map(rs);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			rs.close();
-			ps.close();
+			patient = jdbcTemplate.queryForObject(sql,
+					new Object[] { healthCard }, new PatientRowMapper());
 			return patient;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
+		} catch (Exception e) {
+			// No user was found with the specified id, return null
+			return null;
+		}
+
+	}
+
+	public List<Patient> getAllPatients() {
+		String sql = "SELECT * FROM patient";
+		List<Patient> patients = new ArrayList<Patient>();
+		try {
+			patients = jdbcTemplate.query(sql, new PatientRowMapper());
+			return patients;
+		} catch (Exception e) {
+			// No user was found with the specified id, return null
+			return patients;
 		}
 	}
 
