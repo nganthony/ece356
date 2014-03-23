@@ -8,7 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>View Patient</title>
-<link type="text/css" href="resources/css/bootstrap.css"
+<link type="text/css"
+	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
 </head>
 <body>
@@ -18,8 +19,8 @@
 			<display:column property="firstName" />
 			<display:column property="lastName" />
 			<display:column>
-					<a href=<c:url value="/patientEdit/${patient.healthCard}"/>>Edit</a>
-				
+				<a href=<c:url value="/patient/edit/${patient.healthCard}"/>>Edit</a>
+
 			</display:column>
 		</display:table>
 	</div>

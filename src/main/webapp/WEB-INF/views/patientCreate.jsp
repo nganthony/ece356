@@ -8,11 +8,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Patient Create</title>
-<link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link type="text/css"
+	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
+	rel="stylesheet" />
 
 </head>
 <body>
+	<spring:hasBindErrors name="patient">
+		<div class="alert alert-danger">Change a few things up and try
+			submitting again.</div>
+	</spring:hasBindErrors>
 	<div class="container-fluid">
 		<c:choose>
 			<c:when test="${patient.edit}">
@@ -25,7 +30,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<fieldset>
-					<form:form class="form-horizontal" action="/patientCreate"
+					<form:form class="form-horizontal" action="/patient/create"
 						modelAttribute="patient">
 						<form:hidden path="edit" />
 						<div class="control-group">

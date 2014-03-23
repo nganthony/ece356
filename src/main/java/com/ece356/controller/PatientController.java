@@ -34,7 +34,7 @@ public class PatientController {
 	@Autowired
 	PatientDao patientDao;
 
-	@RequestMapping(value = "/patientCreate", method = RequestMethod.GET)
+	@RequestMapping(value = "/patient/create", method = RequestMethod.GET)
 	public String getCreatePage(Model model,
 			@ModelAttribute("patient") Patient patient) {
 		List<User> doctors = userDao.getAllDoctors();
@@ -52,7 +52,7 @@ public class PatientController {
 
 	}
 
-	@RequestMapping(value = "/patientCreate", method = RequestMethod.POST)
+	@RequestMapping(value = "/patient/create", method = RequestMethod.POST)
 	public String submit(@Valid @ModelAttribute("patient") Patient patient,
 			BindingResult result, Model model) {
 		if (result.hasErrors()) {
@@ -78,14 +78,14 @@ public class PatientController {
 		}
 	}
 
-	@RequestMapping(value = "/patientView", method = RequestMethod.GET)
+	@RequestMapping(value = "/patient/view", method = RequestMethod.GET)
 	public String getView(Model model) {
 		List<Patient> patients = patientDao.getAllPatients();
 		model.addAttribute("patients", patients);
 		return "patientView";
 	}
 
-	@RequestMapping(value = "/patientEdit/{healthCard}")
+	@RequestMapping(value = "/patient/edit/{healthCard}")
 	public String editPatient(@PathVariable String healthCard, Model model) {
 		Patient patient = patientDao.findByHealthCard(healthCard);
 		patient.setEdit(true);
