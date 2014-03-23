@@ -3,7 +3,7 @@ package com.ece356.domain;
 import com.ece356.dao.BaseEntity;
 
 public class User extends BaseEntity {
-	private String firstName, LastName, password;
+	private String firstName, lastName, password;
 	private int roleId, id;
 	private boolean deleted;
 
@@ -16,11 +16,11 @@ public class User extends BaseEntity {
 	}
 
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String getPassword() {

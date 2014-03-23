@@ -17,4 +17,10 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUser(id);
 	}
 
+	@Override
+	public User createUser(User user) {
+		int id = userDao.createUser(user);
+		return getUser(Integer.toString(id));
+	}
+
 }

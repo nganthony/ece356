@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,5 +70,22 @@ public class UserController {
 		// Check role to determine which page the user should be directed to
 		map.put("errorMessage", "Logged in");
 		return new ModelAndView("userLogin", map);
+	}
+	
+	@RequestMapping(value = "create", method = RequestMethod.GET)
+	public String showCreatePage(Model model,
+			@ModelAttribute("user") User user) {
+		
+		model.addAttribute("user", user);
+		
+		return "userCreate";
+	}
+	
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+	public ModelAndView validateCreate(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		return new ModelAndView("userCreate");
+		
 	}
 }
