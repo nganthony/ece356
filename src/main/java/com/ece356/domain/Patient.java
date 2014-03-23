@@ -2,7 +2,6 @@ package com.ece356.domain;
 
 import java.sql.Timestamp;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,6 +24,7 @@ public class Patient extends BaseEntity {
 	private int defaultDoctorId;
 	private Timestamp lastVisitDate;
 	private boolean deleted;
+	private transient boolean edit;
 
 	public String getSin() {
 		return sin;
@@ -96,5 +96,13 @@ public class Patient extends BaseEntity {
 
 	public void setLastVisitDate(Timestamp lastVisitDate) {
 		this.lastVisitDate = lastVisitDate;
+	}
+
+	public boolean isEdit() {
+		return edit;
+	}
+
+	public void setEdit(boolean edit) {
+		this.edit = edit;
 	}
 }

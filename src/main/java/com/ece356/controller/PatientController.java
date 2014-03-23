@@ -47,6 +47,7 @@ public class PatientController {
 		model.addAttribute("currentHealthMap",
 				currentHealthDao.getCurrentHealths());
 		model.addAttribute("patient", patient);
+
 		return "patientCreate";
 
 	}
@@ -57,19 +58,23 @@ public class PatientController {
 		if (result.hasErrors()) {
 			return getCreatePage(model, patient);
 		} else {
-			Date now = new Date();
-			patient.setLastVisitDate(new Timestamp(now.getTime()));
-			Patient existingPatient = patientDao.findByHealthCard(patient
-					.getHealthCard());
-			if (existingPatient == null) {
-				patientDao.insert(patient);
-				return ("welcome");
+			if (patient.isEdit()) {
+				patientDao.update(patient);
+				return getView(model);
 			} else {
-				result.rejectValue("healthCard", "error.patient",
-						"This Patient already exists");
-				return getCreatePage(model, patient);
+				Date now = new Date();
+				patient.setLastVisitDate(new Timestamp(now.getTime()));
+				Patient existingPatient = patientDao.findByHealthCard(patient
+						.getHealthCard());
+				if (existingPatient == null) {
+					patientDao.insert(patient);
+					return getView(model);
+				} else {
+					result.rejectValue("healthCard", "error.patient",
+							"This Patient already exists");
+					return getCreatePage(model, patient);
+				}
 			}
-
 		}
 	}
 
@@ -83,7 +88,7 @@ public class PatientController {
 	@RequestMapping(value = "/patientEdit/{healthCard}")
 	public String editPatient(@PathVariable String healthCard, Model model) {
 		Patient patient = patientDao.findByHealthCard(healthCard);
-
+		patient.setEdit(true);
 		return getCreatePage(model, patient);
 	}
 

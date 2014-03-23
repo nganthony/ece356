@@ -51,6 +51,10 @@ public class PatientDao {
 
 	}
 
+	/**
+	 * This is only for testing
+	 */
+	@Deprecated
 	public List<Patient> getAllPatients() {
 		String sql = "SELECT * FROM patient";
 		List<Patient> patients = new ArrayList<Patient>();
@@ -61,6 +65,19 @@ public class PatientDao {
 			// No user was found with the specified id, return null
 			return patients;
 		}
+	}
+
+	public void update(Patient patient) {
+		String sql = "UPDATE patient SET `sin`= ?,`first_name`= ?, `last_name`= ?, `password`= ?, default_doctor_id = ?, current_health_id = ?, deleted = ? WHERE health_card = ? ";
+		jdbcTemplate.update(sql, patient.getSin(), patient.getFirstName(),
+				patient.getLastName(), patient.getPassword(),
+				patient.getDefaultDoctorId(), patient.getCurrentHealthID(),
+				patient.isDeleted(), patient.getHealthCard());
+	}
+
+	public void delete(Patient patient) {
+		String sql = "UPDATE patient SET deleted=? Where health_card=? ";
+		jdbcTemplate.update(sql, true, patient.getHealthCard());
 	}
 
 }
