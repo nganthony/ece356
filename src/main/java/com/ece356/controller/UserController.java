@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class UserController {
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public ModelAndView validateLogin(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response, HttpSession session) throws Exception {
 
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
@@ -77,17 +78,23 @@ public class UserController {
 
 		// Validate password
 		if ((user != null && !user.getPassword().equals(password))
-				&& (patient != null && !patient.getPassword().equals(password))) {
+				|| (patient != null && !patient.getPassword().equals(password))) {
 			map.put("errorMessage", "Incorrect credentials");
 			return new ModelAndView("userLogin", map);
 		}
 
-		// Check role to determine which page the user should be directed to
+		
 
 		if (user != null && user.getPassword().equals(password)) {
 			map.put("errorMessage", "Logged in as user");
-		} else {
+			Role role = userService.getRole(user);
+			session.setAttribute("role", role.getName());
+			session.setAttribute("user", user);
+			// Check role to determine which page the user should be directed to
+		} else if (patient != null && patient.getPassword().equals(password)){
 			map.put("errorMessage", "Logged in as patient");
+			session.setAttribute("role", "patient");
+			session.setAttribute("patient", patient);
 		}
 		return new ModelAndView("userLogin", map);
 	}
