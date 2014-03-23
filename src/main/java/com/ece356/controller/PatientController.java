@@ -22,6 +22,7 @@ import com.ece356.dao.PatientDao;
 import com.ece356.dao.UserDao;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
+import com.ece356.service.PatientService;
 
 @Controller
 @RequestMapping()
@@ -32,7 +33,7 @@ public class PatientController {
 	@Autowired
 	CurrentHealthDao currentHealthDao;
 	@Autowired
-	PatientDao patientDao;
+	PatientService patientService;
 
 	@RequestMapping(value = "/patient/create", method = RequestMethod.GET)
 	public String getCreatePage(Model model,
@@ -59,15 +60,15 @@ public class PatientController {
 			return getCreatePage(model, patient);
 		} else {
 			if (patient.isEdit()) {
-				patientDao.update(patient);
+				patientService.update(patient);
 				return getView(model);
 			} else {
 				Date now = new Date();
 				patient.setLastVisitDate(new Timestamp(now.getTime()));
-				Patient existingPatient = patientDao.findByHealthCard(patient
+				Patient existingPatient = patientService.findByHealthCard(patient
 						.getHealthCard());
 				if (existingPatient == null) {
-					patientDao.insert(patient);
+					patientService.insert(patient);
 					return getView(model);
 				} else {
 					result.rejectValue("healthCard", "error.patient",
@@ -80,14 +81,14 @@ public class PatientController {
 
 	@RequestMapping(value = "/patient/view", method = RequestMethod.GET)
 	public String getView(Model model) {
-		List<Patient> patients = patientDao.getAllPatients();
+		List<Patient> patients = patientService.getAllPatients();
 		model.addAttribute("patients", patients);
 		return "patientView";
 	}
 
 	@RequestMapping(value = "/patient/edit/{healthCard}")
 	public String editPatient(@PathVariable String healthCard, Model model) {
-		Patient patient = patientDao.findByHealthCard(healthCard);
+		Patient patient = patientService.findByHealthCard(healthCard);
 		patient.setEdit(true);
 		return getCreatePage(model, patient);
 	}
