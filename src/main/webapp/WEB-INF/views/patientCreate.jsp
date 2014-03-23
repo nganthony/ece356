@@ -65,8 +65,7 @@
 						<c:choose>
 							<c:when test="${patient.edit}">
 								<div class="control-group">
-									<form:label path="healthCard">Health Card Number (No
-								dashes or spaces)</form:label>
+									<form:label path="healthCard">Health Card Number (No dashes or spaces)</form:label>
 									<div class="controls">
 										<form:input path="healthCard" class="disabled" disabled="true"></form:input>
 										<form:errors path="healthCard" cssclass="error"></form:errors>
@@ -77,8 +76,7 @@
 							</c:when>
 							<c:otherwise>
 								<div class="control-group">
-									<form:label path="healthCard">Health Card Number (No
-								dashes or spaces)</form:label>
+									<form:label path="healthCard">Health Card Number (No dashes or spaces)</form:label>
 									<div class="controls">
 										<form:input path="healthCard"></form:input>
 										<form:errors path="healthCard" cssclass="error"></form:errors>
@@ -87,6 +85,45 @@
 							</c:otherwise>
 						</c:choose>
 
+						<div class="control-group">
+							<form:label path="phoneNumber">Phone Number (No dashes or spaces)</form:label>
+							<div class="controls">
+								<form:input path="phoneNumber"></form:input>
+								<form:errors path="phoneNumber" cssclass="error"></form:errors>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<form:label path="street">Street</form:label>
+							<div class="controls">
+								<form:input path="street"></form:input>
+								<form:errors path="street" cssclass="error"></form:errors>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<form:label path="city">City</form:label>
+							<div class="controls">
+								<form:input path="city"></form:input>
+								<form:errors path="city" cssclass="error"></form:errors>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<form:label path="province">Province</form:label>
+							<div class="controls">
+								<form:input path="province"></form:input>
+								<form:errors path="province" cssclass="error"></form:errors>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<form:label path="postalCode">Postal Code</form:label>
+							<div class="controls">
+								<form:input path="postalCode"></form:input>
+								<form:errors path="postalCode" cssclass="error"></form:errors>
+							</div>
+						</div>
 
 						<div class="control-group">
 							<form:label path="defaultDoctorId">Default Doctor</form:label>
@@ -95,7 +132,6 @@
 									items="${doctors}" />
 							</div>
 						</div>
-
 
 						<div class="control-group">
 							<form:label path="currentHealthID">Current Health</form:label>
