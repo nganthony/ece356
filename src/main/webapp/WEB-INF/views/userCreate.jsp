@@ -18,13 +18,14 @@
 			<div class="span12">
 				<fieldset>
 					<legend>Create a user</legend>
-					<form:form class="form-horizontal" method="post" action='login'
+					<form:form class="form-horizontal" method="post" action='create'
 						name="userForm" id="userForm" modelAttribute="user">
 
 						<div class="control-group">
 							<label class="control-label">First Name</label>
 							<div class="controls">
 								<form:input type="text" path="firstName" value="${user.firstName}"></form:input>
+								<form:errors path="firstName" cssclass="error"></form:errors>
 							</div>
 						</div>
 
@@ -32,6 +33,7 @@
 							<label class="control-label">Last Name</label>
 							<div class="controls">
 								<form:input type="text" path="lastName" value="${user.lastName}"></form:input>
+								<form:errors path="lastName" cssclass="error"></form:errors>
 							</div>
 						</div>
 
@@ -39,6 +41,7 @@
 							<label class="control-label">Password</label>
 							<div class="controls">
 								<form:input type="password" path="password" value="${user.password}"></form:input>
+								<form:errors path="password" cssclass="error"></form:errors>
 							</div>
 						</div>
 

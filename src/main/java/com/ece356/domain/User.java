@@ -1,9 +1,25 @@
 package com.ece356.domain;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 public class User extends BaseEntity {
-	private String firstName, lastName, password;
+	
+	@NotNull(message = "Must enter a value")
+	@Size(max = 30, min = 1, message = "Must be between 1 and 30 characters")
+	private String firstName;
+	
+	@NotNull(message = "Must enter a value")
+	@Size(max = 30, min = 1, message = "Must be between 1 and 30 characters")
+	private String lastName;
+	
+	@NotNull
+	@Size(min = 6, max=255, message = "Must be at least 6 characters")
+	private String password;
+	
 	private int roleId, id;
+	
 	private boolean deleted;
 
 	public String getFirstName() {
