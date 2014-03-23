@@ -21,12 +21,14 @@
 			<display:column property="health_card" />
 			<display:column property="diagnosis" />
 			<display:column property="treatment" />
+			<display:column property="surgery" />
+			<display:column property="comment" />
 			<display:column property="user_id" />
 			<display:column property="duration" />
 		</display:table>
 	</div>
 	<div>
-		<a href=<c:url value="/staffnavigation/create/appointment/${visit.user_id}"/>>Create Appointment</a>
+		<a href=<c:url value="/staffnavigation/create/appointment/${id}"/>>Create Appointment</a>
 		<!-- <a href="/1.0.0-BUILD-SNAPSHOT/staffnavigation/create/appointment?value=${visit.user_id}">Create Appointment</a> -->
 	</div>
 </body>

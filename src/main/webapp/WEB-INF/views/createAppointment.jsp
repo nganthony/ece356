@@ -29,6 +29,34 @@
 							</div>
 						</div>
 						<div class="control-group">
+							<label class="control-label">User_ID</label>
+							<div class="controls">
+								<form:input type="text" path="user_id" value="${visit.user_id}"></form:input>
+								<form:errors path="user_id" cssclass="error"></form:errors>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Start</label>
+							<div class="controls">
+								<form:input type="text" path="start" value="${visit.start}"></form:input>
+								<form:errors path="start" cssclass="error"></form:errors>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">End</label>
+							<div class="controls">
+								<form:input type="text" path="end" value="${visit.end}"></form:input>
+								<form:errors path="end" cssclass="error"></form:errors>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">Duration</label>
+							<div class="controls">
+								<form:input type="text" path="duration" value="${visit.duration}"></form:input>
+								<form:errors path="duration" cssclass="error"></form:errors>
+							</div>
+						</div>
+						<div class="control-group">
 							<label class="control-label">Surgery</label>
 							<div class="controls">
 								<form:input type="text" path="surgery" value="${visit.surgery}"></form:input>

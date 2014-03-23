@@ -69,6 +69,7 @@ public class StaffNavigationController {
 	public String doctorSchedule1(@PathVariable("id") int id, Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(id);
 		model.addAttribute("visits", visits);
+		model.addAttribute("id", id);
 		return "doctorSchedule";
 	}
 
@@ -87,20 +88,22 @@ public class StaffNavigationController {
 		if (result.hasErrors()) {
 			return doctorSchedule1(1, model);
 		}
-		
+		visit.setHealth_card("124323432123");
+		visit.setDuration(1);
+		visit.setUser_id(id);
 		Date now = new Date();
 		visit.setStart(new Timestamp(now.getTime()));
 		visit.setEnd(new Timestamp(now.getTime()+3600000));
 		visit.setUser_id(id);
 		
 		visitService.createVisit(visit);
-		return "userLogin";
+		return doctorSchedule1(visit.getId(), model);
 	}
 
 	@RequestMapping(value = "create/appointment/{id}", method = RequestMethod.GET)
 	public String createDoctorAppointment(@PathVariable int id, Model model) {
 		Visit visit = new Visit();
-		visit.setHealth_card("123454321");
+		visit.setHealth_card("124323432123");
 		visit.setDuration(1);
 		visit.setUser_id(id);
 		model.addAttribute("visit", visit);
