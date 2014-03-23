@@ -6,21 +6,29 @@ import javax.validation.constraints.NotNull;
 
 public class Visit extends BaseEntity {
 
+	int id;
+	
+	String diagnosis;
+	
+	String surgery;
+	
+	String treatment;
+	
+	String comment;
+	
+	//@NotNull
+	Timestamp start;
+	
+	//@NotNull
+	Timestamp end;
+	
+	int user_id;
+	
+	int duration;
+	
 	@NotNull
-	 int id;
-	 String diagnosis;
-	 String surgery;
-	 String treatment;
-	 String comment;
-	@NotNull
-	 Timestamp start;
-	@NotNull
-	 Timestamp end;
-	@NotNull
-	 int user_id;
-	 int duration;
-	@NotNull
-	 String health_card;
+	String health_card;
+	
 	public int getId() {
 		return id;
 	}
@@ -81,6 +89,6 @@ public class Visit extends BaseEntity {
 	public void setHealth_card(String health_card) {
 		this.health_card = health_card;
 	}
-	
+
 }
 
