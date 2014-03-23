@@ -51,10 +51,7 @@ public class PatientDao {
 
 	}
 
-	/**
-	 * This is only for testing
-	 */
-	@Deprecated
+
 	public List<Patient> getAllPatients() {
 		String sql = "SELECT * FROM patient";
 		List<Patient> patients = new ArrayList<Patient>();
