@@ -75,8 +75,15 @@ public class UserController {
 			return new ModelAndView("userLogin", map);
 		}
 		
-		// Check role to determine which page the user should be directed to
-		map.put("errorMessage", "Logged in");
+		if(user.getRoleId() == 1) {
+			// Show doctor page
+			
+		}
+		else if(user.getRoleId() == 2) {
+			// Show staff page
+			
+			
+		}
 		return new ModelAndView("userLogin", map);
 	}
 	

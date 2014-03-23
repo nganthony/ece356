@@ -66,6 +66,12 @@ public class PatientDao {
 			return patients;
 		}
 	}
+	
+	public List<Patient> getAllPatients(int defaultDoctorId) {
+		String sql = "SELECT * FROM patient WHERE default_doctor_id = ?";
+		List<Patient> patients = jdbcTemplate.query(sql, new PatientRowMapper());
+		return patients;
+	}
 
 	public void update(Patient patient) {
 		String sql = "UPDATE patient SET `sin`= ?,`first_name`= ?, `last_name`= ?, `password`= ?, default_doctor_id = ?, current_health_id = ?, deleted = ? WHERE health_card = ? ";
