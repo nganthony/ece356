@@ -19,9 +19,8 @@ public class VisitServiceImpl  implements VisitService{
 	}
 
 	@Override
-	public Visit createVisit(Visit visit) {
-		int id = visitDao.createVisit(visit);
-		return getVisit(Integer.toString(id));
+	public void createVisit(Visit visit) {
+		visitDao.createVisit(visit);
 	}
 	
 }

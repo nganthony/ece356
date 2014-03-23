@@ -81,14 +81,20 @@ public class StaffNavigationController {
 
 	}
 
-	@RequestMapping(value = "create/appointment", method = RequestMethod.POST)
-	public String submit(@Valid @ModelAttribute("visit") Visit visit,
+	@RequestMapping(value = "create/appointment/{id}", method = RequestMethod.POST)
+	public String submit(@PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return doctorSchedule1(1, model);
 		}
-		Visit newVisit = visitService.createVisit(visit);
-		return doctorSchedule1(newVisit.getUser_id(), model);
+		
+		Date now = new Date();
+		visit.setStart(new Timestamp(now.getTime()));
+		visit.setEnd(new Timestamp(now.getTime()+3600000));
+		visit.setUser_id(id);
+		
+		visitService.createVisit(visit);
+		return "userLogin";
 	}
 
 	@RequestMapping(value = "create/appointment/{id}", method = RequestMethod.GET)
@@ -96,12 +102,10 @@ public class StaffNavigationController {
 		Visit visit = new Visit();
 		visit.setHealth_card("123454321");
 		visit.setDuration(1);
-		Date now = new Date();
-		visit.setStart(new Timestamp(now.getTime()));
-		visit.setEnd(new Timestamp(now.getTime()+3600000));
 		visit.setUser_id(id);
 		model.addAttribute("visit", visit);
-		return getCreateAppointment(model, visit);
+		return "createAppointment";
+		//return getCreateAppointment(model, visit);
 	}
 
 
