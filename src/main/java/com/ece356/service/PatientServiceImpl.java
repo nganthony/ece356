@@ -40,5 +40,17 @@ public class PatientServiceImpl implements PatientService {
 	public List<Patient> getAllPatients() {
 		return patientDao.getAllPatients();
 	}
+	
+	
+
+	@Override
+	public List<Patient> getAllPatients(int defaultDoctorId, String search) {
+		return patientDao.getAllPatients(defaultDoctorId, search);
+	}
+
+	@Override
+	public List<Patient> getAllPatients(int defaultDoctorId) {
+		return patientDao.getAllPatients(defaultDoctorId);
+	}
 
 }

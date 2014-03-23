@@ -66,7 +66,7 @@ public class PatientDao {
 	
 	public List<Patient> getAllPatients(int defaultDoctorId) {
 		String sql = "SELECT * FROM patient WHERE default_doctor_id = ?";
-		List<Patient> patients = jdbcTemplate.query(sql, new PatientRowMapper());
+		List<Patient> patients = jdbcTemplate.query(sql, new Object[]{defaultDoctorId}, new PatientRowMapper());
 		return patients;
 	}
 
@@ -81,6 +81,17 @@ public class PatientDao {
 	public void delete(Patient patient) {
 		String sql = "UPDATE patient SET deleted=? Where health_card=? ";
 		jdbcTemplate.update(sql, true, patient.getHealthCard());
+	}
+	
+	public List<Patient> getAllPatients(int defaultDoctorId, String search) {
+		String sql = "SELECT * FROM patient WHERE default_doctor_id = ?" +
+					" AND first_name LIKE ?" +
+					" OR last_name LIKE ?" +
+					" OR sin LIKE ?" +
+					" OR health_card LIKE ?";
+		
+		List<Patient> patients = jdbcTemplate.query(sql, new Object[]{defaultDoctorId, search + "%", search + "%", search + "%", search + "%"}, new PatientRowMapper());
+		return patients;
 	}
 
 }
