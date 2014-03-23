@@ -20,12 +20,18 @@ public class RoleDao {
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
+
 	public List<Role> getAllRoles() {
 		String sql = "SELECT * FROM role";
-		
+
 		List<Role> roles = jdbcTemplate.query(sql, new RoleRowMapper());
-		
+
 		return roles;
+	}
+
+	public Role getRole(int id) {
+		String sql = "SELECT * FROM role where id=?";
+		return jdbcTemplate.queryForObject(sql, new Object[] { id },
+				new RoleRowMapper());
 	}
 }
