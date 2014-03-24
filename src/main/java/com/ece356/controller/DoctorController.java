@@ -18,6 +18,7 @@ import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.service.PatientService;
+import com.ece356.service.VisitService;
 
 @Controller
 @RequestMapping("doctor")
@@ -27,7 +28,7 @@ public class DoctorController {
 	PatientService patientService;
 	
 	@Autowired
-	VisitDao visitDao;
+	VisitService visitService;
 	
 	@RequestMapping(value = "{doctorId}/patients", method= RequestMethod.GET)
 	public String showPatientsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
@@ -62,7 +63,7 @@ public class DoctorController {
 	@RequestMapping(value = "{doctorId}/appointments", method= RequestMethod.GET)
 	public String showAppintmentsPage(@PathVariable("doctorId") int doctorId, Model model) {
 		
-		List<Visit> visits  = visitDao.getDoctorSchedule(doctorId);
+		List<Visit> visits  = visitService.getDoctorSchedule(doctorId);
 		model.addAttribute("visits", visits);
 		return "doctorAppointments";
 	}

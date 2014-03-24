@@ -9,5 +9,5 @@ public interface VisitService {
 	public Visit getVisit(String id);
 	public void createVisit(Visit visit);
 	List<Visit> getPatientVisit(String healthCard);
-	
+	public List<Visit> getDoctorSchedule(int doctorId);
 }

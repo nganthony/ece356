@@ -21,7 +21,8 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">${user.firstName} ${user.lastName}</a>
+			<a class="navbar-brand" href="#">${user.firstName}
+				${user.lastName}</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -34,7 +35,16 @@
 		</div>
 	</div>
 	</nav>
-	
+
+	<form class="navbar-form navbar-left" role="search" method='post'
+		action='patients'>
+		<div class="form-group">
+			<input type="text" class="form-control" name="search"
+				placeholder="Search" value="${search}">
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+
 	<div class="container-fluid">
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed">
