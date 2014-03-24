@@ -22,20 +22,6 @@ public class VisitDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public void insert(Visit visit) {
-
-		String sql = "INSERT INTO visit "
-				+ "(`diagnosis`,`surgery`, `treatment`, `comment`, start, end , user_id, duration, health_card ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-		jdbcTemplate.update(
-				sql,
-				new Object[] { visit.getDiagnosis(), visit.getSurgery(),
-						visit.getTreatment(), visit.getComment(),
-						visit.getStart(), visit.getEnd(), visit.getUser_id(),
-						visit.getDuration(), visit.getHealth_card() });
-
-	}
-
 	public void createVisit(Visit visit) {
 		final String sql = "INSERT INTO visit (diagnosis,surgery, treatment, comment, start, end , user_id, duration, health_card ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 

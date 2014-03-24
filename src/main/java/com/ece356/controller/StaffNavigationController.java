@@ -1,11 +1,8 @@
 package com.ece356.controller;
 
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +22,6 @@ import com.ece356.dao.CurrentHealthDao;
 import com.ece356.dao.PatientDao;
 import com.ece356.dao.UserDao;
 import com.ece356.dao.VisitDao;
-import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.service.VisitService;
@@ -126,15 +122,4 @@ public class StaffNavigationController {
 		return "createAppointment";
 		//return getCreateAppointment(model, visit);
 	}
-
-
-
-
-	//	@RequestMapping(method = RequestMethod.GET)
-	//	public String printWelcome1() {
-	// 
-	//		return "staffnavigation";
-	//
-	//	}
-
 }
