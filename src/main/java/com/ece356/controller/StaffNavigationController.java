@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ece356.dao.CurrentHealthDao;
 import com.ece356.dao.PatientDao;
@@ -87,7 +88,7 @@ public class StaffNavigationController {
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.POST)
-	public String submit(HttpServletRequest request,
+	public ModelAndView submit(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, @PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
 		String start = request.getParameter("start");
@@ -108,7 +109,7 @@ public class StaffNavigationController {
 		visit.setUser_id(id);
 		
 		visitService.createVisit(visit);
-		return doctorSchedule1(staffId,visit.getId(), model);
+		return new ModelAndView("redirect:/staff/" +staffId+ "/doctor/schedule"+ visit.getId());
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.GET)
