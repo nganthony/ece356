@@ -141,12 +141,11 @@ public class StaffController {
 		model.addAttribute("id", user_id);
 		visit.setUser_id(user_id);
 		
-		if (visit.getEdit() == true) {
+		if (visitDao.getVisit(id) != null) {
 			visitService.updateVisit(visit);
 		} else {
 			visitService.createVisit(visit);
 		}
-		visit.setEdit(true);
 		ModelAndView modelAndView = new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
 		return modelAndView;
 		
