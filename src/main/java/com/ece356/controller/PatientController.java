@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ece356.dao.CurrentHealthDao;
-import com.ece356.dao.PatientDao;
 import com.ece356.dao.UserDao;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
+import com.ece356.domain.Visit;
 import com.ece356.service.PatientService;
+import com.ece356.service.VisitService;
 
 @Controller
 @RequestMapping()
@@ -34,6 +36,8 @@ public class PatientController {
 	CurrentHealthDao currentHealthDao;
 	@Autowired
 	PatientService patientService;
+	@Autowired
+	VisitService vistService;
 
 	@RequestMapping(value = "/patient/create", method = RequestMethod.GET)
 	public String getCreatePage(Model model,
@@ -65,8 +69,8 @@ public class PatientController {
 			} else {
 				Date now = new Date();
 				patient.setLastVisitDate(new Timestamp(now.getTime()));
-				Patient existingPatient = patientService.findByHealthCard(patient
-						.getHealthCard());
+				Patient existingPatient = patientService
+						.findByHealthCard(patient.getHealthCard());
 				if (existingPatient == null) {
 					patientService.insert(patient);
 					return getView(model);
@@ -91,6 +95,50 @@ public class PatientController {
 		Patient patient = patientService.findByHealthCard(healthCard);
 		patient.setEdit(true);
 		return getCreatePage(model, patient);
+	}
+
+
+	@RequestMapping(value = "/patient/home", method = RequestMethod.GET)
+	public String patientHome(Model model, HttpSession session) {
+
+		String role = (String) session.getAttribute("role");
+		if ("patient".equals(role)) {
+			Patient patient = (Patient) session.getAttribute("patient");
+			if (patient != null) {
+				User defaultDoctor = patientService.getDefaultDoctor(patient);
+				List<Visit> patientVisit = vistService.getPatientVisit(patient.getHealthCard());
+				model.addAttribute(
+						"defaultDoctor",
+						defaultDoctor.getFirstName() + " "
+								+ defaultDoctor.getLastName());
+				model.addAttribute("patient", patient);
+				model.addAttribute("patientVisit", patientVisit);
+				return "patientHome";
+			}
+		}
+		return "redirect:/user/login";
+
+	}
+
+
+	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
+	public String editPatientSelf(@PathVariable String healthCard, Model model) {
+		Patient patient = patientService.findByHealthCard(healthCard);
+		patient.setEdit(true);
+		model.addAttribute("patient", patient);
+
+		return "patientEdit";
+	}
+
+	@RequestMapping(value = "/patient/edit/self", method = RequestMethod.POST)
+	public String submit(@Valid @ModelAttribute("patient") Patient patient,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "patientEdit";
+		} else {
+			patientService.update(patient);
+			return "patientEdit";	// change later
+		}
 	}
 
 }

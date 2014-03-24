@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Patient Create</title>
+<title>Edit</title>
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
@@ -19,41 +19,20 @@
 			submitting again.</div>
 	</spring:hasBindErrors>
 	<div class="container-fluid">
-		<c:choose>
-			<c:when test="${patient.edit}">
-				<h3>Edit Patient</h3>
-			</c:when>
-			<c:otherwise>
-				<h3>Create Patient</h3>
-			</c:otherwise>
-		</c:choose>
+		<h3>Your Information</h3>
 		<div class="row-fluid">
 			<div class="span12">
 				<fieldset>
-					<form:form class="form-horizontal" action="/patient/create"
+					<form:form class="form-horizontal" action="/patient/edit/self"
 						modelAttribute="patient">
 						<form:hidden path="edit" />
-						<div class="control-group">
-							<form:label path="sin">SIN</form:label>
-							<div class="controls">
-								<form:input path="sin"></form:input>
-								<form:errors path="sin" cssclass="alert alert-danger"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<form:label path="firstName">First Name</form:label>
-							<div class="controls">
-								<form:input path="firstName"></form:input>
-								<form:errors path="firstName" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<form:label path="lastName">Last Name</form:label>
-							<div class="controls">
-								<form:input path="lastName"></form:input>
-								<form:errors path="lastName" cssclass="error"></form:errors>
-							</div>
-						</div>
+						<form:hidden path="sin" />
+						<form:hidden path="firstName" />
+						<form:hidden path="lastName" />
+						<form:hidden path="healthCard" />
+						<form:hidden path="defaultDoctorId" />
+						<form:hidden path="currentHealthID" />
+						
 						<div class="control-group">
 							<form:label path="password">Password</form:label>
 							<div class="controls">
@@ -61,29 +40,6 @@
 								<form:errors path="password" cssclass="error"></form:errors>
 							</div>
 						</div>
-
-						<c:choose>
-							<c:when test="${patient.edit}">
-								<div class="control-group">
-									<form:label path="healthCard">Health Card Number (No dashes or spaces)</form:label>
-									<div class="controls">
-										<form:input path="healthCard" class="disabled" disabled="true"></form:input>
-										<form:errors path="healthCard" cssclass="error"></form:errors>
-									</div>
-									<form:hidden path="healthCard" />
-
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="control-group">
-									<form:label path="healthCard">Health Card Number (No dashes or spaces)</form:label>
-									<div class="controls">
-										<form:input path="healthCard"></form:input>
-										<form:errors path="healthCard" cssclass="error"></form:errors>
-									</div>
-								</div>
-							</c:otherwise>
-						</c:choose>
 
 						<div class="control-group">
 							<form:label path="phoneNumber">Phone Number (No dashes or spaces)</form:label>
@@ -122,22 +78,6 @@
 							<div class="controls">
 								<form:input path="postalCode"></form:input>
 								<form:errors path="postalCode" cssclass="error"></form:errors>
-							</div>
-						</div>
-
-						<div class="control-group">
-							<form:label path="defaultDoctorId">Default Doctor</form:label>
-							<div class="controls">
-								<form:select class="dropdown-toggle" path="defaultDoctorId"
-									items="${doctors}" />
-							</div>
-						</div>
-
-						<div class="control-group">
-							<form:label path="currentHealthID">Current Health</form:label>
-							<div class="controls">
-								<form:select class="dropdown-toggle" path="currentHealthID"
-									items="${currentHealthMap}" />
 							</div>
 						</div>
 

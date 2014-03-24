@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,7 @@ import com.ece356.domain.Visit;
 import com.ece356.service.VisitService;
 
 @Controller
-@RequestMapping("staffnavigation")
+@RequestMapping("staff")
 public class StaffNavigationController {
 	@Autowired
 	UserDao userDao;
@@ -41,68 +44,72 @@ public class StaffNavigationController {
 	@Autowired
 	VisitDao visitDao;
 
-	@RequestMapping(value = "create", method = RequestMethod.GET)
-	public String getCreatePage(Model model,
-			@ModelAttribute("patient") Patient patient) {
-		List<User> doctors = userDao.getAllDoctors();
-		Map<Integer, String> doctorsMap = new HashMap<Integer, String>();
-		for (User user : doctors) {
-			doctorsMap.put(user.getId(),
-					user.getLastName() + ", " + user.getFirstName());
-		}
-		model.addAttribute("doctors", doctorsMap);
-		model.addAttribute("currentHealthMap",
-				currentHealthDao.getCurrentHealths());
-		model.addAttribute("patient", patient);
+	@RequestMapping(value = "{staffId}/create", method = RequestMethod.GET)
+	public String getCreatePage(@PathVariable("staffId") int staffId, Model model) {
+		
+		model.addAttribute("staffID", staffId);
 		return "staffnavigation";
 
 	}
 
-	@RequestMapping(value = "doctor/view", method = RequestMethod.GET)
-	public String getView(Model model) {
+	@RequestMapping(value = "{staffId}/doctor/view", method = RequestMethod.GET)
+	public String getView(@PathVariable("staffId") int staffId, Model model) {
 		List<User> doctors = userDao.getAllDoctors();
+		model.addAttribute("staffId", staffId);
 		model.addAttribute("users", doctors);
 		return "doctorView";
 	}
 
-	@RequestMapping(value = "doctor/schedule/{id}", method = RequestMethod.GET)
-	public String doctorSchedule1(@PathVariable("id") int id, Model model) {
+	@RequestMapping(value = "{staffId}/doctor/schedule/{id}", method = RequestMethod.GET)
+	public String doctorSchedule1(@PathVariable("staffId") int staffId,@PathVariable("id") int id, Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(id);
+		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
+		model.addAttribute("id", id);
 		return "doctorSchedule";
 	}
 
-	@RequestMapping(value = "create/appointment", method = RequestMethod.GET)
-	public String getCreateAppointment(Model model,
+	@RequestMapping(value = "{staffId}/create/appointment", method = RequestMethod.GET)
+	public String getCreateAppointment(@PathVariable("staffId") int staffId, Model model,
 			@ModelAttribute("visit") Visit visit) {
 		model.addAttribute("visit", visit);
-
+		model.addAttribute("staffId", staffId);
 		return "createAppointment";
 
 	}
 
-	@RequestMapping(value = "create/appointment/{id}", method = RequestMethod.POST)
-	public String submit(@PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
+	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.POST)
+	public String submit(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, @PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return doctorSchedule1(1, model);
-		}
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
+//		if (result.hasErrors()) {
+//			return doctorSchedule1(staffId, id , model);
+//		}
 		
+		Timestamp startTimestamp = Timestamp.valueOf(start);
+		Timestamp endTimestamp = Timestamp.valueOf(end);
+		model.addAttribute("staffId", staffId);
+		visit.setHealth_card("124323432123");
+		visit.setDuration(1);
+		visit.setUser_id(id);
 		Date now = new Date();
-		visit.setStart(new Timestamp(now.getTime()));
-		visit.setEnd(new Timestamp(now.getTime()+3600000));
+		visit.setStart(startTimestamp);
+		visit.setEnd(endTimestamp);
 		visit.setUser_id(id);
 		
 		visitService.createVisit(visit);
-		return "userLogin";
+		return doctorSchedule1(staffId,visit.getId(), model);
 	}
 
-	@RequestMapping(value = "create/appointment/{id}", method = RequestMethod.GET)
-	public String createDoctorAppointment(@PathVariable int id, Model model) {
+	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.GET)
+	public String createDoctorAppointment(@PathVariable("staffId") int staffId, @PathVariable int id, Model model) {
 		Visit visit = new Visit();
-		visit.setHealth_card("123454321");
+		visit.setHealth_card("124323432123");
 		visit.setDuration(1);
 		visit.setUser_id(id);
+		model.addAttribute("staffId", staffId);
 		model.addAttribute("visit", visit);
 		return "createAppointment";
 		//return getCreateAppointment(model, visit);

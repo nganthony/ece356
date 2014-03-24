@@ -20,6 +20,16 @@ public class Patient extends BaseEntity {
 	@NotNull
 	@Size(min = 1, max=12, message = "must be between 1 and 12 characters")
 	String healthCard;
+	@NotNull
+	String phoneNumber;
+	@NotNull
+	String street;
+	@NotNull
+	String city;
+	@NotNull
+	String province;
+	@NotNull
+	String postalCode;
 	private int currentHealthID;
 	private int defaultDoctorId;
 	private Timestamp lastVisitDate;
@@ -104,5 +114,45 @@ public class Patient extends BaseEntity {
 
 	public void setEdit(boolean edit) {
 		this.edit = edit;
+	}
+	
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	
+	public String getStreet() {
+		return street;
+	}
+	
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	
+	public String getProvince() {
+		return province;
+	}
+	
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+	
+	public String getPostalCode() {
+		return this.postalCode;
 	}
 }

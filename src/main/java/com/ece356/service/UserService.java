@@ -8,4 +8,5 @@ public interface UserService {
 	public User getUser(String id);
 	public User createUser(User user);
 	public Role getRole(User user);
+
 }

@@ -30,7 +30,7 @@
 					<li><a href="/1.0.0-BUILD-SNAPSHOT/patient/view"
 						onclick="return go(this);">Update Patient</a></li>
 						
-					<li><a href="/1.0.0-BUILD-SNAPSHOT/staffnavigation/doctor/view"
+					<li><a href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/doctor/view"
 						onclick="return go(this);">New Appointment</a></li>
 						
 					<li><a href="/1.0.0-BUILD-SNAPSHOT/doctor/view"

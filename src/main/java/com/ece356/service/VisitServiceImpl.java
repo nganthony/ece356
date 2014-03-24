@@ -1,5 +1,7 @@
 package com.ece356.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,11 +9,11 @@ import com.ece356.dao.VisitDao;
 import com.ece356.domain.Visit;
 
 @Service
-public class VisitServiceImpl  implements VisitService{
+public class VisitServiceImpl implements VisitService {
 
 	@Autowired
 	VisitDao visitDao;
-	
+
 	@Override
 	public Visit getVisit(String id) {
 		// TODO Auto-generated method stub
@@ -22,5 +24,10 @@ public class VisitServiceImpl  implements VisitService{
 	public void createVisit(Visit visit) {
 		visitDao.createVisit(visit);
 	}
-	
+
+	@Override
+	public List<Visit> getPatientVisit(String healthCard) {
+		return visitDao.getPatientVisit(healthCard);
+	}
+
 }

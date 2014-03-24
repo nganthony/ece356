@@ -94,12 +94,13 @@ public class UserController {
 				
 			}
 			else if(user.getRoleId() == 2) {
-				
+				return new ModelAndView("redirect:/staff/" + user.getId() + "/create");
 			}
 		} else if (patient != null && patient.getPassword().equals(password)){
 			map.put("errorMessage", "Logged in as patient");
 			session.setAttribute("role", "patient");
 			session.setAttribute("patient", patient);
+			return new ModelAndView("redirect:/patient/home");
 		}
 
 		return new ModelAndView("userLogin", map);

@@ -19,7 +19,7 @@
 			<display:column property="firstName" />
 			<display:column property="lastName" />
 			<display:column>
-				<a href=<c:url value="/staffnavigation/doctor/schedule/${user.id}"/>>View Schedule</a>
+				<a href=<c:url value="/staff/${staffId}/doctor/schedule/${user.id}"/>>View Schedule</a>
 
 			</display:column>
 		</display:table>

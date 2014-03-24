@@ -46,4 +46,31 @@ public class CurrentHealthDao {
 		}
 	}
 
+	public String getCurrentHealth(int id) {
+		String sql = "SELECT * FROM `current_health` WHERE id=?;";
+		Connection conn = null;
+		String status = null;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs != null && rs.next()) {
+				status = rs.getString("status");
+			}
+			rs.close();
+			ps.close();
+			return status;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
+
 }
