@@ -93,8 +93,9 @@ public class PatientDao {
 	}
 	
 	public List<Patient> getAllPatients(int defaultDoctorId, String search) {
-		String sql = "SELECT * FROM patient WHERE default_doctor_id = ?" +
-					" AND first_name LIKE ?" +
+		String sql = "SELECT * FROM (" +
+					"SELECT * FROM patient WHERE default_doctor_id = ?) as patient" +
+					" WHERE first_name LIKE ?" +
 					" OR last_name LIKE ?" +
 					" OR sin LIKE ?" +
 					" OR health_card LIKE ?";
