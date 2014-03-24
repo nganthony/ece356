@@ -79,18 +79,24 @@ public class StaffNavigationController {
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.POST)
-	public String submit(@PathVariable("staffId") int staffId, @PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
+	public String submit(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, @PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return doctorSchedule1(staffId, id , model);
-		}
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
+//		if (result.hasErrors()) {
+//			return doctorSchedule1(staffId, id , model);
+//		}
+		
+		Timestamp startTimestamp = Timestamp.valueOf(start);
+		Timestamp endTimestamp = Timestamp.valueOf(end);
 		model.addAttribute("staffId", staffId);
 		visit.setHealth_card("124323432123");
 		visit.setDuration(1);
 		visit.setUser_id(id);
 		Date now = new Date();
-		visit.setStart(new Timestamp(now.getTime()));
-		visit.setEnd(new Timestamp(now.getTime()+3600000));
+		visit.setStart(startTimestamp);
+		visit.setEnd(endTimestamp);
 		visit.setUser_id(id);
 		
 		visitService.createVisit(visit);

@@ -11,20 +11,48 @@
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
+<link
+	href="<%=request.getContextPath()%>/resources/css/bootstrap-combined.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="<%=request.getContextPath()%>/resources/css/bootstrap-datetimepicker.min.css">
 
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12">
+
 				<fieldset>
-					<form:form class="form-horizontal" method = "post" action='/staff/${staffId}/create/appointment/${visit.user_id}'
+					<form:form class="form-horizontal" method="post"
+						action='/staff/${staffId}/create/appointment/${visit.user_id}'
 						modelAttribute="visit">
-						
+						<div class="control-group">
+							<label class="control-label">Start</label>
+							<div id="datetimepicker" class="input-append date"
+								style="position: relative; left: 20px;">
+								<input type="text" name="start" id="start" title="START">
+								<span class="add-on"> <i data-time-icon="icon-time"
+									data-date-icon="icon-calendar"></i>
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">End</label>
+							<div id="datetimepicker1" class="input-append date"
+								style="position: relative; left: 20px;">
+								<input type="text" name="end" id="end" title="END"> <span
+									class="add-on"> <i data-time-icon="icon-time"
+									data-date-icon="icon-calendar"></i>
+								</span>
+							</div>
+						</div>
+
 						<div class="control-group">
 							<label class="control-label">Health Card</label>
 							<div class="controls">
-								<form:input  path="health_card" value="${visit.health_card}"></form:input>
+								<form:input path="health_card" value="${visit.health_card}"></form:input>
 								<form:errors path="health_card" cssclass="error"></form:errors>
 							</div>
 						</div>
@@ -36,23 +64,10 @@
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label">Start</label>
-							<div class="controls">
-								<form:input type="text" path="start" value="${visit.start}"></form:input>
-								<form:errors path="start" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">End</label>
-							<div class="controls">
-								<form:input type="text" path="end" value="${visit.end}"></form:input>
-								<form:errors path="end" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
 							<label class="control-label">Duration</label>
 							<div class="controls">
-								<form:input type="text" path="duration" value="${visit.duration}"></form:input>
+								<form:input type="text" path="duration"
+									value="${visit.duration}"></form:input>
 								<form:errors path="duration" cssclass="error"></form:errors>
 							</div>
 						</div>
@@ -66,7 +81,8 @@
 						<div class="control-group">
 							<label class="control-label">Treatment</label>
 							<div class="controls">
-								<form:input type="text" path="treatment" value="${visit.treatment}"></form:input>
+								<form:input type="text" path="treatment"
+									value="${visit.treatment}"></form:input>
 								<form:errors path="treatment" cssclass="error"></form:errors>
 							</div>
 						</div>
@@ -80,7 +96,8 @@
 						<div class="control-group">
 							<label class="control-label">Diagnosis</label>
 							<div class="controls">
-								<form:input type="text" path="diagnosis" value="${visit.diagnosis}"></form:input>
+								<form:input type="text" path="diagnosis"
+									value="${visit.diagnosis}"></form:input>
 								<form:errors path="diagnosis" cssclass="error"></form:errors>
 							</div>
 						</div>
@@ -94,5 +111,27 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/resources/javascript/jquery.min.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/resources/javascript/bootstrap.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/resources/javascript/bootstrap-datetimepicker.min.js">
+		
+	</script>
+	<script type="text/javascript">
+		$('#datetimepicker').datetimepicker({
+			format : 'yyyy-MM-dd hh:mm:ss',
+			language : 'pt-EN'
+		});
+		$('#datetimepicker1').datetimepicker({
+			format : 'yyyy-MM-dd hh:mm:ss',
+			language : 'pt-EN'
+		});
+	</script>
 </body>
 </html>
