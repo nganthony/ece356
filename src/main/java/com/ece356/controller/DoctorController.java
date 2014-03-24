@@ -83,7 +83,7 @@ public class DoctorController {
 	
 	@RequestMapping(value = "{doctorId}/update_appointment/{visitId}", method = RequestMethod.GET)
 	public String showUpdateAppointmentPage(@PathVariable int visitId, Model model) {
-		Visit visit = visitService.getVisit(Integer.toString(visitId));
+		Visit visit = visitService.getVisit(visitId);
 		model.addAttribute("visit", visit);
 		return "doctorUpdateAppointment";
 	}

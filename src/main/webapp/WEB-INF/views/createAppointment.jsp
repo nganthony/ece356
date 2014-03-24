@@ -25,13 +25,13 @@
 
 				<fieldset>
 					<form:form class="form-horizontal" method="post"
-						action='/staff/${staffId}/create/appointment/${visit.user_id}'
+						action='/staff/${staffId}/create/appointment/${visit.user_id}/${visit.id}'
 						modelAttribute="visit">
 						<div class="control-group">
 							<label class="control-label">Start</label>
 							<div id="datetimepicker" class="input-append date"
 								style="position: relative; left: 20px;">
-								<input type="text" name="start" id="start" title="START">
+								<input type="text"  name="start" id="start" title="START">
 								<span class="add-on"> <i data-time-icon="icon-time"
 									data-date-icon="icon-calendar"></i>
 								</span>
@@ -56,52 +56,7 @@
 								<form:errors path="health_card" cssclass="error"></form:errors>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label">User_ID</label>
-							<div class="controls">
-								<form:input type="text" path="user_id" value="${visit.user_id}"></form:input>
-								<form:errors path="user_id" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Duration</label>
-							<div class="controls">
-								<form:input type="text" path="duration"
-									value="${visit.duration}"></form:input>
-								<form:errors path="duration" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Surgery</label>
-							<div class="controls">
-								<form:input type="text" path="surgery" value="${visit.surgery}"></form:input>
-								<form:errors path="surgery" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Treatment</label>
-							<div class="controls">
-								<form:input type="text" path="treatment"
-									value="${visit.treatment}"></form:input>
-								<form:errors path="treatment" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Comments</label>
-							<div class="controls">
-								<form:input type="text" path="comment" value="${visit.comment}"></form:input>
-								<form:errors path="comment" cssclass="error"></form:errors>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Diagnosis</label>
-							<div class="controls">
-								<form:input type="text" path="diagnosis"
-									value="${visit.diagnosis}"></form:input>
-								<form:errors path="diagnosis" cssclass="error"></form:errors>
-							</div>
-						</div>
-
+						
 						<br />
 						<div class="form-actions">
 							<button type="submit" class="btn btn-success">Create</button>
@@ -125,7 +80,7 @@
 	</script>
 	<script type="text/javascript">
 		$('#datetimepicker').datetimepicker({
-			format : 'yyyy-MM-dd hh:mm',
+			format : 'yyyy-MM-dd hh:mm:ss',
 			language : 'pt-EN'
 		});
 		$('#datetimepicker1').datetimepicker({

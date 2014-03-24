@@ -15,7 +15,7 @@ public class VisitServiceImpl implements VisitService {
 	VisitDao visitDao;
 
 	@Override
-	public Visit getVisit(String id) {
+	public Visit getVisit(int id) {
 		// TODO Auto-generated method stub
 		return visitDao.getVisit(id);
 	}
@@ -40,8 +40,8 @@ public class VisitServiceImpl implements VisitService {
 		return visitDao.getDoctorSchedule(doctorId, search);
 	}
 
-	@Override
-	public void update(Visit visit) {
-		visitDao.update(visit);	
+	public void updateVisit(Visit visit) {
+		// TODO Auto-generated method stub
+		visitDao.update(visit);
 	}
 }

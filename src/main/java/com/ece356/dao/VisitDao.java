@@ -35,14 +35,14 @@ public class VisitDao {
 
 	public void update(Visit visit) {
 
-		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ?, start = ?, end = ?, user_id = ?, duration = ?, health_card = ? WHERE health_card = ? ";
+		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ?, start = ?, end = ?, user_id = ?, duration = ?, health_card = ? WHERE id = ? ";
 
 		jdbcTemplate.update(
 				sql,
 				new Object[] { visit.getDiagnosis(), visit.getSurgery(),
 						visit.getTreatment(), visit.getComment(),
 						visit.getStart(), visit.getEnd(), visit.getUser_id(),
-						visit.getDuration(), visit.getHealth_card() });
+						visit.getDuration(), visit.getHealth_card(), visit.getId() });
 
 	}
 
@@ -88,7 +88,7 @@ public class VisitDao {
 		return visits;
 	}
 
-	public Visit getVisit(String id) {
+	public Visit getVisit(int id) {
 		Visit visit = null;
 
 		String sql = "SELECT * FROM visit WHERE id = ?";
