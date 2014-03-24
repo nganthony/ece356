@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
+import com.ece356.domain.Visit;
 import com.ece356.service.PatientService;
+import com.ece356.service.VisitService;
 
 @Controller
 @RequestMapping("doctor")
@@ -23,6 +25,9 @@ public class DoctorController {
 	
 	@Autowired
 	PatientService patientService;
+	
+	@Autowired
+	VisitService visitService;
 	
 	@RequestMapping(value = "{doctorId}/patients", method= RequestMethod.GET)
 	public String showPatientsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
@@ -55,7 +60,22 @@ public class DoctorController {
 	}
 	
 	@RequestMapping(value = "{doctorId}/appointments", method= RequestMethod.GET)
-	public String showAppintmentsPage(@PathVariable("doctorId") int doctorId) {
+	public String showAppointmentsPage(@PathVariable("doctorId") int doctorId, Model model) {
+		
+		List<Visit> visits  = visitService.getDoctorSchedule(doctorId);
+		model.addAttribute("visits", visits);
+		return "doctorAppointments";
+	}
+	
+	@RequestMapping(value = "{doctorId}/appointments", method= RequestMethod.POST)
+	public String showFilteredAppintmentsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
+			HttpServletResponse response, HttpSession session, Model model) {
+		
+		String search = request.getParameter("search");
+		
+		List<Visit> visits  = visitService.getDoctorSchedule(doctorId, search);
+		model.addAttribute("visits", visits);
+		model.addAttribute("search", search);
 		
 		return "doctorAppointments";
 	}

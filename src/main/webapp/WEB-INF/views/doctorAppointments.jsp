@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,7 +21,8 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">${user.firstName} ${user.lastName}</a>
+			<a class="navbar-brand" href="#">${user.firstName}
+				${user.lastName}</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -33,6 +35,30 @@
 		</div>
 	</div>
 	</nav>
+
+	<form class="navbar-form navbar-left" role="search" method='post'
+		action='appointments'>
+		<div class="form-group">
+			<input type="text" class="form-control" name="search"
+				placeholder="Search" value="${search}">
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+
+	<div class="container-fluid">
+		<display:table name="visits" id="visit"
+			class="table table-striped table-condensed">
+			<display:column property="start" />
+			<display:column property="end" />
+			<display:column property="health_card" />
+			<display:column property="diagnosis" />
+			<display:column property="treatment" />
+			<display:column property="surgery" />
+			<display:column property="comment" />
+			<display:column property="user_id" />
+			<display:column property="duration" />
+		</display:table>
+	</div>
 
 </body>
 </html>

@@ -72,6 +72,21 @@ public class VisitDao {
 			return visits;
 		}
 	}
+	
+	public List<Visit> getDoctorSchedule(int id, String search) {
+		List<Visit> visits = new ArrayList<Visit>();
+
+		String sql = "SELECT * FROM (" +
+					"SELECT * FROM `visit` WHERE user_id = ?) as visit" +
+					" WHERE diagnosis LIKE ?" +
+					" OR surgery LIKE ?" +
+					" OR comment LIKE ?" +
+					" OR health_card LIKE ?";
+
+		visits = jdbcTemplate.query(sql, new Object[] {id, search + "%", search + "%", "%" + search + "%", search + "%"},
+					new VisitRowMapper());
+		return visits;
+	}
 
 	public Visit getVisit(String id) {
 		Visit visit = null;

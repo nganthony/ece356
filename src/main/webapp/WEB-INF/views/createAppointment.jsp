@@ -125,7 +125,7 @@
 	</script>
 	<script type="text/javascript">
 		$('#datetimepicker').datetimepicker({
-			format : 'yyyy-MM-dd hh:mm:ss',
+			format : 'yyyy-MM-dd hh:mm',
 			language : 'pt-EN'
 		});
 		$('#datetimepicker1').datetimepicker({
