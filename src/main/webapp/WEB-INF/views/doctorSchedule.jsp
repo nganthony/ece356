@@ -25,6 +25,14 @@
 			<display:column property="comment" />
 			<display:column property="user_id" />
 			<display:column property="duration" />
+			<display:column>
+				<!-- <a href=<c:url value="/staff/${staffId}/create/appointment/${visit.user_id}"/>>Reschedule</a> -->
+				<!--<a href=<c:url value="/staff/${staffId}/doctor/schedule/${id}/edit"/>>Reschedule</a>  -->
+			</display:column>
+			<display:column>
+				<a href=<c:url value="/staff/${staffId}/doctor/schedule/${visit.user_id}/${visit.id}"/>>Delete</a>
+
+			</display:column>
 		</display:table>
 	</div>
 	<div>

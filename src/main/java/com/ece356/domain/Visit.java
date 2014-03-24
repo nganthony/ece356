@@ -29,6 +29,14 @@ public class Visit extends BaseEntity {
 	@NotNull
 	String health_card;
 	
+	private transient boolean edit;
+	
+	public boolean getEdit() {
+		return edit;
+	}
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+	}
 	public int getId() {
 		return id;
 	}

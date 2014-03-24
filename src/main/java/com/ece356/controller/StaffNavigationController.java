@@ -68,6 +68,18 @@ public class StaffNavigationController {
 		model.addAttribute("id", id);
 		return "doctorSchedule";
 	}
+	
+	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
+	public String doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
+			@PathVariable("id") int id,Model model) {
+		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
+		visitDao.delete(id);
+		model.addAttribute("staffId", staffId);
+		model.addAttribute("visits", visits);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("id", id);
+		return doctorSchedule1(staffId, user_id, model);
+	}
 
 	@RequestMapping(value = "{staffId}/create/appointment", method = RequestMethod.GET)
 	public String getCreateAppointment(@PathVariable("staffId") int staffId, Model model,

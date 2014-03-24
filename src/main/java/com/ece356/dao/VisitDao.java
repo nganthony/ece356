@@ -116,5 +116,14 @@ public class VisitDao {
 			return visits;
 		}
 	}
+	
+	public void delete(int id) {
+		String sql = "DELETE FROM visit WHERE id = ?";
+		try {
+			jdbcTemplate.update(sql, new Object[] {id} );
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 }
