@@ -29,7 +29,7 @@ import com.ece356.service.VisitService;
 
 @Controller
 @RequestMapping("staff")
-public class StaffNavigationController {
+public class StaffController {
 	@Autowired
 	UserDao userDao;
 	@Autowired
