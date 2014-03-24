@@ -29,7 +29,7 @@ import com.ece356.service.VisitService;
 
 @Controller
 @RequestMapping("staff")
-public class StaffNavigationController {
+public class StaffController {
 	@Autowired
 	UserDao userDao;
 	@Autowired
@@ -63,7 +63,7 @@ public class StaffNavigationController {
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
 		model.addAttribute("id", id);
-		return "doctorSchedule";
+		return "staffDoctorAppointments";
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
@@ -88,7 +88,7 @@ public class StaffNavigationController {
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.POST)
-	public ModelAndView submit(HttpServletRequest request,
+	public String submit(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, @PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
 		String start = request.getParameter("start");
@@ -109,7 +109,8 @@ public class StaffNavigationController {
 		visit.setUser_id(id);
 		
 		visitService.createVisit(visit);
-		return new ModelAndView("redirect:/staff/" +staffId+ "/doctor/schedule"+ visit.getId());
+		//return new ModelAndView("redirect:/staff/" +staffId+ "/doctor/schedule"+ visit.getId());
+		return doctorSchedule1(staffId, id, model);
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.GET)
