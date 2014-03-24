@@ -63,7 +63,7 @@ public class StaffNavigationController {
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
 		model.addAttribute("id", id);
-		return "doctorSchedule";
+		return "staffDoctorAppointments";
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
