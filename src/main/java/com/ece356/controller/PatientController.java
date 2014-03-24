@@ -97,7 +97,7 @@ public class PatientController {
 		return getCreatePage(model, patient);
 	}
 
-<<<<<<< HEAD
+
 	@RequestMapping(value = "/patient/home", method = RequestMethod.GET)
 	public String patientHome(Model model, HttpSession session) {
 
@@ -120,7 +120,7 @@ public class PatientController {
 
 	}
 
-=======
+
 	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
 	public String editPatientSelf(@PathVariable String healthCard, Model model) {
 		Patient patient = patientService.findByHealthCard(healthCard);
@@ -140,5 +140,5 @@ public class PatientController {
 			return "patientEdit";	// change later
 		}
 	}
->>>>>>> 49a3941f76363ec9e95a1c3c7559d3f0f3bde87c
+
 }
