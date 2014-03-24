@@ -97,6 +97,7 @@ public class PatientController {
 		return getCreatePage(model, patient);
 	}
 
+<<<<<<< HEAD
 	@RequestMapping(value = "/patient/home", method = RequestMethod.GET)
 	public String patientHome(Model model, HttpSession session) {
 
@@ -119,4 +120,25 @@ public class PatientController {
 
 	}
 
+=======
+	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
+	public String editPatientSelf(@PathVariable String healthCard, Model model) {
+		Patient patient = patientService.findByHealthCard(healthCard);
+		patient.setEdit(true);
+		model.addAttribute("patient", patient);
+
+		return "patientEdit";
+	}
+
+	@RequestMapping(value = "/patient/edit/self", method = RequestMethod.POST)
+	public String submit(@Valid @ModelAttribute("patient") Patient patient,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "patientEdit";
+		} else {
+			patientService.update(patient);
+			return "patientEdit";	// change later
+		}
+	}
+>>>>>>> 49a3941f76363ec9e95a1c3c7559d3f0f3bde87c
 }
