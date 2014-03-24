@@ -90,7 +90,6 @@ public class DoctorController {
 	
 	@RequestMapping(value = "{doctorId}/update_appointment/{visitId}", method = RequestMethod.POST)
 	public String updateAppointment(@PathVariable int doctorId, @PathVariable int visitId, @ModelAttribute Visit visit, Model model) {
-		visitService.update(visit);
 		return "redirect:/doctor/" + doctorId + "/appointments";
 	}
 }

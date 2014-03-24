@@ -12,5 +12,4 @@ public interface VisitService {
 	List<Visit> getPatientVisit(String healthCard);
 	public List<Visit> getDoctorSchedule(int doctorId);
 	public List<Visit> getDoctorSchedule(int doctorId, String search);
-	public void update(Visit visit);
 }
