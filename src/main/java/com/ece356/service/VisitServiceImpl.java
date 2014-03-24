@@ -39,4 +39,9 @@ public class VisitServiceImpl implements VisitService {
 	public List<Visit> getDoctorSchedule(int doctorId, String search) {
 		return visitDao.getDoctorSchedule(doctorId, search);
 	}
+
+	@Override
+	public void update(Visit visit) {
+		visitDao.update(visit);	
+	}
 }
