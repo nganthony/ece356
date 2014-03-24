@@ -40,7 +40,6 @@ public class VisitServiceImpl implements VisitService {
 		return visitDao.getDoctorSchedule(doctorId, search);
 	}
 
-	@Override
 	public void updateVisit(Visit visit) {
 		// TODO Auto-generated method stub
 		visitDao.update(visit);

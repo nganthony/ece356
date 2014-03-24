@@ -55,8 +55,10 @@
 			<display:column property="treatment" />
 			<display:column property="surgery" />
 			<display:column property="comment" />
-			<display:column property="user_id" />
 			<display:column property="duration" />
+			<display:column>
+				<a href="update_appointment/${visit.id}">Update Information</a>
+			</display:column>
 		</display:table>
 	</div>
 

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,5 +79,17 @@ public class DoctorController {
 		model.addAttribute("search", search);
 		
 		return "doctorAppointments";
+	}
+	
+	@RequestMapping(value = "{doctorId}/update_appointment/{visitId}", method = RequestMethod.GET)
+	public String showUpdateAppointmentPage(@PathVariable int visitId, Model model) {
+		Visit visit = visitService.getVisit(visitId);
+		model.addAttribute("visit", visit);
+		return "doctorUpdateAppointment";
+	}
+	
+	@RequestMapping(value = "{doctorId}/update_appointment/{visitId}", method = RequestMethod.POST)
+	public String updateAppointment(@PathVariable int doctorId, @PathVariable int visitId, @ModelAttribute Visit visit, Model model) {
+		return "redirect:/doctor/" + doctorId + "/appointments";
 	}
 }
