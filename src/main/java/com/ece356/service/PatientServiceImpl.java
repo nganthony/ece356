@@ -5,13 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ece356.dao.CurrentHealthDao;
 import com.ece356.dao.PatientDao;
+import com.ece356.dao.UserDao;
 import com.ece356.domain.Patient;
+import com.ece356.domain.User;
+
 @Service
 public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	PatientDao patientDao;
+	@Autowired
+	CurrentHealthDao currentHealthDao;
+	@Autowired
+	UserDao userDao;
 
 	@Override
 	public Patient findByHealthCard(String healthCard) {
@@ -40,8 +48,6 @@ public class PatientServiceImpl implements PatientService {
 	public List<Patient> getAllPatients() {
 		return patientDao.getAllPatients();
 	}
-	
-	
 
 	@Override
 	public List<Patient> getAllPatients(int defaultDoctorId, String search) {
@@ -51,6 +57,16 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<Patient> getAllPatients(int defaultDoctorId) {
 		return patientDao.getAllPatients(defaultDoctorId);
+	}
+
+	@Override
+	public String getCurrentHealth(Patient patient) {
+		return currentHealthDao.getCurrentHealth(patient.getCurrentHealthID());
+	}
+
+	@Override
+	public User getDefaultDoctor(Patient patient) {
+		return userDao.getUser(""+patient.getDefaultDoctorId());
 	}
 
 }

@@ -100,6 +100,7 @@ public class UserController {
 			map.put("errorMessage", "Logged in as patient");
 			session.setAttribute("role", "patient");
 			session.setAttribute("patient", patient);
+			return new ModelAndView("redirect:/patient/home");
 		}
 
 		return new ModelAndView("userLogin", map);

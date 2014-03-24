@@ -16,8 +16,8 @@
 	<div class="container-fluid">
 		<display:table name="patients" id="patient"
 			class="table table-striped table-condensed">
-			<display:column property="firstName" />
-			<display:column property="lastName" />
+			<display:column property="firstName" title="First Name" />
+			<display:column property="lastName" title="Last Name" />
 			<display:column>
 				<a href=<c:url value="/patient/edit/${patient.healthCard}"/>>Edit</a>
 
