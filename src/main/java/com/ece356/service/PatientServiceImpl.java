@@ -23,7 +23,7 @@ public class PatientServiceImpl implements PatientService {
 		patientDao.update(patient);
 
 	}
-
+	
 	@Override
 	public void delete(Patient patient) {
 		patientDao.delete(patient);

@@ -25,7 +25,7 @@ public class PatientDao {
 	public void insert(Patient patient) {
 
 		String sql = "INSERT INTO patient "
-				+ "(sin, first_name, last_name, password, last_visit_date, health_card, "
+				+ "(`sin`, `first_name`, `last_name`, `password`, last_visit_date, health_card, "
 				+ "default_doctor_id, current_health_id, deleted, phone_number, street, city, "
 				+ "province, postal_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -76,11 +76,15 @@ public class PatientDao {
 	}
 
 	public void update(Patient patient) {
-		String sql = "UPDATE patient SET `sin`= ?,`first_name`= ?, `last_name`= ?, `password`= ?, default_doctor_id = ?, current_health_id = ?, deleted = ? WHERE health_card = ? ";
+		String sql = "UPDATE patient SET `sin`= ?,`first_name`= ?, `last_name`= ?, `password`= ?, default_doctor_id = ?,"
+				+ "current_health_id = ?, deleted = ?, phone_number = ?, street = ?, city = ?, province = ?, "
+				+ "postal_code = ? WHERE health_card = ? ";
 		jdbcTemplate.update(sql, patient.getSin(), patient.getFirstName(),
 				patient.getLastName(), patient.getPassword(),
 				patient.getDefaultDoctorId(), patient.getCurrentHealthID(),
-				patient.isDeleted(), patient.getHealthCard());
+				patient.isDeleted(), patient.getPhoneNumber(),
+				patient.getStreet(), patient.getCity(), patient.getProvince(),
+				patient.getPostalCode(), patient.getHealthCard());
 	}
 
 	public void delete(Patient patient) {

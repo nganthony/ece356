@@ -65,8 +65,8 @@ public class PatientController {
 			} else {
 				Date now = new Date();
 				patient.setLastVisitDate(new Timestamp(now.getTime()));
-				Patient existingPatient = patientService.findByHealthCard(patient
-						.getHealthCard());
+				Patient existingPatient = patientService
+						.findByHealthCard(patient.getHealthCard());
 				if (existingPatient == null) {
 					patientService.insert(patient);
 					return getView(model);
@@ -93,4 +93,23 @@ public class PatientController {
 		return getCreatePage(model, patient);
 	}
 
+	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
+	public String editPatientSelf(@PathVariable String healthCard, Model model) {
+		Patient patient = patientService.findByHealthCard(healthCard);
+		patient.setEdit(true);
+		model.addAttribute("patient", patient);
+
+		return "patientEdit";
+	}
+
+	@RequestMapping(value = "/patient/edit/self", method = RequestMethod.POST)
+	public String submit(@Valid @ModelAttribute("patient") Patient patient,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return "patientEdit";
+		} else {
+			patientService.update(patient);
+			return "patientEdit";	// change later
+		}
+	}
 }
