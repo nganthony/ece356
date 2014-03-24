@@ -37,7 +37,7 @@
 	</nav>
 
 	<form class="navbar-form navbar-left" role="search" method='post'
-		action='patients'>
+		action='appointments'>
 		<div class="form-group">
 			<input type="text" class="form-control" name="search"
 				placeholder="Search" value="${search}">

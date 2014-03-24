@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ece356.dao.VisitDao;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
@@ -61,10 +60,23 @@ public class DoctorController {
 	}
 	
 	@RequestMapping(value = "{doctorId}/appointments", method= RequestMethod.GET)
-	public String showAppintmentsPage(@PathVariable("doctorId") int doctorId, Model model) {
+	public String showAppointmentsPage(@PathVariable("doctorId") int doctorId, Model model) {
 		
 		List<Visit> visits  = visitService.getDoctorSchedule(doctorId);
 		model.addAttribute("visits", visits);
+		return "doctorAppointments";
+	}
+	
+	@RequestMapping(value = "{doctorId}/appointments", method= RequestMethod.POST)
+	public String showFilteredAppintmentsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
+			HttpServletResponse response, HttpSession session, Model model) {
+		
+		String search = request.getParameter("search");
+		
+		List<Visit> visits  = visitService.getDoctorSchedule(doctorId, search);
+		model.addAttribute("visits", visits);
+		model.addAttribute("search", search);
+		
 		return "doctorAppointments";
 	}
 }
