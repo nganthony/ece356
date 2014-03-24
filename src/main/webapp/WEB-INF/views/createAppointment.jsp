@@ -25,13 +25,13 @@
 
 				<fieldset>
 					<form:form class="form-horizontal" method="post"
-						action='/staff/${staffId}/create/appointment/${visit.user_id}'
+						action='/staff/${staffId}/create/appointment/${visit.user_id}/${visit.id}'
 						modelAttribute="visit">
 						<div class="control-group">
 							<label class="control-label">Start</label>
 							<div id="datetimepicker" class="input-append date"
 								style="position: relative; left: 20px;">
-								<input type="text" name="start" id="start" title="START">
+								<input type="text"  name="start" id="start" title="START">
 								<span class="add-on"> <i data-time-icon="icon-time"
 									data-date-icon="icon-calendar"></i>
 								</span>

@@ -66,7 +66,7 @@ public class StaffController {
 		return "staffDoctorAppointments";
 	}
 	
-	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/delete/{id}", method = RequestMethod.GET)
 	public String doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
@@ -76,6 +76,20 @@ public class StaffController {
 		model.addAttribute("user_id", user_id);
 		model.addAttribute("id", id);
 		return doctorSchedule1(staffId, user_id, model);
+	}
+	
+	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
+	public String rescheduleAppointment(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
+			@PathVariable("id") int id,Model model) {
+		Visit visit = visitDao.getVisit(id);
+//		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
+//		visitDao.delete(id);
+		model.addAttribute("staffId", staffId);
+//		model.addAttribute("visits", visits);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("visit", visit);
+		model.addAttribute("id", id);
+		return "createAppointment";
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment", method = RequestMethod.GET)
@@ -87,9 +101,11 @@ public class StaffController {
 
 	}
 
-	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.POST)
 	public String submit(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, @PathVariable int id, @Valid @ModelAttribute("visit") Visit visit,
+			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, 
+			@PathVariable("user_id") int user_id, 
+			@PathVariable("id") int id,@Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
 		String start = request.getParameter("start");
 		String end = request.getParameter("end");
@@ -102,24 +118,35 @@ public class StaffController {
 		model.addAttribute("staffId", staffId);
 		visit.setHealth_card("124323432123");
 		visit.setDuration(1);
-		visit.setUser_id(id);
+		visit.setUser_id(user_id);
 		Date now = new Date();
 		visit.setStart(startTimestamp);
 		visit.setEnd(endTimestamp);
-		visit.setUser_id(id);
-		
-		visitService.createVisit(visit);
+		if (visit.getEdit() == true) {
+			visitService.updateVisit(visit);
+		} else {
+			visitService.createVisit(visit);
+		}
+		visit.setEdit(true);
 		//return new ModelAndView("redirect:/staff/" +staffId+ "/doctor/schedule"+ visit.getId());
-		return doctorSchedule1(staffId, id, model);
+		return doctorSchedule1(staffId, user_id, model);
 	}
 
-	@RequestMapping(value = "{staffId}/create/appointment/{id}", method = RequestMethod.GET)
-	public String createDoctorAppointment(@PathVariable("staffId") int staffId, @PathVariable int id, Model model) {
+	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.GET)
+	public String createDoctorAppointment(@PathVariable("staffId") int staffId, @PathVariable("user_id") int user_id, @PathVariable("id") int id,Model model) {
+		Visit getVisit = visitDao.getVisit(id);
 		Visit visit = new Visit();
+		visit.setId(0);
+		if (getVisit != null) {
+			visit.setStart(getVisit.getStart());
+			visit.setEnd(getVisit.getEnd());
+			visit.setId(id);
+		}
 		visit.setHealth_card("124323432123");
 		visit.setDuration(1);
-		visit.setUser_id(id);
+		visit.setUser_id(user_id);
 		model.addAttribute("staffId", staffId);
+		model.addAttribute("id", id);
 		model.addAttribute("visit", visit);
 		return "createAppointment";
 		//return getCreateAppointment(model, visit);
