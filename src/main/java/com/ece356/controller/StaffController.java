@@ -2,7 +2,9 @@ package com.ece356.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.ece356.dao.CurrentHealthDao;
 import com.ece356.dao.PatientDao;
 import com.ece356.dao.UserDao;
 import com.ece356.dao.VisitDao;
+import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.service.VisitService;
@@ -67,7 +71,7 @@ public class StaffController {
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/delete/{id}", method = RequestMethod.GET)
-	public String doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
+	public ModelAndView doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
 		visitDao.delete(id);
@@ -75,7 +79,7 @@ public class StaffController {
 		model.addAttribute("visits", visits);
 		model.addAttribute("user_id", user_id);
 		model.addAttribute("id", id);
-		return doctorSchedule1(staffId, user_id, model);
+		return new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
@@ -102,26 +106,47 @@ public class StaffController {
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.POST)
-	public String submit(HttpServletRequest request,
+	public ModelAndView submit(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session, @PathVariable("staffId") int staffId, 
 			@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,@Valid @ModelAttribute("visit") Visit visit,
 			BindingResult result, Model model) {
-		String start = request.getParameter("start");
-		String end = request.getParameter("end");
-//		if (result.hasErrors()) {
-//			return doctorSchedule1(staffId, id , model);
-//		}
+		String start = request.getParameter("startTime");
+		String end = request.getParameter("endTime");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("staffId", staffId);
+		map.put("user_id", user_id);
+		map.put("id", id);
+		if (result.hasErrors()) {
+			map.put("id", user_id);
+			map.put("errorMessage", "There is an error in one of the forms");
+			return new ModelAndView("createAppointment", map);
+			//return doctorSchedule1(staffId, id , model);
+		}
+		try {
+			Timestamp startTimestamp = Timestamp.valueOf(start);
+			Timestamp endTimestamp = Timestamp.valueOf(end);
+			visit.setStart(startTimestamp);
+			visit.setEnd(endTimestamp);
+			if (!startTimestamp.before(endTimestamp)) {
+				map.put("errorMessage", "The start of the appointment should come before it ends");
+				return new ModelAndView("createAppointment", map);
+			}
+		} catch (Exception e) {
+			map.put("errorMessage", "Please enter times for the start and end of the appointment");
+			return new ModelAndView("createAppointment", map);
+			// TODO: handle exception
+		}
 		
-		Timestamp startTimestamp = Timestamp.valueOf(start);
-		Timestamp endTimestamp = Timestamp.valueOf(end);
+		Patient patient = patientDao.findByHealthCard(visit.getHealth_card());
+		if (patient == null) {
+			map.put("errorMessage", "Health Card does not match with a patient");
+			return new ModelAndView("createAppointment", map);
+		}
 		model.addAttribute("staffId", staffId);
-		visit.setHealth_card("124323432123");
-		visit.setDuration(1);
+		model.addAttribute("id", user_id);
 		visit.setUser_id(user_id);
-		Date now = new Date();
-		visit.setStart(startTimestamp);
-		visit.setEnd(endTimestamp);
+		
 		if (visit.getEdit() == true) {
 			visitService.updateVisit(visit);
 		} else {
@@ -129,7 +154,10 @@ public class StaffController {
 		}
 		visit.setEdit(true);
 		//return new ModelAndView("redirect:/staff/" +staffId+ "/doctor/schedule"+ visit.getId());
-		return doctorSchedule1(staffId, user_id, model);
+		map.put("id", user_id);
+		ModelAndView modelAndView = new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
+		return modelAndView;
+		
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.GET)
@@ -142,6 +170,10 @@ public class StaffController {
 			visit.setEnd(getVisit.getEnd());
 			visit.setId(id);
 		}
+//		Date date = new Date();
+//		Timestamp timestamp = new Timestamp(date.getTime());
+//		visit.setStart(timestamp);
+//		visit.setEnd(timestamp);
 		visit.setHealth_card("124323432123");
 		visit.setDuration(1);
 		visit.setUser_id(user_id);

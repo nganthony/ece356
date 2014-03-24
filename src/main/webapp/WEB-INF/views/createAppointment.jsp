@@ -24,31 +24,31 @@
 			<div class="span12">
 
 				<fieldset>
+					<legend>Create an Appointment</legend>
 					<form:form class="form-horizontal" method="post"
 						action='/staff/${staffId}/create/appointment/${visit.user_id}/${visit.id}'
 						modelAttribute="visit">
 						<div class="control-group">
-							<label class="control-label">Start</label>
+							<label class="control-label">Start Time</label>
 							<div id="datetimepicker" class="input-append date"
 								style="position: relative; left: 20px;">
-								<input type="text"  name="start" id="start" title="START">
+								<input type="text" name="startTime" id="startTime"
+									title="STARTTIME"> <span class="add-on"> <i
+									data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">End Time</label>
+							<div id="datetimepicker1" class="input-append date"
+								style="position: relative; left: 20px;">
+								<input type="text" name="endTime" id="endTime" title="ENDTIME">
 								<span class="add-on"> <i data-time-icon="icon-time"
 									data-date-icon="icon-calendar"></i>
 								</span>
 							</div>
 						</div>
-
-						<div class="control-group">
-							<label class="control-label">End</label>
-							<div id="datetimepicker1" class="input-append date"
-								style="position: relative; left: 20px;">
-								<input type="text" name="end" id="end" title="END"> <span
-									class="add-on"> <i data-time-icon="icon-time"
-									data-date-icon="icon-calendar"></i>
-								</span>
-							</div>
-						</div>
-
 						<div class="control-group">
 							<label class="control-label">Health Card</label>
 							<div class="controls">
@@ -56,11 +56,14 @@
 								<form:errors path="health_card" cssclass="error"></form:errors>
 							</div>
 						</div>
+						<p style="position:relative; left:16%; color: red">${errorMessage}</p>
 						
-						<br />
 						<div class="form-actions">
 							<button type="submit" class="btn btn-success">Create</button>
 						</div>
+						
+						<br />	
+						
 					</form:form>
 				</fieldset>
 			</div>

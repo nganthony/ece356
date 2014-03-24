@@ -14,6 +14,7 @@
 </head>
 <body>
 	<div class="container-fluid">
+		<legend>Schedule of Doctor</legend>
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed">
 			<display:column property="start" />

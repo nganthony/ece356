@@ -14,6 +14,7 @@
 </head>
 <body>
 	<div class="container-fluid">
+		<legend>List of All Doctors</legend>
 		<display:table name="users" id="user"
 			class="table table-striped table-condensed">
 			<display:column property="firstName" />
