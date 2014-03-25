@@ -178,5 +178,19 @@ public class VisitDao {
 		}
 		
 	}
+	
+	public List<Visit> getPatientVisit(String healthCard, int userId) {
+		List<Visit> visits = new ArrayList<Visit>();
+
+		String sql = "SELECT * FROM `visit` WHERE health_card = ? and user_id = ?";
+
+		try {
+			visits = jdbcTemplate.query(sql, new Object[] { healthCard, userId },
+					new VisitRowMapper());
+			return visits;
+		} catch (Exception e) {
+			return visits;
+		}
+	}
 
 }

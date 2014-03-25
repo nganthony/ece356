@@ -98,10 +98,10 @@ public class DoctorController {
 	}
 	
 	@RequestMapping(value = "{doctorId}/patient/{healthCard}", method = RequestMethod.GET)
-	public String getPatientRecord(@PathVariable("healthCard") String healthCard, Model model) {
+	public String getPatientRecord(@PathVariable("doctorId") int doctorId, @PathVariable("healthCard") String healthCard, Model model) {
 		
 		Patient patient = patientService.findByHealthCard(healthCard);
-		List<Visit> visits = visitService.getPatientVisit(healthCard);
+		List<Visit> visits = visitService.getPatientVisit(healthCard, doctorId);
 		
  		model.addAttribute("patient", patient);
 		model.addAttribute("visits", visits);
