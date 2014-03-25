@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -35,14 +38,26 @@
 	</div>
 	</nav>
 
-	<form class="navbar-form navbar-left" role="search" method='post' action='patients'>
+	<form class="navbar-form navbar-left" role="search" method='post'
+		action='patients'>
 		<div class="form-group">
-			<input type="text" class="form-control" name="search" placeholder="Search" value="${search}">
+			<input type="text" class="form-control" name="search"
+				placeholder="Search" value="${search}">
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
 
-	<%@include file="patientView.jsp"%>
+	<div class="container-fluid">
+		<display:table name="patients" id="patient"
+			class="table table-striped table-condensed">
+			<display:column property="firstName" title="First Name" />
+			<display:column property="lastName" title="Last Name" />
+			<display:column>
+				<a href="">View records</a>
+
+			</display:column>
+		</display:table>
+	</div>
 
 </body>
 </html>
