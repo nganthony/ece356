@@ -44,4 +44,9 @@ public class VisitServiceImpl implements VisitService {
 		// TODO Auto-generated method stub
 		visitDao.update(visit);
 	}
+
+	@Override
+	public void updateForDoctor(Visit visit) {
+		visitDao.updateForDoctors(visit);
+	}
 }

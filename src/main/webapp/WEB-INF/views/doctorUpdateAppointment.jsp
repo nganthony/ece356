@@ -18,44 +18,34 @@
 			<div class="span12">
 				<fieldset>
 					<legend>Update appointment information</legend>
-					<form:form class="form-horizontal" method="post" action='${visit.id}'
+					
+					<form:form role="form" method="post" action='${visit.id}'
 						modelAttribute="visit">
-						
-						<div class="control-group">
-							<label class="control-label">Diagnosis</label>
-							<div class="controls">
-								<form:input type="text" path="diagnosis"
-									value="${visit.diagnosis}"></form:input>
-							</div>
+
+						<div class="form-group">
+							<label for="diagnosis">Diagnosis</label>
+							<form:input type="text" path="diagnosis" class="form-control"
+								id="diagnosis" value="${visit.diagnosis}"></form:input>
 						</div>
 
-						<div class="control-group">
-							<label class="control-label">Surgery</label>
-							<div class="controls">
-								<form:input type="text" path="surgery" value="${visit.surgery}"></form:input>
-							</div>
+						<div class="form-group">
+							<label for="surgery">Surgery</label>
+							<form:input type="text" path="surgery" class="form-control"
+								id="surgery" value="${visit.surgery}"></form:input>
 						</div>
 
-						<div class="control-group">
-							<label class="control-label">Treatment</label>
-							<div class="controls">
-								<form:input type="text" path="treatment"
-									value="${visit.treatment}"></form:input>
-							</div>
+						<div class="form-group">
+							<label for="treatment">Treatment</label>
+							<form:input type="text" path="treatment" class="form-control"
+								id="treatment" value="${visit.treatment}"></form:input>
 						</div>
 
-						<div class="control-group">
+						<div class="form-group">
 							<label class="control-label">Comment</label>
-							<div class="controls">
-								<form:input type="text" path="comment" value="${visit.comment}"></form:input>
-							</div>
+							<textarea name="comment" class="form-control" rows="3">${visit.comment}</textarea>
 						</div>
 
-						<br />
-						
-						<div class="form-actions">
-							<button type="submit" class="btn btn-success">Update</button>
-						</div>
+						<button type="submit" class="btn btn-success">Update</button>
 
 					</form:form>
 

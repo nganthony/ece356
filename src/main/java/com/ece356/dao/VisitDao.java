@@ -45,6 +45,15 @@ public class VisitDao {
 						visit.getDuration(), visit.getHealth_card(), visit.getId() });
 
 	}
+	
+	public void updateForDoctors(Visit visit) {
+		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ? WHERE id = ? ";
+		
+		jdbcTemplate.update(
+				sql,
+				new Object[] { visit.getDiagnosis(), visit.getSurgery(),
+						visit.getTreatment(), visit.getComment(), visit.getId() });
+	}
 
 	public List<Visit> getAllVisits() {
 		String sql = "SELECT * FROM `visit`";
