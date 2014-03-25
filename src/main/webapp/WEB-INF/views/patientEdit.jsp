@@ -18,6 +18,35 @@
 		<div class="alert alert-danger">Change a few things up and try
 			submitting again.</div>
 	</spring:hasBindErrors>
+
+	<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<%-- 			<a class="navbar-brand" href="#">${user.firstName} --%>
+			<%-- 				${user.lastName}</a> --%>
+
+			<a class="navbar-brand" href="#">${patient.firstName}
+				${patient.lastName}</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="<%=request.getContextPath()%>/patient/home">Details</a></li>
+				<li class="active"><a href="edit/self/${patient.healthCard}">Update</a></li>
+			</ul>
+		</div>
+	</div>
+	</nav>
+
 	<div class="container-fluid">
 		<h3>Your Information</h3>
 		<div class="row-fluid">
@@ -32,7 +61,7 @@
 						<form:hidden path="healthCard" />
 						<form:hidden path="defaultDoctorId" />
 						<form:hidden path="currentHealthID" />
-						
+
 						<div class="control-group">
 							<form:label path="password">Password</form:label>
 							<div class="controls">
@@ -48,7 +77,7 @@
 								<form:errors path="phoneNumber" cssclass="error"></form:errors>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<form:label path="street">Street</form:label>
 							<div class="controls">
@@ -56,7 +85,7 @@
 								<form:errors path="street" cssclass="error"></form:errors>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<form:label path="city">City</form:label>
 							<div class="controls">
@@ -64,7 +93,7 @@
 								<form:errors path="city" cssclass="error"></form:errors>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<form:label path="province">Province</form:label>
 							<div class="controls">
@@ -72,7 +101,7 @@
 								<form:errors path="province" cssclass="error"></form:errors>
 							</div>
 						</div>
-						
+
 						<div class="control-group">
 							<form:label path="postalCode">Postal Code</form:label>
 							<div class="controls">

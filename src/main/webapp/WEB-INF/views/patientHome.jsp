@@ -37,7 +37,7 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="home">Details</a></li>
-				<li><a href="update">Update</a></li>
+				<li><a href="edit/self/${patient.healthCard}">Update</a></li>
 			</ul>
 		</div>
 	</div>
@@ -45,7 +45,7 @@
 
 
 
-	<div class="container-fluid well col-md-6">
+	<div class="container-fluid ">
 		<div class="row-fluid">
 			<div class="col-md-8">
 				<h3>${patient.firstName}${patient.lastName}</h3>
