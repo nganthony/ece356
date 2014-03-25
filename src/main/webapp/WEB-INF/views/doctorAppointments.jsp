@@ -44,22 +44,8 @@
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
-
-	<div class="container-fluid">
-		<display:table name="visits" id="visit"
-			class="table table-striped table-condensed">
-			<display:column property="health_card"/>
-			<display:column property="diagnosis" />
-			<display:column property="treatment" />
-			<display:column property="surgery" />
-			<display:column property="comment" />
-			<display:column property="start" />
-			<display:column property="end" />
-			<display:column>
-				<a href="update_appointment/${visit.id}">Update Information</a>
-			</display:column>
-		</display:table>
-	</div>
+	
+	<%@include file="doctorAppointmentsList.jsp" %>
 
 </body>
 </html>

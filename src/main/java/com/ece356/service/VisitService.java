@@ -18,5 +18,6 @@ public interface VisitService {
 	public List<Visit> getDoctorSchedule(int doctorId, String search);
 	public List<Visit> staffGetAllVisits(int staffId);
 	public List<Visit> staffGetFilteredVisits(int staffId, String search);
+	public List<Visit> getPatientVisit(String healthCard, int userId);
 	public List<User> getCountPerDoctor(Timestamp start, Timestamp end);
 }
