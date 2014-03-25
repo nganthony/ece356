@@ -1,5 +1,9 @@
 package com.ece356.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.jdbc.VisitRowMapper;
 
@@ -20,6 +25,9 @@ public class VisitDao {
 
 	@Autowired
 	ReportsToDao reportsToDao;
+	
+	@Autowired
+	private DataSource dataSource;
 	
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -193,4 +201,43 @@ public class VisitDao {
 		}
 	}
 
+	public List<User> getCountPerDoctor(Timestamp start, Timestamp end) {
+		String sql = "SELECT `user_id`, COUNT(user_id) AS count,user.`id`, user.`role_id`,"
+				+ " user.`first_name`, user.`last_name`, user.`password`, user.`deleted` "
+				+ "FROM `visit` "
+				+ "INNER JOIN user ON user.id=user_id AND visit.`start` BETWEEN ? AND ? GROUP BY user_id;";
+
+		Connection conn = null;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setTimestamp(1, start);
+			ps.setTimestamp(2, end);
+			ResultSet rs = ps.executeQuery();
+			List<User> doctors = new ArrayList<User>();
+			while (rs.next()) {
+				User user = new User();
+				try {
+					user.map(rs);
+					user.setCount(rs.getLong("count"));
+					doctors.add(user);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			rs.close();
+			ps.close();
+			return doctors;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+	}
 }
