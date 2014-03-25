@@ -1,6 +1,7 @@
 package com.ece356.controller;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ import com.ece356.dao.VisitDao;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
+import com.ece356.domain.VisitAudit;
+import com.ece356.service.VisitAuditService;
 import com.ece356.service.VisitService;
 
 @Controller
@@ -43,6 +46,8 @@ public class StaffController {
 	VisitService visitService;
 	@Autowired
 	VisitDao visitDao;
+	@Autowired
+	VisitAuditService visitAuditService;
 
 	@RequestMapping(value = "{staffId}/create", method = RequestMethod.GET)
 	public String getCreatePage(@PathVariable("staffId") int staffId, Model model) {
@@ -94,6 +99,8 @@ public class StaffController {
 	public ModelAndView doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
+		Visit visit = visitDao.getVisit(id);
+		insertIntoAuditTable(visit, staffId, "delete", visit.getId());
 		visitDao.delete(id);
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
@@ -164,8 +171,10 @@ public class StaffController {
 		
 		if (visitDao.getVisit(id) != null) {
 			visitService.updateVisit(visit);
+			insertIntoAuditTable(visit, staffId, "update", visit.getId());
 		} else {
-			visitService.createVisit(visit);
+			int visitId = visitService.createVisit(visit);
+			insertIntoAuditTable(visit, staffId, "insert", visitId);
 		}
 		ModelAndView modelAndView = new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
 		return modelAndView;
@@ -189,5 +198,22 @@ public class StaffController {
 		model.addAttribute("id", id);
 		model.addAttribute("visit", visit);
 		return "createAppointment";
+	}
+	
+	private void insertIntoAuditTable(Visit visit, int user_id, String type, int visitId) {
+		VisitAudit visitAudit = new VisitAudit();
+		visitAudit.setVisitId(visitId);
+		visitAudit.setComment(visit.getComment());
+		visitAudit.setDiagnosis(visit.getDiagnosis());
+		visitAudit.setDuration(visit.getDuration());
+		visitAudit.setEnd(visit.getEnd());
+		visitAudit.setHealth_card(visit.getHealth_card());
+		visitAudit.setModifiedById(user_id);
+		visitAudit.setModifyType(type);
+		visitAudit.setStart(visit.getStart());
+		visitAudit.setSurgery(visit.getSurgery());
+		visitAudit.setUser_id(visit.getUser_id());
+		visitAudit.setModifiedOn(new Timestamp((new Date()).getTime()));
+		visitAuditService.insert(visitAudit);
 	}
 }

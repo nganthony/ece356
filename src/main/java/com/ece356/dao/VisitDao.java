@@ -29,7 +29,7 @@ public class VisitDao {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public void createVisit(Visit visit) {
+	public int createVisit(Visit visit) {
 		final String sql = "INSERT INTO visit (diagnosis,surgery, treatment, comment, start, end , user_id, duration, health_card ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		final Object[] params = new Object[] { visit.getDiagnosis(),
@@ -38,6 +38,7 @@ public class VisitDao {
 				visit.getDuration(), visit.getHealth_card() };
 
 		jdbcTemplate.update(sql, params);
+		return jdbcTemplate.queryForObject( "select last_insert_id()", Integer.class);
 	}
 
 	public void update(Visit visit) {

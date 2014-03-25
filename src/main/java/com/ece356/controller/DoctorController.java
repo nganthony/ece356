@@ -1,5 +1,7 @@
 package com.ece356.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
+import com.ece356.domain.VisitAudit;
 import com.ece356.service.PatientService;
+import com.ece356.service.VisitAuditService;
 import com.ece356.service.VisitService;
 
 @Controller
@@ -29,6 +33,9 @@ public class DoctorController {
 	
 	@Autowired
 	VisitService visitService;
+	
+	@Autowired
+	VisitAuditService visitAuditService;
 	
 	@RequestMapping(value = "{doctorId}/patients", method= RequestMethod.GET)
 	public String showPatientsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
@@ -93,6 +100,25 @@ public class DoctorController {
 		visit.setUser_id(doctorId);
 		visit.setId(visitId);
 		visitService.updateForDoctor(visit);
+		Visit updatedVisit = visitService.getVisit(visitId);
+		insertIntoAuditTable(updatedVisit, doctorId, "update", visitId);
 		return "redirect:/doctor/" + doctorId + "/appointments";
+	}
+	
+	private void insertIntoAuditTable(Visit visit, int user_id, String type, int visitId) {
+		VisitAudit visitAudit = new VisitAudit();
+		visitAudit.setVisitId(visitId);
+		visitAudit.setComment(visit.getComment());
+		visitAudit.setDiagnosis(visit.getDiagnosis());
+		visitAudit.setDuration(visit.getDuration());
+		visitAudit.setEnd(visit.getEnd());
+		visitAudit.setHealth_card(visit.getHealth_card());
+		visitAudit.setModifiedById(user_id);
+		visitAudit.setModifyType(type);
+		visitAudit.setStart(visit.getStart());
+		visitAudit.setSurgery(visit.getSurgery());
+		visitAudit.setUser_id(visit.getUser_id());
+		visitAudit.setModifiedOn(new Timestamp((new Date()).getTime()));
+		visitAuditService.insert(visitAudit);
 	}
 }
