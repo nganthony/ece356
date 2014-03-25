@@ -187,6 +187,20 @@ public class VisitDao {
 		
 	}
 	
+	public List<Visit> getPatientVisit(String healthCard, int userId) {
+		List<Visit> visits = new ArrayList<Visit>();
+
+		String sql = "SELECT * FROM `visit` WHERE health_card = ? and user_id = ?";
+
+		try {
+			visits = jdbcTemplate.query(sql, new Object[] { healthCard, userId },
+					new VisitRowMapper());
+			return visits;
+		} catch (Exception e) {
+			return visits;
+		}
+	}
+
 	public List<User> getCountPerDoctor(Timestamp start, Timestamp end) {
 		String sql = "SELECT `user_id`, COUNT(user_id) AS count,user.`id`, user.`role_id`,"
 				+ " user.`first_name`, user.`last_name`, user.`password`, user.`deleted` "
