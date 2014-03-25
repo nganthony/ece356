@@ -1,5 +1,6 @@
 package com.ece356.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -164,6 +165,17 @@ public class VisitDao {
 		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {staffId, search + "%", search + "%", "%" + search + "%", search + "%"},
 				new VisitRowMapper());
 		return visits;
+		
+	}
+	
+	public boolean verifyScheduleDates(Timestamp start, Timestamp end, int visitId, int doctorId, String healthCard) {
+		String sql = "SELECT * FROM visit WHERE (? > start AND ? < end AND id != ?) AND (user_id = ? OR health_card = ?)";
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[]{end, start, visitId, doctorId, healthCard}, new VisitRowMapper());
+		if (visits.size() == 0) {
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 

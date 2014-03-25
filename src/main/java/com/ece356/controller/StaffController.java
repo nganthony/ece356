@@ -100,8 +100,8 @@ public class StaffController {
 			@PathVariable("id") int id,Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
 		Visit visit = visitDao.getVisit(id);
-		insertIntoAuditTable(visit, staffId, "delete", visit.getId());
 		visitDao.delete(id);
+		insertIntoAuditTable(visit, staffId, "delete", visit.getId());
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
 		model.addAttribute("user_id", user_id);
@@ -153,6 +153,10 @@ public class StaffController {
 			visit.setEnd(endTimestamp);
 			if (!startTimestamp.before(endTimestamp)) {
 				map.put("errorMessage", "The start of the appointment should come before it ends");
+				return new ModelAndView("createAppointment", map);
+			}
+			if (!visitDao.verifyScheduleDates(startTimestamp, endTimestamp, visit.getId(),visit.getUser_id(), visit.getHealth_card())) {
+				map.put("errorMessage", "There is a conflict with the dates. Please choose another time");
 				return new ModelAndView("createAppointment", map);
 			}
 		} catch (Exception e) {
