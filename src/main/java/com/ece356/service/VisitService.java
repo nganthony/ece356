@@ -8,11 +8,12 @@ import com.ece356.domain.Visit;
 public interface VisitService {
 
 	public Visit getVisit(int id);
-	public void createVisit(Visit visit);
+	public int createVisit(Visit visit);
 	public void updateVisit(Visit visit);
 	public void updateForDoctor(Visit visit);
 	List<Visit> getPatientVisit(String healthCard);
 	public List<Visit> getDoctorSchedule(int doctorId);
 	public List<Visit> getDoctorSchedule(int doctorId, String search);
 	public List<Visit> staffGetAllVisits(int staffId);
+	public List<Visit> staffGetFilteredVisits(int staffId, String search);
 }

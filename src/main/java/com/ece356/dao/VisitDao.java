@@ -1,5 +1,6 @@
 package com.ece356.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +30,7 @@ public class VisitDao {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public void createVisit(Visit visit) {
+	public int createVisit(Visit visit) {
 		final String sql = "INSERT INTO visit (diagnosis,surgery, treatment, comment, start, end , user_id, duration, health_card ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		final Object[] params = new Object[] { visit.getDiagnosis(),
@@ -38,6 +39,7 @@ public class VisitDao {
 				visit.getDuration(), visit.getHealth_card() };
 
 		jdbcTemplate.update(sql, params);
+		return jdbcTemplate.queryForObject( "select last_insert_id()", Integer.class);
 	}
 
 	public void update(Visit visit) {
@@ -151,6 +153,30 @@ public class VisitDao {
 			String sql = "SELECT * FROM visit WHERE user_id in ( :user_ids) ORDER BY health_card";
 			return namedParameterJdbcTemplate.query(sql, Collections.singletonMap("user_ids", doctorIds),new VisitRowMapper() );
 		}
+	}
+	
+	public List<Visit> staffGetFilteredVisits(int staffId, String search) {
+		String sql = "SELECT * FROM visit INNER JOIN reports_to ON visit.user_id = reports_to.manages_id WHERE reports_to.managed_id = ?" +
+						" AND (diagnosis LIKE ?" +
+						" OR surgery LIKE ?" +
+						" OR comment LIKE ?" +
+						" OR health_card LIKE ? )";
+		
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {staffId, search + "%", search + "%", "%" + search + "%", search + "%"},
+				new VisitRowMapper());
+		return visits;
+		
+	}
+	
+	public boolean verifyScheduleDates(Timestamp start, Timestamp end, int visitId, int doctorId, String healthCard) {
+		String sql = "SELECT * FROM visit WHERE (? > start AND ? < end AND id != ?) AND (user_id = ? OR health_card = ?)";
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[]{end, start, visitId, doctorId, healthCard}, new VisitRowMapper());
+		if (visits.size() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 }

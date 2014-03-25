@@ -93,6 +93,9 @@ public class DoctorController {
 		visit.setUser_id(doctorId);
 		visit.setId(visitId);
 		visitService.updateForDoctor(visit);
+		
 		return "redirect:/doctor/" + doctorId + "/appointments";
 	}
+	
+	
 }

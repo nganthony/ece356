@@ -15,9 +15,17 @@
 <body>
 	<div class="container-fluid">
 		<legend>List Appointments with Granted Access</legend>
+		<form class="navbar-form navbar-left" role="search" method="post"
+			action='/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view'>
+			<div class="form-group">
+				<input type="text" class="form-control" name="search"
+					placeholder="Search" value="${search}">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed">
-					<display:column property="start" />
+			<display:column property="start" />
 			<display:column property="end" />
 			<display:column property="health_card" />
 			<display:column property="diagnosis" />

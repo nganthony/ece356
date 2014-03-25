@@ -22,8 +22,8 @@ public class VisitServiceImpl implements VisitService {
 	}
 
 	@Override
-	public void createVisit(Visit visit) {
-		visitDao.createVisit(visit);
+	public int createVisit(Visit visit) {
+		return visitDao.createVisit(visit);
 	}
 
 	@Override
@@ -54,5 +54,10 @@ public class VisitServiceImpl implements VisitService {
 	@Override
 	public List<Visit> staffGetAllVisits(int staffId) {
 		return visitDao.staffGetAllVisits(staffId);
+	}
+
+	@Override
+	public List<Visit> staffGetFilteredVisits(int staffId, String search) {
+		return visitDao.staffGetFilteredVisits(staffId, search);
 	}
 }
