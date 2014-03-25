@@ -61,13 +61,26 @@ public class StaffController {
 	}
 	
 	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.GET)
-	public String getPatientView(@PathVariable("staffId") int staffId, Model model) {
+	public String getVisitView(@PathVariable("staffId") int staffId, Model model) {
 		List<Visit> visits = visitDao.staffGetAllVisits(staffId);
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
 		return "staffAppointmentsView";
 	}
-
+	
+	
+	
+	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.POST)
+	public String getVisitFilteredView(@PathVariable("staffId") int staffId, HttpServletRequest request,
+			HttpServletResponse response, HttpSession session, Model model) {
+		String search = request.getParameter("search");
+		List<Visit> visits = visitDao.staffGetFilteredVisits(staffId, search);
+		model.addAttribute("staffId", staffId);
+		model.addAttribute("visits", visits);
+		model.addAttribute("search", search);
+		return "staffAppointmentsView";
+	}
+	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{id}", method = RequestMethod.GET)
 	public String doctorSchedule1(@PathVariable("staffId") int staffId,@PathVariable("id") int id, Model model) {
 		List<Visit> visits  = visitDao.getDoctorSchedule(id);

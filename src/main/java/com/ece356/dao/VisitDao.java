@@ -143,5 +143,18 @@ public class VisitDao {
 			return namedParameterJdbcTemplate.query(sql, Collections.singletonMap("user_ids", doctorIds),new VisitRowMapper() );
 		}
 	}
+	
+	public List<Visit> staffGetFilteredVisits(int staffId, String search) {
+		String sql = "SELECT * FROM visit INNER JOIN reports_to ON visit.user_id = reports_to.manages_id WHERE reports_to.managed_id = ?" +
+						" AND (diagnosis LIKE ?" +
+						" OR surgery LIKE ?" +
+						" OR comment LIKE ?" +
+						" OR health_card LIKE ? )";
+		
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {staffId, search + "%", search + "%", "%" + search + "%", search + "%"},
+				new VisitRowMapper());
+		return visits;
+		
+	}
 
 }

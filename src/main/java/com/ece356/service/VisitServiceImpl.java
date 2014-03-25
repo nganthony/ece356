@@ -49,4 +49,9 @@ public class VisitServiceImpl implements VisitService {
 	public List<Visit> staffGetAllVisits(int staffId) {
 		return visitDao.staffGetAllVisits(staffId);
 	}
+
+	@Override
+	public List<Visit> staffGetFilteredVisits(int staffId, String search) {
+		return visitDao.staffGetFilteredVisits(staffId, search);
+	}
 }
