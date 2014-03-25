@@ -97,5 +97,16 @@ public class DoctorController {
 		return "redirect:/doctor/" + doctorId + "/appointments";
 	}
 	
+	@RequestMapping(value = "{doctorId}/patient/{healthCard}", method = RequestMethod.GET)
+	public String getPatientRecord(@PathVariable("healthCard") String healthCard, Model model) {
+		
+		Patient patient = patientService.findByHealthCard(healthCard);
+		List<Visit> visits = visitService.getPatientVisit(healthCard);
+		
+ 		model.addAttribute("patient", patient);
+		model.addAttribute("visits", visits);
+		
+		return "doctorPatientView";
+	}
 	
 }

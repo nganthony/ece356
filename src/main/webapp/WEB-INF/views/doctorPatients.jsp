@@ -52,9 +52,10 @@
 			class="table table-striped table-condensed">
 			<display:column property="firstName" title="First Name" />
 			<display:column property="lastName" title="Last Name" />
+			<display:column property="healthCard" title="Health Card" />
+			<display:column property="lastVisitDate" title="Last Visit Date" />
 			<display:column>
-				<a href="">View records</a>
-
+				<a href="patient/${patient.healthCard}">View records</a>
 			</display:column>
 		</display:table>
 	</div>
