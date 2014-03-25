@@ -156,13 +156,16 @@ public class VisitDao {
 	}
 	
 	public List<Visit> staffGetFilteredVisits(int staffId, String search) {
-		String sql = "SELECT * FROM visit INNER JOIN reports_to ON visit.user_id = reports_to.manages_id WHERE reports_to.managed_id = ?" +
+		String sql = "SELECT * FROM visit INNER JOIN reports_to ON visit.user_id = reports_to.manages_id" +
+						" INNER JOIN patient ON visit.health_card = patient.health_card WHERE reports_to.managed_id = ?" +
 						" AND (diagnosis LIKE ?" +
 						" OR surgery LIKE ?" +
 						" OR comment LIKE ?" +
-						" OR health_card LIKE ? )";
+						" OR visit.health_card LIKE ? "
+						+ " OR patient.first_name LIKE ?"
+						+ " OR patient.last_name LIKE ?) ORDER BY visit.health_card, visit.start";
 		
-		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {staffId, search + "%", search + "%", "%" + search + "%", search + "%"},
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {staffId, search + "%", search + "%", "%" + search + "%", search + "%", "%"+search + "%","%"+ search + "%"},
 				new VisitRowMapper());
 		return visits;
 		
