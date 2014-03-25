@@ -1,12 +1,14 @@
 package com.ece356.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.ece356.domain.Visit;
@@ -15,11 +17,16 @@ import com.ece356.jdbc.VisitRowMapper;
 @Repository
 public class VisitDao {
 
+	@Autowired
+	ReportsToDao reportsToDao;
+	
 	private JdbcTemplate jdbcTemplate;
-
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	public void createVisit(Visit visit) {
@@ -70,7 +77,7 @@ public class VisitDao {
 	public List<Visit> getDoctorSchedule(int id) {
 		List<Visit> visits = new ArrayList<Visit>();
 
-		String sql = "SELECT * FROM `visit` WHERE user_id = ?";
+		String sql = "SELECT * FROM `visit` WHERE user_id = ? ORDER BY start";
 
 		try {
 			visits = jdbcTemplate.query(sql, new Object[] { id },
@@ -133,6 +140,16 @@ public class VisitDao {
 			jdbcTemplate.update(sql, new Object[] {id} );
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+	}
+	
+	public List<Visit> staffGetAllVisits(int staffId) {
+		List<Integer> doctorIds = reportsToDao.getManagesIds(staffId);
+		if (doctorIds.size() == 0) {
+			return null;
+		} else {
+			String sql = "SELECT * FROM visit WHERE user_id in ( :user_ids) ORDER BY health_card";
+			return namedParameterJdbcTemplate.query(sql, Collections.singletonMap("user_ids", doctorIds),new VisitRowMapper() );
 		}
 	}
 

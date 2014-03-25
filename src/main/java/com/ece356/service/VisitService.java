@@ -2,6 +2,7 @@ package com.ece356.service;
 
 import java.util.List;
 
+import com.ece356.domain.Patient;
 import com.ece356.domain.Visit;
 
 public interface VisitService {
@@ -13,4 +14,5 @@ public interface VisitService {
 	List<Visit> getPatientVisit(String healthCard);
 	public List<Visit> getDoctorSchedule(int doctorId);
 	public List<Visit> getDoctorSchedule(int doctorId, String search);
+	public List<Visit> staffGetAllVisits(int staffId);
 }
