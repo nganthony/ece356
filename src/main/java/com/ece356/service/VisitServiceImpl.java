@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ece356.dao.VisitDao;
+import com.ece356.domain.Patient;
 import com.ece356.domain.Visit;
 
 @Service
@@ -43,5 +44,9 @@ public class VisitServiceImpl implements VisitService {
 	public void updateVisit(Visit visit) {
 		// TODO Auto-generated method stub
 		visitDao.update(visit);
+	}
+	@Override
+	public List<Visit> staffGetAllVisits(int staffId) {
+		return visitDao.staffGetAllVisits(staffId);
 	}
 }

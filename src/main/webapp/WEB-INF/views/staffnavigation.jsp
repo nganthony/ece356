@@ -33,8 +33,8 @@
 					<li><a href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/doctor/view"
 						onclick="return go(this);">New Appointment</a></li>
 						
-					<li><a href="/1.0.0-BUILD-SNAPSHOT/doctor/view"
-						onclick="return go(this);">Scheduling Information</a></li>
+					<li><a href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view"
+						onclick="return go(this);">Patient Visitation Records</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->

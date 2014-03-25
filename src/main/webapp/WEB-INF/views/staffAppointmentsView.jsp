@@ -7,33 +7,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>View Doctor Schedule</title>
+<title>View Doctors</title>
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
 </head>
 <body>
 	<div class="container-fluid">
-		<legend>Schedule of Doctor</legend>
+		<legend>List Appointments with Granted Access</legend>
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed">
-			<display:column property="start" />
+					<display:column property="start" />
 			<display:column property="end" />
 			<display:column property="health_card" />
+			<display:column property="diagnosis" />
+			<display:column property="treatment" />
+			<display:column property="surgery" />
+			<display:column property="comment" />
 			<display:column property="user_id" />
-			<display:column>
-				<a
-					href=<c:url value="/staff/${staffId}/doctor/schedule/${visit.user_id}/${visit.id}"/>>Reschedule</a>
-			</display:column>
-			<display:column>
-				<a
-					href=<c:url value="/staff/${staffId}/doctor/schedule/${visit.user_id}/delete/${visit.id}"/>>Delete</a>
-			</display:column>
+			<display:column property="duration" />
 		</display:table>
-	</div>
-	<div>
-		<a href=<c:url value="/staff/${staffId}/create/appointment/${id}/0"/>>Create
-			Appointment</a>
 	</div>
 </body>
 </html>

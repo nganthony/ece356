@@ -53,11 +53,19 @@ public class StaffController {
 	}
 
 	@RequestMapping(value = "{staffId}/doctor/view", method = RequestMethod.GET)
-	public String getView(@PathVariable("staffId") int staffId, Model model) {
+	public String getDoctorView(@PathVariable("staffId") int staffId, Model model) {
 		List<User> doctors = userDao.getAllDoctors();
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("users", doctors);
 		return "doctorView";
+	}
+	
+	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.GET)
+	public String getPatientView(@PathVariable("staffId") int staffId, Model model) {
+		List<Visit> visits = visitDao.staffGetAllVisits(staffId);
+		model.addAttribute("staffId", staffId);
+		model.addAttribute("visits", visits);
+		return "staffAppointmentsView";
 	}
 
 	@RequestMapping(value = "{staffId}/doctor/schedule/{id}", method = RequestMethod.GET)
