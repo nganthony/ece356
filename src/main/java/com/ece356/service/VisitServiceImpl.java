@@ -22,8 +22,8 @@ public class VisitServiceImpl implements VisitService {
 	}
 
 	@Override
-	public void createVisit(Visit visit) {
-		visitDao.createVisit(visit);
+	public int createVisit(Visit visit) {
+		return visitDao.createVisit(visit);
 	}
 
 	@Override
