@@ -30,9 +30,6 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<%-- 			<a class="navbar-brand" href="#">${user.firstName} --%>
-			<%-- 				${user.lastName}</a> --%>
-
 			<a class="navbar-brand" href="#">${user.firstName}
 				${user.lastName}</a>
 		</div>
@@ -41,7 +38,7 @@
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="home">Details</a></li>
+				<li class="active"><a href="home">Summary</a></li>
 			</ul>
 		</div>
 	</div>
@@ -88,7 +85,7 @@
 				<display:column property="lastName" title="Last Name" />
 				<display:column property="count" title="Number of Patients" />
 				<display:column>
-					<a href=<c:url value="#"/>>Detail</a>
+					<a href=<c:url value="detail/${doctor.id}/${startTime}/${endTime}"/>>Detail</a>
 				</display:column>
 			</display:table>
 
@@ -109,11 +106,11 @@
 	</script>
 	<script type="text/javascript">
 		$('#datetimepicker').datetimepicker({
-			format : 'yyyy-MM-dd hh:mm:ss',
+			format : 'yyyy-MM-dd',
 			language : 'pt-EN'
 		});
 		$('#datetimepicker1').datetimepicker({
-			format : 'yyyy-MM-dd hh:mm:ss',
+			format : 'yyyy-MM-dd',
 			language : 'pt-EN'
 		});
 	</script>

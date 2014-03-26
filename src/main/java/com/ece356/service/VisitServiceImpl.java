@@ -67,10 +67,16 @@ public class VisitServiceImpl implements VisitService {
 	public List<Visit> getPatientVisit(String healthCard, int userId) {
 		return visitDao.getPatientVisit(healthCard, userId);
 	}
-	
+
 	@Override
 	public List<User> getCountPerDoctor(Timestamp start, Timestamp end) {
 		return visitDao.getCountPerDoctor(start, end);
 
+	}
+
+	@Override
+	public List<Visit> getVisitForStaffInRange(Timestamp start, Timestamp end,
+			int doctorId) {
+		return visitDao.getVisitForStaffInRange(start, end, doctorId);
 	}
 }

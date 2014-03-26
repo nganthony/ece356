@@ -20,4 +20,5 @@ public interface VisitService {
 	public List<Visit> staffGetFilteredVisits(int staffId, String search);
 	public List<Visit> getPatientVisit(String healthCard, int userId);
 	public List<User> getCountPerDoctor(Timestamp start, Timestamp end);
+	public List<Visit> getVisitForStaffInRange(Timestamp start, Timestamp end, int doctorId);
 }

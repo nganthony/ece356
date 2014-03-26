@@ -243,4 +243,14 @@ public class VisitDao {
 		}
 
 	}
+	
+	public List<Visit> getVisitForStaffInRange(Timestamp start, Timestamp end,
+			int doctorId) {
+		String sql = "SELECT 	* FROM `visit` WHERE user_id=? AND `start` BETWEEN ? AND ?;";
+
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[] { doctorId,
+				start, end }, new VisitRowMapper());
+		return visits;
+
+	}
 }

@@ -12,7 +12,6 @@
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
-<script src="resources/javascript/bootstrap.js"></script>
 <body>
 
 	<nav class="navbar navbar-default" role="navigation">
@@ -25,45 +24,35 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">${patient.firstName}
-				${patient.lastName}</a>
+			<a class="navbar-brand" href="#">${user.firstName}
+				${user.lastName}</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="home">Details</a></li>
-				<li><a href="edit/self/${patient.healthCard}">Update</a></li>
+				<li><a href="home">Summary</a></li>
+				<li class="active"><a href="">Detail</a></li>
 			</ul>
 		</div>
 	</div>
 	</nav>
 
-
-
-	<div class="container-fluid ">
-		<div class="row-fluid">
-			<div class="col-md-8">
-				<h3>${patient.firstName}${patient.lastName}</h3>
-				<h6>Health Card: ${patient.healthCard}</h6>
-				<c:if test="${not empty patient.sin}">
-					<h6>SIN: ${patient.sin}</h6>
-				</c:if>
-				<h6>Default Doctor: ${defaultDoctor}</h6>
-				<h6>Last Visit :${patient.lastVisitDate}</h6>
-			</div>
-
-			<display:table name="patientVisit" id="visit"
-				class="table table-striped table-condensed">
-				<display:column property="diagnosis" title="Diagnosis" />
-				<display:column property="surgery" title="Surgery" />
-				<display:column property="treatment" title="Treatment" />
-				<display:column property="start" title="Visit Start" />
-				<display:column property="end" title="Visit End" />
-			</display:table>
-
-		</div>
+	<div class="container-fluid">
+		<display:table name="visits" id="visit"
+			class="table table-striped table-condensed">
+			<display:column property="health_card" title="Health Card" />
+			<display:column property="diagnosis" />
+			<display:column property="treatment" />
+			<display:column property="surgery" />
+			<display:column property="comment" />
+			<display:column property="start" />
+			<display:column property="end" />
+		</display:table>
 	</div>
+
+	<br>
+
 </body>
 </html>
