@@ -32,7 +32,7 @@
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="home">Summary</a></li>
+				<li><a href="<%=request.getContextPath()%>/finance/home">Summary</a></li>
 				<li class="active"><a href="">Detail</a></li>
 			</ul>
 		</div>
@@ -41,14 +41,16 @@
 
 	<div class="container-fluid">
 		<display:table name="visits" id="visit"
-			class="table table-striped table-condensed">
-			<display:column property="health_card" title="Health Card" />
+			class="table table-striped table-condensed"
+			requestURI="${requestScope['javax.servlet.forward.request_uri']}">
+			<display:column property="health_card" title="Health Card"
+				sortable="true" />
 			<display:column property="diagnosis" />
 			<display:column property="treatment" />
 			<display:column property="surgery" />
 			<display:column property="comment" />
-			<display:column property="start" />
-			<display:column property="end" />
+			<display:column property="start" sortable="true" />
+			<display:column property="end" sortable="true" />
 		</display:table>
 	</div>
 
