@@ -81,6 +81,11 @@ public class VisitServiceImpl implements VisitService {
 	}
 
 	@Override
+	public List<Visit> getVisitWithPatient(int userId) {
+		return visitDao.getVisitWithPatient(userId);
+	}
+	
+	@Override
 	public void delete(int id) {
 		visitDao.delete(id);
 	}

@@ -21,6 +21,7 @@ import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.jdbc.PatientRowMapper;
 import com.ece356.jdbc.VisitRowMapper;
+import com.ece356.jdbc.VisitWithPatientRowMapper;
 
 @Repository
 public class VisitDao {
@@ -254,5 +255,15 @@ public class VisitDao {
 				start, end }, new VisitRowMapper());
 		return visits;
 
+	}
+	
+	public List<Visit> getVisitWithPatient(int userId) {
+		String sql = "SELECT * FROM visit" +
+					" INNER JOIN patient ON visit.health_card = patient.health_card" +
+					" WHERE user_id = ?";
+		
+		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {userId}, new VisitWithPatientRowMapper());
+		
+		return visits;
 	}
 }
