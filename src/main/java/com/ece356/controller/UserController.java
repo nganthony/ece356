@@ -38,6 +38,76 @@ public class UserController {
 	@Autowired
 	RoleDao roleDao;
 
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String showLoginPage() {
+
+		return "userLogin";
+	}
+
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public ModelAndView validateLogin(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) throws Exception {
+
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", id);
+
+		// Check if id is valid
+		if (id.isEmpty()) {
+			map.put("errorMessage", "Please enter an id number");
+			return new ModelAndView("userLogin", map);
+		}
+
+		// Check if password is valid
+		if (password.isEmpty()) {
+			map.put("errorMessage", "Please enter a password");
+			return new ModelAndView("userLogin", map);
+		}
+
+		// Get user
+		User user = userService.getUser(id);
+		Patient patient = patientService.findByHealthCard(id);
+
+		// No user with specified id
+		if (user == null && patient == null) {
+			map.put("errorMessage", "Incorrect credentials");
+			return new ModelAndView("userLogin", map);
+		}
+
+		// Validate password
+		if ((user != null && !user.getPassword().equals(password))
+				|| (patient != null && !patient.getPassword().equals(password))) {
+			map.put("errorMessage", "Incorrect credentials");
+			return new ModelAndView("userLogin", map);
+		}
+
+		if (user != null && user.getPassword().equals(password)) {
+			map.put("errorMessage", "Logged in as user");
+			Role role = userService.getRole(user);
+			session.setAttribute("role", role.getName());
+			session.setAttribute("user", user);
+			// Check role to determine which page the user should be directed to
+			if(user.getRoleId() == 1) {
+				return new ModelAndView("redirect:/doctor/" + user.getId() + "/patients");
+				
+			}
+			else if(user.getRoleId() == 2) {
+				return new ModelAndView("redirect:/staff/" + user.getId() + "/create");
+			} else if (user.getRoleId() == 3) {
+				return new ModelAndView("redirect:/finance/home");
+			}
+		} else if (patient != null && patient.getPassword().equals(password)){
+			map.put("errorMessage", "Logged in as patient");
+			session.setAttribute("role", "patient");
+			session.setAttribute("patient", patient);
+			return new ModelAndView("redirect:/patient/home");
+		}
+
+		return new ModelAndView("userLogin", map);
+	}
+
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String showCreatePage(Model model, @ModelAttribute("user") User user) {
 

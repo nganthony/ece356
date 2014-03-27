@@ -16,8 +16,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
+import com.ece356.jdbc.PatientRowMapper;
 import com.ece356.jdbc.VisitRowMapper;
 import com.ece356.jdbc.VisitWithPatientRowMapper;
 
@@ -159,7 +161,7 @@ public class VisitDao {
 		if (doctorIds.size() == 0) {
 			return null;
 		} else {
-			String sql = "SELECT * FROM visit WHERE user_id in ( :user_ids) ORDER BY health_card";
+			String sql = "SELECT * FROM visit WHERE user_id in ( :user_ids) ORDER BY health_card, visit.start";
 			return namedParameterJdbcTemplate.query(sql, Collections.singletonMap("user_ids", doctorIds),new VisitRowMapper() );
 		}
 	}

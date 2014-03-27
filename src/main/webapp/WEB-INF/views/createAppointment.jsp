@@ -31,9 +31,9 @@
 						<div class="control-group">
 							<label class="control-label">Start Time</label>
 							<div id="datetimepicker" class="input-append date"
-								style="position: relative; left: 20px;">
+								style="position: relative; left: 20px;" >
 								<input type="text" name="startTime" id="startTime"
-									title="STARTTIME"> <span class="add-on"> <i
+									title="STARTTIME" value=${visit.start}> <span class="add-on" > <i
 									data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
 								</span>
 							</div>
@@ -43,19 +43,38 @@
 							<label class="control-label">End Time</label>
 							<div id="datetimepicker1" class="input-append date"
 								style="position: relative; left: 20px;">
-								<input type="text" name="endTime" id="endTime" title="ENDTIME">
+								<input type="text" name="endTime" value=${visit.end} id="endTime" title="ENDTIME">
 								<span class="add-on"> <i data-time-icon="icon-time"
 									data-date-icon="icon-calendar"></i>
 								</span>
 							</div>
 						</div>
-						<div class="control-group">
-							<label class="control-label">Health Card</label>
-							<div class="controls">
-								<form:input path="health_card" value="${visit.health_card}"></form:input>
-								<form:errors path="health_card" cssclass="error"></form:errors>
-							</div>
-						</div>
+						
+						<c:choose>
+							<c:when test="${visit.edit}">
+								<div class="control-group">
+									<form:label path="health_card"></form:label>
+									<label class="control-label">Health Card</label>
+									<div class="controls">
+										<form:input path="health_card" class="disabled" disabled="true"></form:input>
+										<form:errors path="health_card" cssclass="error"></form:errors>
+									</div>
+									<form:hidden path="health_card" />
+
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="control-group">
+									<!--  <form:label path="health_card" style="position:relative; left:17%;">Health Card Number (No dashes or spaces)</form:label>-->
+									<label class="control-label">Health Card</label>
+									<div class="controls">
+										<form:input path="health_card"></form:input>
+										<form:errors path="health_card" cssclass="error"></form:errors>
+									</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
+						
 						<p style="position:relative; left:16%; color: red">${errorMessage}</p>
 						
 						<div class="form-actions">

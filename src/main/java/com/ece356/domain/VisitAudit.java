@@ -32,6 +32,10 @@ public class VisitAudit extends BaseEntity {
 	Timestamp modifiedOn;
 	
 	int modifiedById;
+	//modifyType
+	String modifiedType;
+	
+	int visitId;
 	
 	public int getModifiedById() {
 		return modifiedById;
@@ -39,9 +43,6 @@ public class VisitAudit extends BaseEntity {
 	public void setModifiedById(int modifiedById) {
 		this.modifiedById = modifiedById;
 	}
-	String modifyType;
-	
-	int visitId;
 	
 	public Timestamp getModifiedOn() {
 		return modifiedOn;
@@ -49,11 +50,11 @@ public class VisitAudit extends BaseEntity {
 	public void setModifiedOn(Timestamp modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	public String getModifyType() {
-		return modifyType;
+	public String getModifiedType() {
+		return modifiedType;
 	}
-	public void setModifyType(String modifyType) {
-		this.modifyType = modifyType;
+	public void setModifiedType(String modifiedType) {
+		this.modifiedType = modifiedType;
 	}
 	public int getVisitId() {
 		return visitId;

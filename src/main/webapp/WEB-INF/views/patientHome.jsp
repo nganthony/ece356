@@ -25,8 +25,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">${patient.firstName}
-				${patient.lastName}</a>
+			<a class="navbar-brand" href="#">${patient.firstName}&nbsp;${patient.lastName}</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -36,6 +35,11 @@
 				<li class="active"><a href="home">Details</a></li>
 				<li><a href="edit/self/${patient.healthCard}">Update</a></li>
 			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
+			</ul>
+
 		</div>
 	</div>
 	</nav>
@@ -44,8 +48,8 @@
 
 	<div class="container-fluid ">
 		<div class="row-fluid">
-			<div class="col-md-8">
-				<h3>${patient.firstName}${patient.lastName}</h3>
+			<div>
+				<h3>${patient.firstName}&nbsp;${patient.lastName}</h3>
 				<h6>Health Card: ${patient.healthCard}</h6>
 				<c:if test="${not empty patient.sin}">
 					<h6>SIN: ${patient.sin}</h6>
@@ -53,7 +57,7 @@
 				<h6>Default Doctor: ${defaultDoctor}</h6>
 				<h6>Last Visit :${patient.lastVisitDate}</h6>
 			</div>
-
+			<br> <br>
 			<display:table name="patientVisit" id="visit"
 				class="table table-striped table-condensed">
 				<display:column property="diagnosis" title="Diagnosis" />

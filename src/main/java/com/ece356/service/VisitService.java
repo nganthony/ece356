@@ -3,7 +3,6 @@ package com.ece356.service;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 
@@ -22,4 +21,7 @@ public interface VisitService {
 	public List<User> getCountPerDoctor(Timestamp start, Timestamp end);
 	public List<Visit> getVisitForStaffInRange(Timestamp start, Timestamp end, int doctorId);
 	public List<Visit> getVisitWithPatient(int userId);
+	public void delete(int id);
+	public boolean verifyScheduleDates(Timestamp startTimestamp,
+			Timestamp endTimestamp, int id, int user_id, String health_card);
 }
