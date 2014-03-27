@@ -38,6 +38,23 @@ public class DoctorController {
 		model.addAttribute(user);
 		
 		List<Patient> patients = patientService.getAllPatients(user.getId());
+		List<Visit> visits = visitService.getVisitWithPatient(user.getId());
+		
+		for(Visit visit: visits) {
+			boolean patientFound = false;
+			
+			for(Patient patient: patients) {
+				if(patient.getHealthCard() == visit.getPatient().getHealthCard()) {
+					patientFound = true;
+					break;
+				}
+			}
+			
+			if(!patientFound) {
+				patients.add(visit.getPatient());
+			}
+		}
+		
 		model.addAttribute("patients", patients);
 		
 		return "doctorPatients";

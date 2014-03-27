@@ -79,4 +79,9 @@ public class VisitServiceImpl implements VisitService {
 			int doctorId) {
 		return visitDao.getVisitForStaffInRange(start, end, doctorId);
 	}
+
+	@Override
+	public List<Visit> getVisitWithPatient(int userId) {
+		return visitDao.getVisitWithPatient(userId);
+	}
 }
