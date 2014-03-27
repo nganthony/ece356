@@ -23,41 +23,52 @@
 			<div class="navbar-collapse collapse top-collapse">
 				<!-- NOTE!  the class top-collapse was added here -->
 				<ul class="nav navbar-nav">
-					<li><a
-						href="/1.0.0-BUILD-SNAPSHOT/patient/create"
+					<li><a href="/1.0.0-BUILD-SNAPSHOT/patient/create"
 						onclick="return go(this);">Create Patient</a></li>
-						
+
 					<li><a href="/1.0.0-BUILD-SNAPSHOT/patient/view"
 						onclick="return go(this);">Update Patient</a></li>
-						
-					<li><a href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/doctor/view"
+
+					<li><a href="/1.0.0-BUILD-SNAPSHOT/user/create"
+						onclick="return go(this);">Create User</a></li>
+
+					<li><a
+						href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/doctor/view"
 						onclick="return go(this);">New Appointment</a></li>
-						
-					<li><a href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view"
+
+					<li><a
+						href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view"
 						onclick="return go(this);">Patient Visitation Records</a></li>
+
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-	<div class="container-fluid" style="padding: 75px 5%">
+	<div class="container-fluid" style="padding: 75px 5%;">
 		<div class="row-fluid">
 			<div class="span12">
 				<div id="content"></div>
 				<script type="text/javascript">
 					onload = function() {
 						var el = document.getElementById("content");
-						el.innerHTML = "<iframe height = '800px' width='100%' src=\"/1.0.0-BUILD-SNAPSHOT/patient/create\"></iframe>";
+						el.innerHTML = "<iframe style=\"border-style:none;\"height = '800px' width='100%' src=\"/1.0.0-BUILD-SNAPSHOT/patient/create\"></iframe>";
 					};
 				</script>
 				<script>
 					function go(obj) {
 						var page = obj.href;
-						document.getElementById('content').innerHTML = '<object height = "800px" width = "100%" data="'+page+'" type="text/html"><embed height = "800px" width = "90%" src="'+page+'" type="text/html" /></object>';
+						document.getElementById('content').innerHTML = '<object height = "800px" width = "100%" data="'
+								+ page
+								+ '" type="text/html"><embed height = "800px" width = "90%" src="'
+								+ page + '" type="text/html" /></object>';
 						return false;
 					}
 				</script>
-				
+
 			</div>
 		</div>
 	</div>

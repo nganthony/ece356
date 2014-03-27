@@ -21,10 +21,10 @@
 	<div class="container-fluid">
 		<c:choose>
 			<c:when test="${patient.edit}">
-				<h3>Edit Patient</h3>
+				<legend>Edit a Patient</legend>
 			</c:when>
 			<c:otherwise>
-				<h3>Create Patient</h3>
+				<legend>Create a Patient</legend>
 			</c:otherwise>
 		</c:choose>
 		<div class="row-fluid">
