@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Login for users</title>
+<title>Login</title>
 <link type="text/css"
 	href="<%=request.getContextPath() %>/resources/css/bootstrap.css"
 	rel="stylesheet" />
@@ -14,12 +14,12 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<fieldset>
-					<legend>Login for users</legend>
-					<form class="form-horizontal" method="post" action='login'
+					<legend>Login</legend>
+					<form class="form-horizontal" method="post" action=''
 						name="userForm" id="userForm">
 
 						<div class="control-group">
-							<label class="control-label">ID</label>
+							<label class="control-label">ID or SIN</label>
 							<div class="controls">
 								<input type="text" name="id" id="id" title="ID" value="${id}">
 							</div>
