@@ -117,7 +117,7 @@ public class PatientController {
 				return "patientHome";
 			}
 		}
-		return "redirect:/user/login";
+		return "redirect:/";
 
 	}
 

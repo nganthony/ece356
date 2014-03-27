@@ -29,11 +29,8 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<%-- 			<a class="navbar-brand" href="#">${user.firstName} --%>
-			<%-- 				${user.lastName}</a> --%>
 
-			<a class="navbar-brand" href="#">${patient.firstName}
-				${patient.lastName}</a>
+			<a class="navbar-brand" href="#">${patient.firstName}&nbsp;${patient.lastName}</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -42,6 +39,9 @@
 			<ul class="nav navbar-nav">
 				<li><a href="<%=request.getContextPath()%>/patient/home">Details</a></li>
 				<li class="active"><a href="edit/self/${patient.healthCard}">Update</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
 			</ul>
 		</div>
 	</div>

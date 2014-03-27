@@ -29,7 +29,7 @@ public class Visit extends BaseEntity {
 	@NotNull
 	String health_card;
 	
-	Patient patient;
+	transient Patient patient; // had to make this transient so the base mapper would ignore it
 	
 	private transient boolean edit;
 	
