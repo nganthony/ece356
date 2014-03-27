@@ -29,6 +29,8 @@ public class Visit extends BaseEntity {
 	@NotNull
 	String health_card;
 	
+	Patient patient;
+	
 	private transient boolean edit;
 	
 	public boolean getEdit() {
@@ -97,6 +99,11 @@ public class Visit extends BaseEntity {
 	public void setHealth_card(String health_card) {
 		this.health_card = health_card;
 	}
-
+	public Patient getPatient() {
+		return patient;
+	}
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
 }
 
