@@ -97,6 +97,8 @@ public class UserController {
 				return new ModelAndView("redirect:/staff/" + user.getId() + "/create");
 			} else if (user.getRoleId() == 3) {
 				return new ModelAndView("redirect:/finance/home");
+			}  else if (user.getRoleId() == 4) {
+				return new ModelAndView("redirect:/legal/" + user.getId() + "/view");
 			}
 		} else if (patient != null && patient.getPassword().equals(password)){
 			map.put("errorMessage", "Logged in as patient");
