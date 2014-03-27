@@ -140,6 +140,7 @@ public class StaffController {
 	public String rescheduleAppointment(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,Model model) {
 		Visit visit = visitService.getVisit(id);
+		visit.setEdit(true);
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("user_id", user_id);
 		model.addAttribute("visit", visit);
@@ -198,6 +199,7 @@ public class StaffController {
 		}
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("id", user_id);
+		model.addAttribute("visit", visit);
 		visit.setUser_id(user_id);
 		
 		if (visitService.getVisit(id) != null) {
