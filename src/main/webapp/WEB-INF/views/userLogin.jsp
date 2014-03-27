@@ -19,7 +19,7 @@
 						name="userForm" id="userForm">
 
 						<div class="control-group">
-							<label class="control-label">ID or SIN</label>
+							<label class="control-label">ID or Health Card #</label>
 							<div class="controls">
 								<input type="text" name="id" id="id" title="ID" value="${id}">
 							</div>
