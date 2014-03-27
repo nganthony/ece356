@@ -38,17 +38,34 @@
 	</div>
 	</nav>
 
-	<form class="navbar-form navbar-left" role="search" method='post'
-		action='patients'>
-		<div class="form-group">
-			<input type="text" class="form-control" name="search"
-				placeholder="Search" value="${search}">
-		</div>
-		<button type="submit" class="btn btn-default">Submit</button>
-	</form>
-
 	<div class="container-fluid">
-		<display:table name="patients" id="patient"
+		<form class="navbar-form navbar-left" role="search" method='post'
+			action='patients'>
+			<div class="form-group">
+				<input type="text" class="form-control" name="search"
+					placeholder="Search" value="${search}">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Default Patients</div>
+		<display:table name="defaultPatients" id="patient"
+			class="table table-striped table-condensed">
+			<display:column property="firstName" title="First Name" />
+			<display:column property="lastName" title="Last Name" />
+			<display:column property="healthCard" title="Health Card" />
+			<display:column property="lastVisitDate" title="Last Visit Date" />
+			<display:column>
+				<a href="patient/${patient.healthCard}">View records</a>
+			</display:column>
+		</display:table>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Visited Patients</div>
+		<display:table name="visitedPatients" id="patient"
 			class="table table-striped table-condensed">
 			<display:column property="firstName" title="First Name" />
 			<display:column property="lastName" title="Last Name" />

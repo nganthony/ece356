@@ -81,8 +81,8 @@ public class VisitServiceImpl implements VisitService {
 	}
 
 	@Override
-	public List<Visit> getVisitWithPatient(int userId) {
-		return visitDao.getVisitWithPatient(userId);
+	public List<Patient> getVisitedPatients(int userId) {
+		return visitDao.getVisitedPatients(userId);
 	}
 	
 	@Override
@@ -95,5 +95,10 @@ public class VisitServiceImpl implements VisitService {
 			Timestamp endTimestamp, int id, int user_id, String health_card) {
 		// TODO Auto-generated method stub
 		return visitDao.verifyScheduleDates(startTimestamp, endTimestamp, id, user_id, health_card);
+	}
+
+	@Override
+	public List<Patient> getVisitedPatients(int userId, String search) {
+		return visitDao.getVisitedPatients(userId, search);
 	}
 }
