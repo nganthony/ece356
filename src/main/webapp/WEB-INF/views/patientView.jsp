@@ -14,6 +14,7 @@
 </head>
 <body>
 	<div class="container-fluid">
+	<legend>List of Patients</legend>
 		<display:table name="patients" id="patient"
 			class="table table-striped table-condensed">
 			<display:column property="firstName" title="First Name" />

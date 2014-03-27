@@ -245,7 +245,7 @@ public class StaffController {
 		visitAudit.setEnd(visit.getEnd());
 		visitAudit.setHealth_card(visit.getHealth_card());
 		visitAudit.setModifiedById(user_id);
-		visitAudit.setModifyType(type);
+		visitAudit.setModifiedType(type);
 		visitAudit.setStart(visit.getStart());
 		visitAudit.setSurgery(visit.getSurgery());
 		visitAudit.setUser_id(visit.getUser_id());

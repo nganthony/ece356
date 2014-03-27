@@ -1,5 +1,7 @@
 package com.ece356.dao;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.ece356.domain.Visit;
 import com.ece356.domain.VisitAudit;
+import com.ece356.jdbc.VisitAuditRowMapper;
+import com.ece356.jdbc.VisitRowMapper;
 
 @Repository
 public class VisitAuditDao {
@@ -31,6 +36,14 @@ public class VisitAuditDao {
 				new Object[] {null,visitAudit.getDiagnosis(), visitAudit.getSurgery(), visitAudit.getTreatment(),
 						visitAudit.getComment(), visitAudit.getStart(), visitAudit.getEnd(), visitAudit.getDuration(),
 						visitAudit.getUser_id(), visitAudit.getHealth_card(), visitAudit.getModifiedOn(),
-						visitAudit.getModifiedById(), visitAudit.getModifyType(),visitAudit.getVisitId()});
+						visitAudit.getModifiedById(), visitAudit.getModifiedType(),visitAudit.getVisitId()});
 	}
+
+	public List<VisitAudit> getAllAuditVisits() {
+		String sql = "SELECT * FROM visit_audit ORDER BY health_card, visit_id, modified_on";
+		List<VisitAudit> VisitAudits = jdbcTemplate.query(sql, new VisitAuditRowMapper());
+		return VisitAudits;
+	}
+	
+	
 }
