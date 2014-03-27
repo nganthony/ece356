@@ -1,5 +1,7 @@
 package com.ece356.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +33,10 @@ public class UserServiceImpl implements UserService {
 	
 	public Role getRole(User user){
 		return roleDao.getRole(user.getRoleId());
+	}
+
+	@Override
+	public List<User> getAllDoctors() {
+		return userDao.getAllDoctors();
 	}
 }

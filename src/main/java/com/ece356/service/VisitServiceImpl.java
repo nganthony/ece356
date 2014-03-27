@@ -79,4 +79,16 @@ public class VisitServiceImpl implements VisitService {
 			int doctorId) {
 		return visitDao.getVisitForStaffInRange(start, end, doctorId);
 	}
+
+	@Override
+	public void delete(int id) {
+		visitDao.delete(id);
+	}
+
+	@Override
+	public boolean verifyScheduleDates(Timestamp startTimestamp,
+			Timestamp endTimestamp, int id, int user_id, String health_card) {
+		// TODO Auto-generated method stub
+		return visitDao.verifyScheduleDates(startTimestamp, endTimestamp, id, user_id, health_card);
+	}
 }

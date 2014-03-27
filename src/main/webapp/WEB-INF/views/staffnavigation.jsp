@@ -40,14 +40,14 @@
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-	<div class="container-fluid" style="padding: 75px 12%">
+	<div class="container-fluid" style="padding: 75px 5%">
 		<div class="row-fluid">
 			<div class="span12">
 				<div id="content"></div>
 				<script type="text/javascript">
 					onload = function() {
 						var el = document.getElementById("content");
-						el.innerHTML = "<iframe height = '800px' width='90%' src=\"/1.0.0-BUILD-SNAPSHOT/patient/create\"></iframe>";
+						el.innerHTML = "<iframe height = '800px' width='100%' src=\"/1.0.0-BUILD-SNAPSHOT/patient/create\"></iframe>";
 					};
 				</script>
 				<script>

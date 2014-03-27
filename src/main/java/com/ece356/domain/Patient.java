@@ -30,6 +30,8 @@ public class Patient extends BaseEntity {
 	String province;
 	@NotNull
 	String postalCode;
+	@NotNull
+	private int numberOfVisits;
 	private int currentHealthID;
 	private int defaultDoctorId;
 	private Timestamp lastVisitDate;
@@ -154,5 +156,13 @@ public class Patient extends BaseEntity {
 	
 	public String getPostalCode() {
 		return this.postalCode;
+	}
+	
+	public int getNumberOfVisits() {
+		return numberOfVisits;
+	}
+
+	public void setNumberOfVisits(int numberOfVisits) {
+		this.numberOfVisits = numberOfVisits;
 	}
 }
