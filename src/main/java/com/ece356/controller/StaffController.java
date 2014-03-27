@@ -1,8 +1,10 @@
 package com.ece356.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +25,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.ece356.dao.CurrentHealthDao;
-import com.ece356.dao.PatientDao;
-import com.ece356.dao.UserDao;
-import com.ece356.dao.VisitDao;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.domain.VisitAudit;
+import com.ece356.service.PatientService;
+import com.ece356.service.UserService;
 import com.ece356.service.VisitAuditService;
 import com.ece356.service.VisitService;
 
@@ -37,15 +38,13 @@ import com.ece356.service.VisitService;
 @RequestMapping("staff")
 public class StaffController {
 	@Autowired
-	UserDao userDao;
+	UserService userService;
 	@Autowired
 	CurrentHealthDao currentHealthDao;
 	@Autowired
-	PatientDao patientDao;
+	PatientService patientService;
 	@Autowired
 	VisitService visitService;
-	@Autowired
-	VisitDao visitDao;
 	@Autowired
 	VisitAuditService visitAuditService;
 
@@ -59,7 +58,7 @@ public class StaffController {
 
 	@RequestMapping(value = "{staffId}/doctor/view", method = RequestMethod.GET)
 	public String getDoctorView(@PathVariable("staffId") int staffId, Model model) {
-		List<User> doctors = userDao.getAllDoctors();
+		List<User> doctors = userService.getAllDoctors();
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("users", doctors);
 		return "doctorView";
@@ -67,9 +66,19 @@ public class StaffController {
 	
 	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.GET)
 	public String getVisitView(@PathVariable("staffId") int staffId, Model model) {
-		List<Visit> visits = visitDao.staffGetAllVisits(staffId);
+		List<Map<String, Object>> patientVisit= new ArrayList<Map<String, Object>>();
+		List<Visit> visits = visitService.staffGetAllVisits(staffId);
+		for (Visit	visit : visits) {
+			Map<String, Object> patientVisitMap = new HashMap<String, Object>();
+			patientVisitMap.put("visit", visit);
+			Patient patient = patientService.findByHealthCard(visit.getHealth_card());
+			patientVisitMap.put("patient", patient);
+			patientVisit.add(patientVisitMap);
+		}
+		
+
 		model.addAttribute("staffId", staffId);
-		model.addAttribute("visits", visits);
+		model.addAttribute("patientVisits", patientVisit);
 		return "staffAppointmentsView";
 	}
 	
@@ -78,17 +87,25 @@ public class StaffController {
 	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.POST)
 	public String getVisitFilteredView(@PathVariable("staffId") int staffId, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session, Model model) {
+		List<Map<String, Object>> patientVisit= new ArrayList<Map<String, Object>>();
 		String search = request.getParameter("search");
-		List<Visit> visits = visitDao.staffGetFilteredVisits(staffId, search);
+		List<Visit> visits = visitService.staffGetFilteredVisits(staffId, search);
+		for (Visit	visit : visits) {
+			Map<String, Object> patientVisitMap = new HashMap<String, Object>();
+			patientVisitMap.put("visit", visit);
+			Patient patient = patientService.findByHealthCard(visit.getHealth_card());
+			patientVisitMap.put("patient", patient);
+			patientVisit.add(patientVisitMap);
+		}
 		model.addAttribute("staffId", staffId);
-		model.addAttribute("visits", visits);
 		model.addAttribute("search", search);
+		model.addAttribute("patientVisits", patientVisit);
 		return "staffAppointmentsView";
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{id}", method = RequestMethod.GET)
 	public String doctorSchedule1(@PathVariable("staffId") int staffId,@PathVariable("id") int id, Model model) {
-		List<Visit> visits  = visitDao.getDoctorSchedule(id);
+		List<Visit> visits  = visitService.getDoctorSchedule(id);
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
 		model.addAttribute("id", id);
@@ -98,9 +115,19 @@ public class StaffController {
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,Model model) {
-		List<Visit> visits  = visitDao.getDoctorSchedule(user_id);
-		Visit visit = visitDao.getVisit(id);
-		visitDao.delete(id);
+		List<Visit> visits  = visitService.getDoctorSchedule(user_id);
+		Visit visit = visitService.getVisit(id);
+		visitService.delete(id);
+		
+		Date date = new Date();
+		Timestamp now = new Timestamp(date.getTime());
+		if (visit.getStart().after(now)) {
+			Patient patient = patientService.findByHealthCard(visit.getHealth_card());
+			int numberOfVisits = patient.getNumberOfVisits();
+			patient.setNumberOfVisits(numberOfVisits-1);
+			patientService.update(patient);
+		}
+		
 		insertIntoAuditTable(visit, staffId, "delete", visit.getId());
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("visits", visits);
@@ -112,7 +139,7 @@ public class StaffController {
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
 	public String rescheduleAppointment(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
 			@PathVariable("id") int id,Model model) {
-		Visit visit = visitDao.getVisit(id);
+		Visit visit = visitService.getVisit(id);
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("user_id", user_id);
 		model.addAttribute("visit", visit);
@@ -155,7 +182,7 @@ public class StaffController {
 				map.put("errorMessage", "The start of the appointment should come before it ends");
 				return new ModelAndView("createAppointment", map);
 			}
-			if (!visitDao.verifyScheduleDates(startTimestamp, endTimestamp, visit.getId(),visit.getUser_id(), visit.getHealth_card())) {
+			if (!visitService.verifyScheduleDates(startTimestamp, endTimestamp, visit.getId(),visit.getUser_id(), visit.getHealth_card())) {
 				map.put("errorMessage", "There is a conflict with the dates. Please choose another time");
 				return new ModelAndView("createAppointment", map);
 			}
@@ -164,7 +191,7 @@ public class StaffController {
 			return new ModelAndView("createAppointment", map);
 		}
 		
-		Patient patient = patientDao.findByHealthCard(visit.getHealth_card());
+		Patient patient = patientService.findByHealthCard(visit.getHealth_card());
 		if (patient == null) {
 			map.put("errorMessage", "Health Card does not match with a patient");
 			return new ModelAndView("createAppointment", map);
@@ -173,11 +200,14 @@ public class StaffController {
 		model.addAttribute("id", user_id);
 		visit.setUser_id(user_id);
 		
-		if (visitDao.getVisit(id) != null) {
+		if (visitService.getVisit(id) != null) {
 			visitService.updateVisit(visit);
 			insertIntoAuditTable(visit, staffId, "update", visit.getId());
 		} else {
 			int visitId = visitService.createVisit(visit);
+			int numberOfVisits = patient.getNumberOfVisits();
+			patient.setNumberOfVisits(numberOfVisits+1);
+			patientService.update(patient);
 			insertIntoAuditTable(visit, staffId, "insert", visitId);
 		}
 		ModelAndView modelAndView = new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
@@ -187,7 +217,7 @@ public class StaffController {
 
 	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.GET)
 	public String createDoctorAppointment(@PathVariable("staffId") int staffId, @PathVariable("user_id") int user_id, @PathVariable("id") int id,Model model) {
-		Visit getVisit = visitDao.getVisit(id);
+		Visit getVisit = visitService.getVisit(id);
 		Visit visit = new Visit();
 		visit.setId(0);
 		if (getVisit != null) {

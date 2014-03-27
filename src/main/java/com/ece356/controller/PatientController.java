@@ -72,6 +72,7 @@ public class PatientController {
 				Patient existingPatient = patientService
 						.findByHealthCard(patient.getHealthCard());
 				if (existingPatient == null) {
+					patient.setNumberOfVisits(0);
 					patientService.insert(patient);
 					return getView(model);
 				} else {
