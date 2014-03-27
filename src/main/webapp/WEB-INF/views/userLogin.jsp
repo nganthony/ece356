@@ -15,7 +15,7 @@
 			<div class="span12">
 				<fieldset>
 					<legend>Login</legend>
-					<form class="form-horizontal" method="post" action=''
+					<form class="form-horizontal" method="post" action='<%=request.getContextPath() %>/'
 						name="userForm" id="userForm">
 
 						<div class="control-group">

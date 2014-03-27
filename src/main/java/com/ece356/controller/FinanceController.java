@@ -27,61 +27,66 @@ public class FinanceController {
 
 	@RequestMapping(value = "home", method = RequestMethod.GET)
 	public String home(Model model, HttpSession session) {
-
-		String role = (String) session.getAttribute("role");
-		if (role != null && "finance".equals(role.toLowerCase())) {
+		if (Util.isValidFinaceUser(session)) {
 			User user = (User) session.getAttribute("user");
-			if (user != null) {
-				model.addAttribute("user", user);
-				return "financeHome";
-			}
+			model.addAttribute("user", user);
+			return "financeHome";
 		}
 		return "redirect:/user/login";
-
 	}
 
 	@RequestMapping(value = "home", method = RequestMethod.POST)
 	public String getDoctors(Model model, HttpSession session,
 			HttpServletRequest request) {
-		String role = (String) session.getAttribute("role");
-		if (role != null && "finance".equals(role.toLowerCase())) {
+		if (Util.isValidFinaceUser(session)) {
 			User user = (User) session.getAttribute("user");
-			if (user != null) {
-				model.addAttribute("user", user);
-				try {
-					Timestamp startTimestamp = Timestamp.valueOf(request.getParameter("startTime") +" 00:00:00");
-					Timestamp endTimestamp = Timestamp.valueOf(request.getParameter("endTime")+" 00:00:00");
-					List<User> doctors = visitService.getCountPerDoctor(
-							startTimestamp, endTimestamp);
-					
-					model.addAttribute("startTime", request.getParameter("startTime"));
-					model.addAttribute("endTime", request.getParameter("endTime"));
-					model.addAttribute("doctors", doctors);
-				} catch (Exception e) {
-					model.addAttribute("errorMessage", "Invalid Date");
-					e.printStackTrace();
-				}
-				return "financeHome";
+			model.addAttribute("user", user);
+			try {
+				Timestamp startTimestamp = Timestamp.valueOf(request
+						.getParameter("startTime") + " 00:00:00");
+				Timestamp endTimestamp = Timestamp.valueOf(request
+						.getParameter("endTime") + " 00:00:00");
+				List<User> doctors = visitService.getCountPerDoctor(
+						startTimestamp, endTimestamp);
+
+				model.addAttribute("startTime",
+						request.getParameter("startTime"));
+				model.addAttribute("endTime", request.getParameter("endTime"));
+				model.addAttribute("doctors", doctors);
+			} catch (Exception e) {
+				model.addAttribute("errorMessage", "Invalid Date");
+				e.printStackTrace();
 			}
+			return "financeHome";
+
 		}
-		return "redirect:/user/login";
+		return "redirect:/"; // go to login page
 	}
 
 	@RequestMapping(value = "detail/{id}/{start}/{end}", method = RequestMethod.GET)
 	public String getDetails(Model model, HttpSession session,
 			@PathVariable("id") String id, @PathVariable("start") String start,
 			@PathVariable("end") String end) {
-		try {
-			Timestamp startTimestamp = Timestamp.valueOf(start + " 00:00:00");
-			Timestamp endTimestamp = Timestamp.valueOf(end + " 00:00:00");
-			int userId = Integer.parseInt(id);
-			List<Visit> visits = visitService.getVisitForStaffInRange(
-					startTimestamp, endTimestamp, userId);
-			model.addAttribute("visits", visits);
-			return "financeDetail";
-		} catch (Exception e) {
-			return "financeHome";
+		if (Util.isValidFinaceUser(session)) {
+			User user = (User) session.getAttribute("user");
+			model.addAttribute("user", user);
+			try {
+				Timestamp startTimestamp = Timestamp.valueOf(start
+						+ " 00:00:00");
+				Timestamp endTimestamp = Timestamp.valueOf(end + " 00:00:00");
+				int userId = Integer.parseInt(id);
+				List<Visit> visits = visitService.getVisitForStaffInRange(
+						startTimestamp, endTimestamp, userId);
+				model.addAttribute("visits", visits);
+				return "financeDetail";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "financeHome";
+			}
 		}
+		return "redirect:/"; // go to login page
 	}
+
+
 
 }

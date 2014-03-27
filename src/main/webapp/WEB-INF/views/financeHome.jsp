@@ -40,6 +40,9 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="home">Summary</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
+			</ul>
 		</div>
 	</div>
 	</nav>
