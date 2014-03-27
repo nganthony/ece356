@@ -257,13 +257,29 @@ public class VisitDao {
 
 	}
 	
-	public List<Visit> getVisitWithPatient(int userId) {
-		String sql = "SELECT * FROM visit" +
+	public List<Patient> getVisitedPatients(int userId) {
+		String sql = "SELECT patient.* FROM visit" +
 					" INNER JOIN patient ON visit.health_card = patient.health_card" +
-					" WHERE user_id = ?";
+					" WHERE user_id = ?" +
+					" GROUP BY patient.health_card";
 		
-		List<Visit> visits = jdbcTemplate.query(sql, new Object[] {userId}, new VisitWithPatientRowMapper());
+		List<Patient> patients = jdbcTemplate.query(sql, new Object[] {userId}, new PatientRowMapper());
 		
-		return visits;
+		return patients;
+	}
+	
+	public List<Patient> getVisitedPatients(int userId, String search) {
+		String sql = "SELECT * FROM (SELECT patient.* FROM visit" +
+					" INNER JOIN patient ON visit.health_card = patient.health_card" +
+					" WHERE user_id = ?" +
+					" GROUP BY patient.health_card) as patient" +
+					" WHERE first_name LIKE ?" +
+					" OR last_name LIKE ?" +
+					" OR sin LIKE ?" +
+					" OR health_card LIKE ?";
+		
+		List<Patient> patients = jdbcTemplate.query(sql, new Object[] {userId, search + "%", search + "%", search + "%", search + "%"}, new PatientRowMapper());
+		
+		return patients;
 	}
 }

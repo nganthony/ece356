@@ -98,32 +98,25 @@ public class PatientController {
 		return getCreatePage(model, patient);
 	}
 
-
 	@RequestMapping(value = "/patient/home", method = RequestMethod.GET)
 	public String patientHome(Model model, HttpSession session) {
-
-		String role = (String) session.getAttribute("role");
-		if ("patient".equals(role)) {
+		if (Util.isValidPatient(session)) {
 			Patient patient = (Patient) session.getAttribute("patient");
-			if (patient != null) {
-				User defaultDoctor = patientService.getDefaultDoctor(patient);
-				List<Visit> patientVisit = vistService.getPatientVisit(patient.getHealthCard());
-				model.addAttribute(
-						"defaultDoctor",
-						defaultDoctor.getFirstName() + " "
-								+ defaultDoctor.getLastName());
-				model.addAttribute("patient", patient);
-				model.addAttribute("patientVisit", patientVisit);
-				return "patientHome";
-			}
+			User defaultDoctor = patientService.getDefaultDoctor(patient);
+			List<Visit> patientVisit = vistService.getPatientVisit(patient
+					.getHealthCard());
+			model.addAttribute("defaultDoctor", defaultDoctor.getFirstName()
+					+ " " + defaultDoctor.getLastName());
+			model.addAttribute("patient", patient);
+			model.addAttribute("patientVisit", patientVisit);
+			return "patientHome";
 		}
 		return "redirect:/";
-
 	}
-
 
 	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
 	public String editPatientSelf(@PathVariable String healthCard, Model model) {
+
 		Patient patient = patientService.findByHealthCard(healthCard);
 		patient.setEdit(true);
 		model.addAttribute("patient", patient);
@@ -138,8 +131,10 @@ public class PatientController {
 			return "patientEdit";
 		} else {
 			patientService.update(patient);
-			return "patientEdit";	// change later
+			return "patientEdit"; // change later
 		}
 	}
+
+
 
 }

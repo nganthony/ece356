@@ -37,25 +37,11 @@ public class DoctorController {
 		User user = (User)session.getAttribute("user");
 		model.addAttribute(user);
 		
-		List<Patient> patients = patientService.getAllPatients(user.getId());
-		List<Visit> visits = visitService.getVisitWithPatient(user.getId());
+		List<Patient> defaultPatients = patientService.getAllPatients(user.getId());
+		List<Patient> visitedPatients = visitService.getVisitedPatients(user.getId());
 		
-		for(Visit visit: visits) {
-			boolean patientFound = false;
-			
-			for(Patient patient: patients) {
-				if(patient.getHealthCard() == visit.getPatient().getHealthCard()) {
-					patientFound = true;
-					break;
-				}
-			}
-			
-			if(!patientFound) {
-				patients.add(visit.getPatient());
-			}
-		}
-		
-		model.addAttribute("patients", patients);
+		model.addAttribute("defaultPatients", defaultPatients);
+		model.addAttribute("visitedPatients", visitedPatients);
 		
 		return "doctorPatients";
 	}
@@ -69,8 +55,10 @@ public class DoctorController {
 		
 		String search = request.getParameter("search");
 		
-		List<Patient> patients = patientService.getAllPatients(user.getId(), search);
-		model.addAttribute("patients", patients);
+		List<Patient> defaultPatients = patientService.getAllPatients(user.getId(), search);
+		List<Patient> visitedPatients = visitService.getVisitedPatients(user.getId(), search);
+		model.addAttribute("defaultPatients", defaultPatients);
+		model.addAttribute("visitedPatients", visitedPatients);
 		
 		model.addAttribute("search", search);
 		
