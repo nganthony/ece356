@@ -92,4 +92,24 @@ public class UserDao {
 
 		return keyHolder.getKey().intValue();	
 	}
+	
+	public List<User> getDoctorsWithoutPermission(int ownerId, String healthCard) {
+		String sql = "SELECT * FROM user WHERE id NOT IN "+ 
+					" (SELECT user_id FROM user_patient WHERE owner_id = ? AND health_card = ?)" +
+					" AND role_id = 1" +
+					" AND id != ?";
+		
+		List<User> doctors = jdbcTemplate.query(sql, new Object[]{ownerId, healthCard, ownerId}, new UserRowMapper());
+		return doctors;
+	}
+	
+	public List<User> getDoctorsWithPermission(int ownerId, String healthCard) {
+		String sql = "SELECT user.* FROM user_patient" +
+					" INNER JOIN user ON user.id = user_patient.user_id" +
+					" WHERE owner_id = ?" +
+					" AND health_card = ?";
+		
+		List<User> doctors = jdbcTemplate.query(sql, new Object[]{ownerId, healthCard}, new UserRowMapper());
+		return doctors;
+	}
 }

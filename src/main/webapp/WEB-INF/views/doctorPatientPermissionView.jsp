@@ -37,9 +37,47 @@
 				<li><a href="records">Records</a></li>
 				<li class="active"><a href="permissions">Permissions</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="back">Back</a></li>
+			</ul>
 		</div>
 	</div>
 	</nav>
-	
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Doctors with permission</div>
+		<display:table name="doctorsWithPermission" id="doctorWithPermission"
+			class="table table-striped table-condensed">
+			<display:column property="id" title="ID" />
+			<display:column property="firstName" title="First Name" />
+			<display:column property="lastName" title="Last Name" />
+			<display:column>
+				<form action="revoke_permission/${doctorWithPermission.id}"
+					method="post">
+					<button type="submit" class="btn btn-danger">Revoke
+						Permissions</button>
+				</form>
+			</display:column>
+		</display:table>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Doctors without permission</div>
+		<display:table name="doctorsWithoutPermission"
+			id="doctorWithoutPermission"
+			class="table table-striped table-condensed">
+			<display:column property="id" title="ID" />
+			<display:column property="firstName" title="First Name" />
+			<display:column property="lastName" title="Last Name" />
+			<display:column>
+				<form action="grant_permission/${doctorWithoutPermission.id}"
+					method="post">
+					<button type="submit" class="btn btn-success">Grant
+						Permissions</button>
+				</form>
+			</display:column>
+		</display:table>
+	</div>
+
 </body>
 </html>

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.ece356.dao.UserPatientDao;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.service.PatientService;
+import com.ece356.service.UserService;
 import com.ece356.service.VisitService;
 
 @Controller
@@ -29,6 +31,12 @@ public class DoctorController {
 	
 	@Autowired
 	VisitService visitService;
+	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	UserPatientDao userPatientDao;
 	
 	@RequestMapping(value = "{doctorId}/patients", method= RequestMethod.GET)
 	public String showPatientsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
@@ -121,7 +129,34 @@ public class DoctorController {
 		Patient patient = patientService.findByHealthCard(healthCard);	
  		model.addAttribute("patient", patient);
 
+ 		List<User> doctorsWithPermission = userService.getDoctorsWithPermission(doctorId, healthCard);
+ 		model.addAttribute("doctorsWithPermission", doctorsWithPermission);
+ 		
+ 		List<User> doctorsWithoutPermission = userService.getDoctorsWithoutPermission(doctorId, healthCard);
+ 		model.addAttribute("doctorsWithoutPermission", doctorsWithoutPermission);
+ 		
 		return "doctorPatientPermissionView";
 	}
 	
+	@RequestMapping(value = "{doctorId}/patient/{healthCard}/back", method = RequestMethod.GET)
+	public String back(@PathVariable("doctorId") int doctorId, @PathVariable("healthCard") String healthCard, Model model) {
+		
+		return "redirect:/doctor/" + doctorId + "/patients";
+	}
+	
+	@RequestMapping(value = "{doctorId}/patient/{healthCard}/grant_permission/{userId}", method = RequestMethod.POST)
+	public String grantPermissions(@PathVariable("doctorId") int doctorId, @PathVariable("healthCard") String healthCard, @PathVariable("userId") int userId, Model model) {
+ 		
+		userPatientDao.insert(doctorId, userId, healthCard);
+ 		
+		return "redirect:/doctor/" + doctorId + "/patient/" + healthCard + "/permissions";
+	}
+	
+	@RequestMapping(value = "{doctorId}/patient/{healthCard}/revoke_permission/{userId}", method = RequestMethod.POST)
+	public String revokePermissions(@PathVariable("doctorId") int doctorId, @PathVariable("healthCard") String healthCard, @PathVariable("userId") int userId, Model model) {
+ 		
+		userPatientDao.delete(doctorId, userId, healthCard);
+ 		
+		return "redirect:/doctor/" + doctorId + "/patient/" + healthCard + "/permissions";
+	}
 }

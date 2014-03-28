@@ -39,4 +39,14 @@ public class UserServiceImpl implements UserService {
 	public List<User> getAllDoctors() {
 		return userDao.getAllDoctors();
 	}
+
+	@Override
+	public List<User> getDoctorsWithoutPermission(int ownerId, String healthCard) {
+		return userDao.getDoctorsWithoutPermission(ownerId, healthCard);
+	}
+
+	@Override
+	public List<User> getDoctorsWithPermission(int ownerId, String healthCard) {
+		return userDao.getDoctorsWithPermission(ownerId, healthCard);
+	}
 }

@@ -31,4 +31,16 @@ public class UserPatientDao {
 		return patients;
 	}
 	
+	public void insert(int ownerId, int userId, String healthCard) {
+		String sql = "INSERT INTO user_patient (owner_id, user_id, health_card) VALUES (?, ?, ?)";
+		
+		jdbcTemplate.update(sql, new Object[]{ownerId, userId, healthCard});
+	}
+	
+	public void delete(int ownerId, int userId, String healthCard) {
+		String sql = "DELETE FROM user_patient WHERE owner_id = ? AND user_id = ? AND health_card = ?";
+		
+		jdbcTemplate.update(sql, new Object[]{ownerId, userId, healthCard});
+	}
+	
 }

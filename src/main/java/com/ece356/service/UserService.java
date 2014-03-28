@@ -11,5 +11,6 @@ public interface UserService {
 	public User createUser(User user);
 	public Role getRole(User user);
 	public List<User> getAllDoctors();
-
+	public List<User> getDoctorsWithoutPermission(int ownerId, String healthCard);
+	public List<User> getDoctorsWithPermission(int ownerId, String healthCard);
 }

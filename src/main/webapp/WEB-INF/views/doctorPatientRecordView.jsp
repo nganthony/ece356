@@ -37,6 +37,9 @@
 				<li class="active"><a href="records">Records</a></li>
 				<li><a href="permissions">Permissions</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="back">Back</a></li>
+			</ul>
 		</div>
 	</div>
 	</nav>
