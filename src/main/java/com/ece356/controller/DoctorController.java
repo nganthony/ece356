@@ -103,7 +103,7 @@ public class DoctorController {
 		return "redirect:/doctor/" + doctorId + "/appointments";
 	}
 	
-	@RequestMapping(value = "{doctorId}/patient/{healthCard}", method = RequestMethod.GET)
+	@RequestMapping(value = "{doctorId}/patient/{healthCard}/records", method = RequestMethod.GET)
 	public String getPatientRecord(@PathVariable("doctorId") int doctorId, @PathVariable("healthCard") String healthCard, Model model) {
 		
 		Patient patient = patientService.findByHealthCard(healthCard);
@@ -111,9 +111,17 @@ public class DoctorController {
 		
  		model.addAttribute("patient", patient);
 		model.addAttribute("visits", visits);
-		model.addAttribute("doctorId", doctorId);
 		
-		return "doctorPatientView";
+		return "doctorPatientRecordView";
+	}
+	
+	@RequestMapping(value = "{doctorId}/patient/{healthCard}/permissions", method = RequestMethod.GET)
+	public String getPatientPermissions(@PathVariable("doctorId") int doctorId, @PathVariable("healthCard") String healthCard, Model model) {
+		
+		Patient patient = patientService.findByHealthCard(healthCard);	
+ 		model.addAttribute("patient", patient);
+
+		return "doctorPatientPermissionView";
 	}
 	
 }

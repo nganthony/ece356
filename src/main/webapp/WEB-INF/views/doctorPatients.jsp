@@ -58,7 +58,7 @@
 			<display:column property="healthCard" title="Health Card" />
 			<display:column property="lastVisitDate" title="Last Visit Date" />
 			<display:column>
-				<a href="patient/${patient.healthCard}">View records</a>
+				<a href="patient/${patient.healthCard}/records">View records</a>
 			</display:column>
 		</display:table>
 	</div>
@@ -72,7 +72,7 @@
 			<display:column property="healthCard" title="Health Card" />
 			<display:column property="lastVisitDate" title="Last Visit Date" />
 			<display:column>
-				<a href="patient/${patient.healthCard}">View records</a>
+				<a href="patient/${patient.healthCard}/records">View records</a>
 			</display:column>
 		</display:table>
 	</div>
