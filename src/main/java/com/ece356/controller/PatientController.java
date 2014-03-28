@@ -41,27 +41,29 @@ public class PatientController {
 
 	@RequestMapping(value = "/patient/create", method = RequestMethod.GET)
 	public String getCreatePage(Model model,
-			@ModelAttribute("patient") Patient patient) {
-		List<User> doctors = userDao.getAllDoctors();
-		Map<Integer, String> doctorsMap = new HashMap<Integer, String>();
-		for (User user : doctors) {
-			doctorsMap.put(user.getId(),
-					user.getLastName() + ", " + user.getFirstName());
+			@ModelAttribute("patient") Patient patient, HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			List<User> doctors = userDao.getAllDoctors();
+			Map<Integer, String> doctorsMap = new HashMap<Integer, String>();
+			for (User user : doctors) {
+				doctorsMap.put(user.getId(),
+						user.getLastName() + ", " + user.getFirstName());
+			}
+			model.addAttribute("doctors", doctorsMap);
+			model.addAttribute("currentHealthMap",
+					currentHealthDao.getCurrentHealths());
+			model.addAttribute("patient", patient);
+
+			return "patientCreate";
 		}
-		model.addAttribute("doctors", doctorsMap);
-		model.addAttribute("currentHealthMap",
-				currentHealthDao.getCurrentHealths());
-		model.addAttribute("patient", patient);
-
-		return "patientCreate";
-
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/patient/create", method = RequestMethod.POST)
 	public String submit(@Valid @ModelAttribute("patient") Patient patient,
-			BindingResult result, Model model) {
+			BindingResult result, Model model, HttpSession session) {
 		if (result.hasErrors()) {
-			return getCreatePage(model, patient);
+			return getCreatePage(model, patient, session);
 		} else {
 			if (patient.isEdit()) {
 				patientService.update(patient);
@@ -78,7 +80,7 @@ public class PatientController {
 				} else {
 					result.rejectValue("healthCard", "error.patient",
 							"This Patient already exists");
-					return getCreatePage(model, patient);
+					return getCreatePage(model, patient, session);
 				}
 			}
 		}
@@ -92,10 +94,14 @@ public class PatientController {
 	}
 
 	@RequestMapping(value = "/patient/edit/{healthCard}")
-	public String editPatient(@PathVariable String healthCard, Model model) {
-		Patient patient = patientService.findByHealthCard(healthCard);
-		patient.setEdit(true);
-		return getCreatePage(model, patient);
+	public String editPatient(@PathVariable String healthCard, Model model,
+			HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			Patient patient = patientService.findByHealthCard(healthCard);
+			patient.setEdit(true);
+			return getCreatePage(model, patient, session);
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/patient/home", method = RequestMethod.GET)
@@ -115,26 +121,27 @@ public class PatientController {
 	}
 
 	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
-	public String editPatientSelf(@PathVariable String healthCard, Model model) {
+	public String editPatientSelf(@PathVariable String healthCard, Model model,
+			HttpSession session) {
+		if (Util.isValidPatient(session)) {
+			Patient patient = patientService.findByHealthCard(healthCard);
+			patient.setEdit(true);
+			model.addAttribute("patient", patient);
 
-		Patient patient = patientService.findByHealthCard(healthCard);
-		patient.setEdit(true);
-		model.addAttribute("patient", patient);
-
-		return "patientEdit";
+			return "patientEdit";
+		}
+		return "redirect:/";// go to login page
 	}
 
 	@RequestMapping(value = "/patient/edit/self", method = RequestMethod.POST)
 	public String submit(@Valid @ModelAttribute("patient") Patient patient,
-			BindingResult result) {
+			BindingResult result, HttpSession session, Model model) {
 		if (result.hasErrors()) {
 			return "patientEdit";
 		} else {
 			patientService.update(patient);
-			return "patientEdit"; // change later
+			return patientHome(model, session);
 		}
 	}
-
-
 
 }
