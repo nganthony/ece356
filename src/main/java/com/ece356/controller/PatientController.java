@@ -115,26 +115,27 @@ public class PatientController {
 	}
 
 	@RequestMapping(value = "/patient/edit/self/{healthCard}", method = RequestMethod.GET)
-	public String editPatientSelf(@PathVariable String healthCard, Model model) {
+	public String editPatientSelf(@PathVariable String healthCard, Model model,
+			HttpSession session) {
+		if (Util.isValidPatient(session)) {
+			Patient patient = patientService.findByHealthCard(healthCard);
+			patient.setEdit(true);
+			model.addAttribute("patient", patient);
 
-		Patient patient = patientService.findByHealthCard(healthCard);
-		patient.setEdit(true);
-		model.addAttribute("patient", patient);
-
-		return "patientEdit";
+			return "patientEdit";
+		}
+		return "redirect:/";// go to login page
 	}
 
 	@RequestMapping(value = "/patient/edit/self", method = RequestMethod.POST)
 	public String submit(@Valid @ModelAttribute("patient") Patient patient,
-			BindingResult result) {
+			BindingResult result, HttpSession session, Model model) {
 		if (result.hasErrors()) {
 			return "patientEdit";
 		} else {
 			patientService.update(patient);
-			return "patientEdit"; // change later
+			return patientHome(model, session);
 		}
 	}
-
-
 
 }
