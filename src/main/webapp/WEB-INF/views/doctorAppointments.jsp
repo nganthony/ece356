@@ -36,16 +36,33 @@
 	</div>
 	</nav>
 
-	<form class="navbar-form navbar-left" role="search" method='post'
-		action='appointments'>
-		<div class="form-group">
-			<input type="text" class="form-control" name="search"
-				placeholder="Search" value="${search}">
-		</div>
-		<button type="submit" class="btn btn-default">Submit</button>
-	</form>
-	
-	<%@include file="doctorAppointmentsList.jsp" %>
+	<div class="container-fluid">
+		<form class="navbar-form navbar-left" role="search" method='post'
+			action='appointments'>
+			<div class="form-group">
+				<input type="text" class="form-control" name="search"
+					placeholder="Search" value="${search}">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Visits</div>
+		<display:table name="visits" id="visit"
+			class="table table-striped table-condensed">
+			<display:column property="health_card" title="Health Card" />
+			<display:column property="diagnosis" />
+			<display:column property="treatment" />
+			<display:column property="surgery" />
+			<display:column property="comment" />
+			<display:column property="start" />
+			<display:column property="end" />
+			<display:column>
+				<a href='update_appointment/${visit.id}'>Update Information</a>
+			</display:column>
+		</display:table>
+	</div>
 
 </body>
 </html>

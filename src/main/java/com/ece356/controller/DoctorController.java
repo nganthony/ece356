@@ -82,6 +82,7 @@ public class DoctorController {
 		List<Visit> visits  = visitService.getDoctorSchedule(doctorId, search);
 		model.addAttribute("visits", visits);
 		model.addAttribute("search", search);
+		model.addAttribute("doctorId", doctorId);
 		
 		return "doctorAppointments";
 	}
@@ -110,6 +111,7 @@ public class DoctorController {
 		
  		model.addAttribute("patient", patient);
 		model.addAttribute("visits", visits);
+		model.addAttribute("doctorId", doctorId);
 		
 		return "doctorPatientView";
 	}

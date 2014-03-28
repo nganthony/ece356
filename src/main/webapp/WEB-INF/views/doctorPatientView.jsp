@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,8 +37,18 @@
 	
 	<br/>
 	
-	<h4>Visits</h4>
-	
-	<%@include file="doctorAppointmentsList.jsp" %>
+	<div class="panel panel-default">
+		<div class="panel-heading">Visits</div>
+		<display:table name="visits" id="visit"
+			class="table table-striped table-condensed">
+			<display:column property="health_card" title="Health Card" />
+			<display:column property="diagnosis" />
+			<display:column property="treatment" />
+			<display:column property="surgery" />
+			<display:column property="comment" />
+			<display:column property="start" />
+			<display:column property="end" />
+		</display:table>
+	</div>
 </body>
 </html>
