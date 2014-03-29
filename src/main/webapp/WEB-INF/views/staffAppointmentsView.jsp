@@ -11,15 +11,10 @@
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
-<style>
-.floatedTable {
-	float: left;
-}
-</style>
 </head>
 <body>
+
 	<div class="container-fluid">
-		<legend>List Appointments with Granted Access</legend>
 		<form class="navbar-form navbar-left" role="search" method="post"
 			action='/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view'>
 			<div class="form-group">
@@ -28,26 +23,25 @@
 			</div>
 			<button type="submit" class="btn btn-default">Submit</button>
 		</form>
-		<div style="width: 100%;">
-			<div style="margin-left: 0px;">
-				<display:table name="patientVisits" id="patientVisit"
-					class="table table-striped table-condensed"
-					style="float: left; width:100%; table-layout:fixed; ">
-					<display:column property="patient.firstName" title="First Name" />
-					<display:column property="patient.lastName" title="Last Name"/>
-					<display:column property="visit.start" title="Start"/>
-					<display:column property="visit.end" title="END"/>
-					<display:column property="visit.health_card" title="Health Card"/>
-					<display:column property="visit.diagnosis" title="Diagnosis"/>
-					<display:column property="visit.treatment" title="Treatment"/>
-					<display:column property="visit.surgery" title="Surgery"/>
-					<display:column property="visit.comment" title="Comment"/>
-					<display:column property="visit.user_id" title="Doctor ID"/>
-				</display:table>
-			</div>
-		</div>
-
-
 	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Doctors with permission</div>
+		<display:table name="patientVisits" id="patientVisit"
+			class="table table-striped table-condensed"
+			style="float: left; width:100%; table-layout:fixed; ">
+			<display:column property="patient.firstName" title="First Name" />
+			<display:column property="patient.lastName" title="Last Name" />
+			<display:column property="visit.start"  title="Start" />
+			<display:column property="visit.end" title="END" />
+			<display:column property="visit.health_card" title="Health Card" />
+			<display:column property="visit.diagnosis" title="Diagnosis" />
+			<display:column property="visit.treatment" title="Treatment" />
+			<display:column property="visit.surgery" title="Surgery" />
+			<display:column property="visit.comment" title="Comment" />
+			<display:column property="visit.user_id" title="Doctor ID" />
+		</display:table>
+	</div>
+
 </body>
 </html>

@@ -13,11 +13,11 @@
 	rel="stylesheet" />
 </head>
 <body>
-	<div class="container-fluid">
-		<legend>Schedule of Doctor</legend>
+	<div class="panel panel-default">
+		<div class="panel-heading">Schedule of Doctor</div>
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed">
-			<display:column property="start" />
+			<display:column property="start"  />
 			<display:column property="end" />
 			<display:column property="health_card" />
 			<display:column property="user_id" />

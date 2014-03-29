@@ -13,12 +13,11 @@
 </head>
 <body>
 	<!-- Static top navbar -->
-	<div class="navbar navbar-default navbar-fixed-top">
-		<div class="container">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span> <a class="navbar-brand" href="#">ECE
-					356</a>
+					class="icon-bar"></span> <a class="navbar-brand" href="#">Staff</a>
 			</div>
 			<div class="navbar-collapse collapse top-collapse">
 				<!-- NOTE!  the class top-collapse was added here -->
@@ -38,17 +37,16 @@
 
 					<li><a
 						href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view"
-						onclick="return go(this);">Patient Visitation Records</a></li>
+						onclick="return go(this);">Patient Records</a></li>
 
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
 				</ul>
 			</div>
-			<!--/.nav-collapse -->
 		</div>
-	</div>
-	<div class="container-fluid" style="padding: 75px 5%;">
+	</nav>
+	<div class="container-fluid" >
 		<div class="row-fluid">
 			<div class="span12">
 				<div id="content"></div>

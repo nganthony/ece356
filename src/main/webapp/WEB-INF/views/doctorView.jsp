@@ -13,14 +13,16 @@
 	rel="stylesheet" />
 </head>
 <body>
-	<div class="container-fluid">
-		<legend>List of All Doctors</legend>
+	<div class="panel panel-default">
+		<div class="panel-heading">List of Doctors</div>
 		<display:table name="users" id="user"
 			class="table table-striped table-condensed">
 			<display:column property="firstName" />
 			<display:column property="lastName" />
 			<display:column>
-				<a href=<c:url value="/staff/${staffId}/doctor/schedule/${user.id}"/>>View Schedule</a>
+				<a
+					href=<c:url value="/staff/${staffId}/doctor/schedule/${user.id}"/>>View
+					Schedule</a>
 
 			</display:column>
 		</display:table>
