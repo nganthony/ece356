@@ -49,11 +49,12 @@ public class StaffController {
 	VisitAuditService visitAuditService;
 
 	@RequestMapping(value = "{staffId}/create", method = RequestMethod.GET)
-	public String getCreatePage(@PathVariable("staffId") int staffId, Model model) {
-		
-		model.addAttribute("staffID", staffId);
-		return "staffnavigation";
-
+	public String getCreatePage(@PathVariable("staffId") int staffId, Model model, HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			model.addAttribute("staffID", staffId);
+			return "staffnavigation";
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "{staffId}/doctor/view", method = RequestMethod.GET)
@@ -65,21 +66,24 @@ public class StaffController {
 	}
 	
 	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.GET)
-	public String getVisitView(@PathVariable("staffId") int staffId, Model model) {
-		List<Map<String, Object>> patientVisit= new ArrayList<Map<String, Object>>();
-		List<Visit> visits = visitService.staffGetAllVisits(staffId);
-		for (Visit	visit : visits) {
-			Map<String, Object> patientVisitMap = new HashMap<String, Object>();
-			patientVisitMap.put("visit", visit);
-			Patient patient = patientService.findByHealthCard(visit.getHealth_card());
-			patientVisitMap.put("patient", patient);
-			patientVisit.add(patientVisitMap);
-		}
-		
+	public String getVisitView(@PathVariable("staffId") int staffId, Model model, HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			List<Map<String, Object>> patientVisit = new ArrayList<Map<String, Object>>();
+			List<Visit> visits = visitService.staffGetAllVisits(staffId);
+			for (Visit visit : visits) {
+				Map<String, Object> patientVisitMap = new HashMap<String, Object>();
+				patientVisitMap.put("visit", visit);
+				Patient patient = patientService.findByHealthCard(visit
+						.getHealth_card());
+				patientVisitMap.put("patient", patient);
+				patientVisit.add(patientVisitMap);
+			}
 
-		model.addAttribute("staffId", staffId);
-		model.addAttribute("patientVisits", patientVisit);
-		return "staffAppointmentsView";
+			model.addAttribute("staffId", staffId);
+			model.addAttribute("patientVisits", patientVisit);
+			return "staffAppointmentsView";
+		}
+		return "redirect:/";
 	}
 	
 	
@@ -87,74 +91,88 @@ public class StaffController {
 	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.POST)
 	public String getVisitFilteredView(@PathVariable("staffId") int staffId, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session, Model model) {
-		List<Map<String, Object>> patientVisit= new ArrayList<Map<String, Object>>();
-		String search = request.getParameter("search");
-		List<Visit> visits = visitService.staffGetFilteredVisits(staffId, search);
-		for (Visit	visit : visits) {
-			Map<String, Object> patientVisitMap = new HashMap<String, Object>();
-			patientVisitMap.put("visit", visit);
-			Patient patient = patientService.findByHealthCard(visit.getHealth_card());
-			patientVisitMap.put("patient", patient);
-			patientVisit.add(patientVisitMap);
+		if (Util.isValidStaff(session)) {
+			List<Map<String, Object>> patientVisit= new ArrayList<Map<String, Object>>();
+			String search = request.getParameter("search");
+			List<Visit> visits = visitService.staffGetFilteredVisits(staffId, search);
+			for (Visit	visit : visits) {
+				Map<String, Object> patientVisitMap = new HashMap<String, Object>();
+				patientVisitMap.put("visit", visit);
+				Patient patient = patientService.findByHealthCard(visit.getHealth_card());
+				patientVisitMap.put("patient", patient);
+				patientVisit.add(patientVisitMap);
+			}
+			model.addAttribute("staffId", staffId);
+			model.addAttribute("search", search);
+			model.addAttribute("patientVisits", patientVisit);
+			return "staffAppointmentsView";
 		}
-		model.addAttribute("staffId", staffId);
-		model.addAttribute("search", search);
-		model.addAttribute("patientVisits", patientVisit);
-		return "staffAppointmentsView";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{id}", method = RequestMethod.GET)
-	public String doctorSchedule1(@PathVariable("staffId") int staffId,@PathVariable("id") int id, Model model) {
-		List<Visit> visits  = visitService.getDoctorSchedule(id);
-		model.addAttribute("staffId", staffId);
-		model.addAttribute("visits", visits);
-		model.addAttribute("id", id);
-		return "staffDoctorAppointments";
+	public String doctorSchedule1(@PathVariable("staffId") int staffId,@PathVariable("id") int id, Model model , HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			List<Visit> visits = visitService.getDoctorSchedule(id);
+			model.addAttribute("staffId", staffId);
+			model.addAttribute("visits", visits);
+			model.addAttribute("id", id);
+			return "staffDoctorAppointments";
+		}
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView doctorScheduleDelete(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
-			@PathVariable("id") int id,Model model) {
-		List<Visit> visits  = visitService.getDoctorSchedule(user_id);
-		Visit visit = visitService.getVisit(id);
-		visitService.delete(id);
-		
-		Date date = new Date();
-		Timestamp now = new Timestamp(date.getTime());
-		if (visit.getStart().after(now)) {
-			Patient patient = patientService.findByHealthCard(visit.getHealth_card());
-			int numberOfVisits = patient.getNumberOfVisits();
-			patient.setNumberOfVisits(numberOfVisits-1);
-			patientService.update(patient);
+			@PathVariable("id") int id,Model model, HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			List<Visit> visits  = visitService.getDoctorSchedule(user_id);
+			Visit visit = visitService.getVisit(id);
+			visitService.delete(id);
+			
+			Date date = new Date();
+			Timestamp now = new Timestamp(date.getTime());
+			if (visit.getStart().after(now)) {
+				Patient patient = patientService.findByHealthCard(visit.getHealth_card());
+				int numberOfVisits = patient.getNumberOfVisits();
+				patient.setNumberOfVisits(numberOfVisits-1);
+				patientService.update(patient);
+			}
+			
+			insertIntoAuditTable(visit, staffId, "delete", visit.getId());
+			model.addAttribute("staffId", staffId);
+			model.addAttribute("visits", visits);
+			model.addAttribute("user_id", user_id);
+			model.addAttribute("id", id);
+			return new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
 		}
-		
-		insertIntoAuditTable(visit, staffId, "delete", visit.getId());
-		model.addAttribute("staffId", staffId);
-		model.addAttribute("visits", visits);
-		model.addAttribute("user_id", user_id);
-		model.addAttribute("id", id);
-		return new ModelAndView(new RedirectView("/1.0.0-BUILD-SNAPSHOT/staff/" + String.valueOf(staffId) + "/doctor/schedule/" + String.valueOf(user_id)));
+		return new ModelAndView("redirect:/");
 	}
 	
 	@RequestMapping(value = "{staffId}/doctor/schedule/{user_id}/{id}", method = RequestMethod.GET)
 	public String rescheduleAppointment(@PathVariable("staffId") int staffId,@PathVariable("user_id") int user_id, 
-			@PathVariable("id") int id,Model model) {
-		Visit visit = visitService.getVisit(id);
-		visit.setEdit(true);
-		model.addAttribute("staffId", staffId);
-		model.addAttribute("user_id", user_id);
-		model.addAttribute("visit", visit);
-		model.addAttribute("id", id);
-		return "createAppointment";
+			@PathVariable("id") int id,Model model,  HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			Visit visit = visitService.getVisit(id);
+			visit.setEdit(true);
+			model.addAttribute("staffId", staffId);
+			model.addAttribute("user_id", user_id);
+			model.addAttribute("visit", visit);
+			model.addAttribute("id", id);
+			return "createAppointment";
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment", method = RequestMethod.GET)
 	public String getCreateAppointment(@PathVariable("staffId") int staffId, Model model,
-			@ModelAttribute("visit") Visit visit) {
-		model.addAttribute("visit", visit);
-		model.addAttribute("staffId", staffId);
-		return "createAppointment";
-
+			@ModelAttribute("visit") Visit visit, HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			model.addAttribute("visit", visit);
+			model.addAttribute("staffId", staffId);
+			return "createAppointment";
+		}
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.POST)
@@ -218,22 +236,26 @@ public class StaffController {
 	}
 
 	@RequestMapping(value = "{staffId}/create/appointment/{user_id}/{id}", method = RequestMethod.GET)
-	public String createDoctorAppointment(@PathVariable("staffId") int staffId, @PathVariable("user_id") int user_id, @PathVariable("id") int id,Model model) {
-		Visit getVisit = visitService.getVisit(id);
-		Visit visit = new Visit();
-		visit.setId(0);
-		if (getVisit != null) {
-			visit.setStart(getVisit.getStart());
-			visit.setEnd(getVisit.getEnd());
-			visit.setId(id);
+	public String createDoctorAppointment(@PathVariable("staffId") int staffId, @PathVariable("user_id") int user_id, @PathVariable("id") int id,
+			Model model ,HttpSession session) {
+		if (Util.isValidStaff(session)) {
+			Visit getVisit = visitService.getVisit(id);
+			Visit visit = new Visit();
+			visit.setId(0);
+			if (getVisit != null) {
+				visit.setStart(getVisit.getStart());
+				visit.setEnd(getVisit.getEnd());
+				visit.setId(id);
+			}
+			visit.setHealth_card("124323432123");
+			visit.setDuration(1);
+			visit.setUser_id(user_id);
+			model.addAttribute("staffId", staffId);
+			model.addAttribute("id", id);
+			model.addAttribute("visit", visit);
+			return "createAppointment";
 		}
-		visit.setHealth_card("124323432123");
-		visit.setDuration(1);
-		visit.setUser_id(user_id);
-		model.addAttribute("staffId", staffId);
-		model.addAttribute("id", id);
-		model.addAttribute("visit", visit);
-		return "createAppointment";
+		return "redirect:/";
 	}
 	
 	private void insertIntoAuditTable(Visit visit, int user_id, String type, int visitId) {
