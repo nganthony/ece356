@@ -129,14 +129,17 @@ public class UserController {
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
 	public String validateCreate(@Valid @ModelAttribute("user") User user,
-			BindingResult result, Model model) throws Exception {
-		if (result.hasErrors()) {
-			return showCreatePage(model, user);
+			BindingResult result, Model model,HttpSession session) throws Exception {
+		if (Util.isValidStaff(session)) {
+			User staff =(User)session.getAttribute("user");
+			if (result.hasErrors()) {
+				return showCreatePage(model, user);
+			}
+
+			User createdUser = userService.createUser(user);
+
+			return "redirect:/staff/"+staff.getId()+"/doctor/view";
 		}
-
-		User createdUser = userService.createUser(user);
-
-		// TODO: Navigate to specific role page
-		return "userLogin";
+		return "redirect:/";
 	}
 }
