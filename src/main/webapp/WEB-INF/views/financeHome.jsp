@@ -88,7 +88,7 @@
 				<display:column property="lastName" title="Last Name" />
 				<display:column property="count" title="Number of Patients" />
 				<display:column>
-					<a href=<c:url value="detail/${doctor.id}/${startTime}/${endTime}"/>>Detail</a>
+					<a href=<c:url value="detail/${doctor.id}/${startTime}/${endTime} }"/>>Detail</a>
 				</display:column>
 			</display:table>
 

@@ -38,7 +38,7 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="<%=request.getContextPath()%>/patient/home">Details</a></li>
-				<li class="active"><a href="edit/self/${patient.healthCard}">Update</a></li>
+				<li class="active"><a href="<%=request.getContextPath()%>/patient/edit/self/${patient.healthCard}">Update</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>

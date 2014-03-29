@@ -33,6 +33,8 @@ public class Visit extends BaseEntity {
 	
 	private transient boolean edit;
 	
+	private transient long count;
+	
 	public boolean getEdit() {
 		return edit;
 	}
@@ -104,6 +106,12 @@ public class Visit extends BaseEntity {
 	}
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+	public long getCount() {
+		return count;
+	}
+	public void setCount(long count) {
+		this.count = count;
 	}
 }
 

@@ -42,18 +42,22 @@
 	</div>
 	</nav>
 
+
+
+
+
 	<div class="container-fluid">
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed"
 			requestURI="${requestScope['javax.servlet.forward.request_uri']}">
-			<display:column property="health_card" title="Health Card"
-				sortable="true" />
+			<display:column property="health_card" title="Health Card"/>
 			<display:column property="diagnosis" />
+			<display:column property="start"/>
+			<display:column property="end" />
 			<display:column property="treatment" />
 			<display:column property="surgery" />
 			<display:column property="comment" />
-			<display:column property="start" sortable="true" />
-			<display:column property="end" sortable="true" />
+			<display:column property="count" />
 		</display:table>
 	</div>
 

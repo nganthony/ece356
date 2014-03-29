@@ -21,7 +21,6 @@ import com.ece356.domain.User;
 import com.ece356.domain.Visit;
 import com.ece356.jdbc.PatientRowMapper;
 import com.ece356.jdbc.VisitRowMapper;
-import com.ece356.jdbc.VisitWithPatientRowMapper;
 
 @Repository
 public class VisitDao {
@@ -208,13 +207,13 @@ public class VisitDao {
 	}
 
 	public List<User> getCountPerDoctor(Timestamp start, Timestamp end) {
-		String sql = "SELECT `user_id`, COUNT(user_id) AS count,user.`id`, user.`role_id`,"
-				+ " user.`first_name`, user.`last_name`, user.`password`, user.`deleted` "
+		String sql = "SELECT  COUNT(user_id) AS COUNT, user.`id`, user.`role_id`"
+				+ ",user.`first_name`, user.`last_name`,user.`password`, user.`deleted` "
 				+ "FROM `visit` "
-				+ "INNER JOIN user ON user.id=user_id AND visit.`start` BETWEEN ? AND ? GROUP BY user_id;";
-
+				+ "RIGHT JOIN (SELECT * FROM user WHERE role_id=1) `user` ON user.id=user_id AND visit.`start` BETWEEN ? AND ? GROUP BY user.id;";
+		
 		Connection conn = null;
-		try {
+		try {			
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setTimestamp(1, start);
@@ -249,12 +248,53 @@ public class VisitDao {
 	
 	public List<Visit> getVisitForStaffInRange(Timestamp start, Timestamp end,
 			int doctorId) {
-		String sql = "SELECT 	* FROM `visit` WHERE user_id=? AND `start` BETWEEN ? AND ?;";
-
-		List<Visit> visits = jdbcTemplate.query(sql, new Object[] { doctorId,
-				start, end }, new VisitRowMapper());
-		return visits;
-
+		String sql = "SELECT `id`, `diagnosis`, `surgery`, `treatment`, `comment`, `start`, `end`, `user_id`, `duration`, visit.`health_card`, `drug_id`, `count` "
+				+ "FROM "
+				+ "(SELECT * FROM visit "
+				+ "WHERE user_id=? AND `start`"
+				+ "BETWEEN ? AND ?) "
+				+ "visit INNER JOIN "
+				+ "(SELECT COUNT(health_card) AS `count`,health_card "
+				+ "FROM visit WHERE user_id=? "
+				+ "AND `start` BETWEEN ? AND ? GROUP BY health_card ) visit2 "
+				+ "ON visit.health_card= visit2.health_card "
+				+ "ORDER BY health_card;";
+		Connection conn = null;
+		try {			
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, doctorId);
+			ps.setTimestamp(2, start);
+			ps.setTimestamp(3, end);
+			ps.setInt(4, doctorId);
+			ps.setTimestamp(5, start);
+			ps.setTimestamp(6, end);
+			System.out.println(ps.toString());
+			ResultSet rs = ps.executeQuery();
+			List<Visit> visits = new ArrayList<Visit>();
+			while (rs.next()) {
+				Visit visit= new Visit();
+				try {
+					visit.map(rs);
+					visit.setCount(rs.getLong("count"));
+					visits.add(visit);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			rs.close();
+			ps.close();
+			return visits;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
 	}
 	
 	public List<Patient> getVisitedPatients(int userId) {
