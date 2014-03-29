@@ -32,6 +32,9 @@
 				<li><a href="patients">Patients</a></li>
 				<li class="active"><a href="appointments">Appointments</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
+			</ul>
 		</div>
 	</div>
 	</nav>
