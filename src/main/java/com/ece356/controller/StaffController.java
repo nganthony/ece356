@@ -62,7 +62,7 @@ public class StaffController {
 		List<User> doctors = userService.getAllDoctors();
 		model.addAttribute("staffId", staffId);
 		model.addAttribute("users", doctors);
-		return "doctorView";
+		return "staffDoctorView";
 	}
 	
 	@RequestMapping(value = "{staffId}/appointment/view", method = RequestMethod.GET)

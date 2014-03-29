@@ -54,7 +54,7 @@
 					onload = function() {
 						var el = document.getElementById("content");
 						el.innerHTML = "<iframe style=\"border-style:none;\"height = '800px' width='100%' src=\"/1.0.0-BUILD-SNAPSHOT/patient/create\"></iframe>";
-					};
+					}; 
 				</script>
 				<script>
 					function go(obj) {

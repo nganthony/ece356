@@ -51,8 +51,7 @@
 							<label class="control-label">End Time</label>
 							<div id="datetimepicker1" class="input-append date"
 								style="position: relative; left: 20px;">
-								<input type="text" name="endTime" value=${visit.end
-									} id="endTime" title="ENDTIME"> <span class="add-on">
+								<input type="text" name="endTime" id="endTime" title="ENDTIME" value=${visit.end}> <span class="add-on">
 									<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
 								</span>
 							</div>
