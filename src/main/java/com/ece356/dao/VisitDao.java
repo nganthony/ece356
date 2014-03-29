@@ -269,7 +269,6 @@ public class VisitDao {
 			ps.setInt(4, doctorId);
 			ps.setTimestamp(5, start);
 			ps.setTimestamp(6, end);
-			System.out.println(ps.toString());
 			ResultSet rs = ps.executeQuery();
 			List<Visit> visits = new ArrayList<Visit>();
 			while (rs.next()) {
