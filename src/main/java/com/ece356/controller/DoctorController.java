@@ -20,6 +20,7 @@ import com.ece356.dao.UserPatientDao;
 import com.ece356.domain.Drug;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
+import com.ece356.domain.UserPatient;
 import com.ece356.domain.Visit;
 import com.ece356.service.PatientService;
 import com.ece356.service.UserService;
@@ -102,6 +103,28 @@ public class DoctorController {
 			model.addAttribute("doctorId", doctorId);
 
 			return "doctorAppointments";
+		}
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "{doctorId}/permissions", method= RequestMethod.GET)
+	public String showPermissionsPage(@PathVariable("doctorId") int doctorId, Model model,HttpSession session) {
+		if (Util.isValidDoctor(session)) {
+			List<UserPatient> userPatients = userPatientDao.getAllPatients(doctorId);
+			model.addAttribute("userPatients", userPatients);
+			return "doctorPermissions";
+		}
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "{doctorId}/permissions/{ownerId}/patient/{healthCard}", method= RequestMethod.GET)
+	public String showPermissionsPatientRecordPage(@PathVariable("ownerId") int ownerId, @PathVariable("healthCard") String healthCard, Model model,HttpSession session) {
+		if (Util.isValidDoctor(session)) {
+			Patient patient = patientService.findByHealthCard(healthCard);
+			List<Visit> visits = visitService.getPatientVisit(healthCard, ownerId);
+			model.addAttribute("patient", patient);
+			model.addAttribute("visits", visits);
+			return "doctorPatientView";
 		}
 		return "redirect:/";
 	}

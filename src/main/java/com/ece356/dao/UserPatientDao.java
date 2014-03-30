@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.ece356.domain.Patient;
-import com.ece356.jdbc.PatientRowMapper;
+import com.ece356.domain.UserPatient;
+import com.ece356.jdbc.UserPatientRowMapper;
 
 @Repository
 public class UserPatientDao {
@@ -21,14 +21,15 @@ public class UserPatientDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public List<Patient> getAllPatients(int userId) {
+	public List<UserPatient> getAllPatients(int userId) {
 		String sql = "SELECT * FROM user_patient" +
 					" INNER JOIN patient ON user_patient.health_card = patient.health_card" +
+					" INNER JOIN user ON user_patient.owner_id = user.id" +
 					" WHERE user_patient.user_id = ?";
 		
-		List<Patient> patients = jdbcTemplate.query(sql, new PatientRowMapper());
+		List<UserPatient> userPatients = jdbcTemplate.query(sql, new Object[]{userId}, new UserPatientRowMapper());
 		
-		return patients;
+		return userPatients;
 	}
 	
 	public void insert(int ownerId, int userId, String healthCard) {

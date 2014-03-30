@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Appointments</title>
+<title>Permissions</title>
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
@@ -30,8 +30,8 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="patients">Patients</a></li>
-				<li class="active"><a href="appointments">Appointments</a></li>
-				<li><a href="permissions">Permissions</a></li>
+				<li><a href="appointments">Appointments</a></li>
+				<li class="active"><a href="permissions">Permissions</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
@@ -40,31 +40,16 @@
 	</div>
 	</nav>
 
-	<div class="container-fluid">
-		<form class="navbar-form navbar-left" role="search" method='post'
-			action='appointments'>
-			<div class="form-group">
-				<input type="text" class="form-control" name="search"
-					placeholder="Search" value="${search}">
-			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
-		</form>
-	</div>
-
 	<div class="panel panel-default">
-		<div class="panel-heading">Visits</div>
-		<display:table name="visits" id="visit"
+		<div class="panel-heading">Permissions</div>
+		<display:table name="userPatients" id="userPatient"
 			class="table table-striped table-condensed">
-			<display:column property="health_card" title="Health Card" />
-			<display:column property="diagnosis" />
-			<display:column property="treatment" />
-			<display:column property="surgery" />
-			<display:column property="comment" />
-			<display:column property="drugName" title="Drug" />
-			<display:column property="start" />
-			<display:column property="end" />
+			<display:column property="user.id" title="Doctor ID" />
+			<display:column property="patient.firstName" title="Patient First Name" />
+			<display:column property="patient.lastName" title="Patient Last Name" />
+			<display:column property="patient.healthCard" title="Patient Health Card" />
 			<display:column>
-				<a href='update_appointment/${visit.id}'>Update Information</a>
+				<a href="permissions/${userPatient.user.id}/patient/${userPatient.patient.healthCard}">View records</a>
 			</display:column>
 		</display:table>
 	</div>

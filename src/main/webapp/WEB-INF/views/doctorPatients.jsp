@@ -33,6 +33,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="patients">Patients</a></li>
 				<li><a href="appointments">Appointments</a></li>
+				<li><a href="permissions">Permissions</a></li>
 			</ul>
 			
 			<ul class="nav navbar-nav navbar-right">
@@ -70,20 +71,6 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Visited Patients</div>
 		<display:table name="visitedPatients" id="patient"
-			class="table table-striped table-condensed">
-			<display:column property="firstName" title="First Name" />
-			<display:column property="lastName" title="Last Name" />
-			<display:column property="healthCard" title="Health Card" />
-			<display:column property="lastVisitDate" title="Last Visit Date" />
-			<display:column>
-				<a href="patient/${patient.healthCard}/records">View records</a>
-			</display:column>
-		</display:table>
-	</div>
-	
-	<div class="panel panel-default">
-		<div class="panel-heading">Patients with granted permission</div>
-		<display:table name="grantedPermissionPatients" id="patient"
 			class="table table-striped table-condensed">
 			<display:column property="firstName" title="First Name" />
 			<display:column property="lastName" title="Last Name" />
