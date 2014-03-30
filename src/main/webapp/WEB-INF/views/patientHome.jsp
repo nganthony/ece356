@@ -58,13 +58,14 @@
 				<h6>Last Visit :${patient.lastVisitDate}</h6>
 			</div>
 			<br> <br>
-			<display:table name="patientVisit" id="visit"
-				class="table table-striped table-condensed">
+			<display:table name="patientVisit" id="visit" class="table table-striped table-condensed">
+				<display:column property="start"  title="Start" />
+				<display:column property="end" title="END" />
 				<display:column property="diagnosis" title="Diagnosis" />
-				<display:column property="surgery" title="Surgery" />
 				<display:column property="treatment" title="Treatment" />
-				<display:column property="start" title="Visit Start" />
-				<display:column property="end" title="Visit End" />
+				<display:column property="surgery" title="Surgery" />
+				<display:column property="drugName" title="Drug" />
+				<display:column property="user_id" title="Doctor ID" />
 			</display:table>
 
 		</div>

@@ -16,9 +16,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.ece356.domain.Drug;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
+import com.ece356.jdbc.DrugRowMapper;
 import com.ece356.jdbc.PatientRowMapper;
 import com.ece356.jdbc.VisitRowMapper;
 
@@ -41,12 +43,12 @@ public class VisitDao {
 	}
 
 	public int createVisit(Visit visit) {
-		final String sql = "INSERT INTO visit (diagnosis,surgery, treatment, comment, start, end , user_id, duration, health_card ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		final String sql = "INSERT INTO visit (diagnosis,surgery, treatment, comment, start, end , user_id, duration, health_card, drug_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		final Object[] params = new Object[] { visit.getDiagnosis(),
 				visit.getSurgery(), visit.getTreatment(), visit.getComment(),
 				visit.getStart(), visit.getEnd(), visit.getUser_id(),
-				visit.getDuration(), visit.getHealth_card() };
+				visit.getDuration(), visit.getHealth_card(), visit.getDrugId() };
 
 		jdbcTemplate.update(sql, params);
 		return jdbcTemplate.queryForObject( "select last_insert_id()", Integer.class);
@@ -54,24 +56,24 @@ public class VisitDao {
 
 	public void update(Visit visit) {
 
-		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ?, start = ?, end = ?, user_id = ?, duration = ?, health_card = ? WHERE id = ? ";
+		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ?, start = ?, end = ?, user_id = ?, duration = ?, health_card = ? , drug_id= ? WHERE id = ? ";
 
 		jdbcTemplate.update(
 				sql,
 				new Object[] { visit.getDiagnosis(), visit.getSurgery(),
 						visit.getTreatment(), visit.getComment(),
 						visit.getStart(), visit.getEnd(), visit.getUser_id(),
-						visit.getDuration(), visit.getHealth_card(), visit.getId() });
-
+						visit.getDuration(), visit.getHealth_card(), visit.getDrugId(),
+						visit.getId() });
 	}
 	
 	public void updateForDoctors(Visit visit) {
-		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ? WHERE id = ? ";
+		String sql = "UPDATE visit SET `diagnosis`= ?,`surgery`= ?, `treatment`= ?, `comment`= ?, `drug_id`= ? WHERE id = ? ";
 		
-		jdbcTemplate.update(
-				sql,
+		jdbcTemplate.update( sql,
 				new Object[] { visit.getDiagnosis(), visit.getSurgery(),
-						visit.getTreatment(), visit.getComment(), visit.getId() });
+						visit.getTreatment(), visit.getComment(),
+						visit.getDrugId(),visit.getId(),  });
 	}
 
 	public List<Visit> getAllVisits() {
@@ -248,7 +250,7 @@ public class VisitDao {
 	
 	public List<Visit> getVisitForStaffInRange(Timestamp start, Timestamp end,
 			int doctorId) {
-		String sql = "SELECT `id`, `diagnosis`, `surgery`, `treatment`, `comment`, `start`, `end`, `user_id`, `duration`, visit.`health_card`, `drug_id`, `count` "
+		String sql = "SELECT `id`, `diagnosis`, `surgery`, `treatment`, `comment`, `drug_id` , `start`, `end`, `user_id`, `duration`, visit.`health_card`, `drug_id`, `count` "
 				+ "FROM "
 				+ "(SELECT * FROM visit "
 				+ "WHERE user_id=? AND `start`"
@@ -321,4 +323,11 @@ public class VisitDao {
 		
 		return patients;
 	}
+	
+	public List<Drug> getDrugs() {
+		String sql = "SELECT * FROM drug;";
+		List<Drug> drugs = jdbcTemplate.query(sql, new Object[] {},	new DrugRowMapper());
+		return drugs;
+	}
+	
 }

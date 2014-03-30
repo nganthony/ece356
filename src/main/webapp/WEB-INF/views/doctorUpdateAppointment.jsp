@@ -41,6 +41,14 @@
 						</div>
 
 						<div class="form-group">
+							<form:label path="drugId">Drug</form:label>
+							<div class="controls">
+								<form:select class="dropdown-toggle" path="drugId"
+									items="${drugs}" />
+							</div>
+						</div>
+
+						<div class="form-group">
 							<label class="control-label">Comment</label>
 							<textarea name="comment" class="form-control" rows="3">${visit.comment}</textarea>
 						</div>

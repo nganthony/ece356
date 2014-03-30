@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ece356.dao.VisitDao;
+import com.ece356.domain.Drug;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
@@ -100,5 +101,10 @@ public class VisitServiceImpl implements VisitService {
 	@Override
 	public List<Patient> getVisitedPatients(int userId, String search) {
 		return visitDao.getVisitedPatients(userId, search);
+	}
+
+	@Override
+	public List<Drug> getDrugs() {
+		return visitDao.getDrugs();
 	}
 }

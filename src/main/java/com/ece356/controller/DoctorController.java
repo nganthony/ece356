@@ -1,6 +1,8 @@
 package com.ece356.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ece356.dao.UserPatientDao;
+import com.ece356.domain.Drug;
 import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.Visit;
@@ -107,6 +110,13 @@ public class DoctorController {
 	public String showUpdateAppointmentPage(@PathVariable int visitId, Model model, HttpSession session) {
 		if (Util.isValidDoctor(session)) {
 			Visit visit = visitService.getVisit(visitId);
+			List<Drug> drugs = visitService.getDrugs();
+			Map<Integer, String> drugMap = new HashMap<Integer, String>();
+			for (Drug drug : drugs) {
+				drugMap.put(drug.getId(), drug.getName());
+			}
+			drugMap.put(null, "");
+			model.addAttribute("drugs", drugMap);
 			model.addAttribute("visit", visit);
 			return "doctorUpdateAppointment";
 		}

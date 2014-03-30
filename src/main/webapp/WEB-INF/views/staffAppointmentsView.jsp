@@ -39,6 +39,7 @@
 			<display:column property="visit.treatment" title="Treatment" />
 			<display:column property="visit.surgery" title="Surgery" />
 			<display:column property="visit.comment" title="Comment" />
+			<display:column property="visit.drugName" title="Drug" />
 			<display:column property="visit.user_id" title="Doctor ID" />
 		</display:table>
 	</div>

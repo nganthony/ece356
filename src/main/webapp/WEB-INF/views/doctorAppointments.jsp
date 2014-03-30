@@ -59,6 +59,7 @@
 			<display:column property="treatment" />
 			<display:column property="surgery" />
 			<display:column property="comment" />
+			<display:column property="drugName" title="Drug" />
 			<display:column property="start" />
 			<display:column property="end" />
 			<display:column>

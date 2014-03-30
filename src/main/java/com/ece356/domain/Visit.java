@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.validation.constraints.NotNull;
 
+import com.ece356.controller.DrugEnum;
+
 public class Visit extends BaseEntity {
 
 	int id;
@@ -29,6 +31,7 @@ public class Visit extends BaseEntity {
 	@NotNull
 	String health_card;
 	
+	private int drugId;
 	transient Patient patient;
 	
 	private transient boolean edit;
@@ -112,6 +115,15 @@ public class Visit extends BaseEntity {
 	}
 	public void setCount(long count) {
 		this.count = count;
+	}
+	public int getDrugId() {
+		return drugId;
+	}
+	public void setDrugId(int drugId) {
+		this.drugId = drugId;
+	}
+	public String getDrugName(){
+		return DrugEnum.getName(drugId);
 	}
 }
 
