@@ -80,6 +80,20 @@
 			</display:column>
 		</display:table>
 	</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">Patients with granted permission</div>
+		<display:table name="grantedPermissionPatients" id="patient"
+			class="table table-striped table-condensed">
+			<display:column property="firstName" title="First Name" />
+			<display:column property="lastName" title="Last Name" />
+			<display:column property="healthCard" title="Health Card" />
+			<display:column property="lastVisitDate" title="Last Visit Date" />
+			<display:column>
+				<a href="patient/${patient.healthCard}/records">View records</a>
+			</display:column>
+		</display:table>
+	</div>
 
 </body>
 </html>
