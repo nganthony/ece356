@@ -1,5 +1,7 @@
 package com.ece356.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,10 @@ import com.ece356.domain.Patient;
 import com.ece356.domain.User;
 import com.ece356.domain.UserPatient;
 import com.ece356.domain.Visit;
+import com.ece356.domain.VisitAudit;
 import com.ece356.service.PatientService;
 import com.ece356.service.UserService;
+import com.ece356.service.VisitAuditService;
 import com.ece356.service.VisitService;
 
 @Controller
@@ -41,6 +45,9 @@ public class DoctorController {
 
 	@Autowired
 	UserPatientDao userPatientDao;
+
+	@Autowired
+	VisitAuditService visitAuditService;
 
 	@RequestMapping(value = "{doctorId}/patients", method= RequestMethod.GET)
 	public String showPatientsPage(@PathVariable("doctorId") int doctorId, HttpServletRequest request,
@@ -106,7 +113,7 @@ public class DoctorController {
 		}
 		return "redirect:/";
 	}
-	
+
 	@RequestMapping(value = "{doctorId}/permissions", method= RequestMethod.GET)
 	public String showPermissionsPage(@PathVariable("doctorId") int doctorId, Model model,HttpSession session) {
 		if (Util.isValidDoctor(session)) {
@@ -116,7 +123,7 @@ public class DoctorController {
 		}
 		return "redirect:/";
 	}
-	
+
 	@RequestMapping(value = "{doctorId}/permissions/{ownerId}/patient/{healthCard}", method= RequestMethod.GET)
 	public String showPermissionsPatientRecordPage(@PathVariable("ownerId") int ownerId, @PathVariable("healthCard") String healthCard, Model model,HttpSession session) {
 		if (Util.isValidDoctor(session)) {
@@ -152,6 +159,8 @@ public class DoctorController {
 			visit.setUser_id(doctorId);
 			visit.setId(visitId);
 			visitService.updateForDoctor(visit);
+			Visit updatedVisit = visitService.getVisit(visitId);
+			insertIntoAuditTable(updatedVisit, doctorId, "update", visitId);
 
 			return "redirect:/doctor/" + doctorId + "/appointments";
 		}
@@ -214,5 +223,22 @@ public class DoctorController {
 		userPatientDao.delete(doctorId, userId, healthCard);
 
 		return "redirect:/doctor/" + doctorId + "/patient/" + healthCard + "/permissions";
+	}
+
+	private void insertIntoAuditTable(Visit visit, int user_id, String type, int visitId) {
+		VisitAudit visitAudit = new VisitAudit();
+		visitAudit.setVisitId(visitId);
+		visitAudit.setComment(visit.getComment());
+		visitAudit.setDiagnosis(visit.getDiagnosis());
+		visitAudit.setDuration(visit.getDuration());
+		visitAudit.setEnd(visit.getEnd());
+		visitAudit.setHealth_card(visit.getHealth_card());
+		visitAudit.setModifiedById(user_id);
+		visitAudit.setModifiedType(type);
+		visitAudit.setStart(visit.getStart());
+		visitAudit.setSurgery(visit.getSurgery());
+		visitAudit.setUser_id(visit.getUser_id());
+		visitAudit.setModifiedOn(new Timestamp((new Date()).getTime()));
+		visitAuditService.insert(visitAudit);
 	}
 }
