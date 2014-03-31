@@ -23,6 +23,7 @@ import com.ece356.domain.Visit;
 import com.ece356.jdbc.DrugRowMapper;
 import com.ece356.jdbc.PatientRowMapper;
 import com.ece356.jdbc.VisitRowMapper;
+import com.ece356.jdbc.VisitWithPatientRowMapper;
 
 @Repository
 public class VisitDao {
@@ -91,11 +92,13 @@ public class VisitDao {
 	public List<Visit> getDoctorSchedule(int id) {
 		List<Visit> visits = new ArrayList<Visit>();
 
-		String sql = "SELECT * FROM `visit` WHERE user_id = ? ORDER BY start";
+		String sql = "SELECT * FROM `visit`" +
+					" INNER JOIN patient ON visit.health_card = patient.health_card" +
+					" WHERE user_id = ? ORDER BY start";
 
 		try {
 			visits = jdbcTemplate.query(sql, new Object[] { id },
-					new VisitRowMapper());
+					new VisitWithPatientRowMapper());
 			return visits;
 		} catch (Exception e) {
 			// No user was found with the specified id, return null
@@ -107,13 +110,17 @@ public class VisitDao {
 		List<Visit> visits = new ArrayList<Visit>();
 
 		String sql = "SELECT * FROM (" +
-					"SELECT * FROM `visit` WHERE user_id = ?) as visit" +
+					"SELECT visit.*, patient.first_name, patient.last_name FROM `visit`" +
+					" INNER JOIN patient ON visit.health_card = patient.health_card" +
+					" WHERE user_id = ?) as visit" +
 					" WHERE diagnosis LIKE ?" +
 					" OR surgery LIKE ?" +
 					" OR comment LIKE ?" +
-					" OR health_card LIKE ?";
+					" OR health_card LIKE ?" +
+					" OR first_name LIKE ?" +
+					" OR last_name LIKE ?";
 
-		visits = jdbcTemplate.query(sql, new Object[] {id, search + "%", search + "%", "%" + search + "%", search + "%"},
+		visits = jdbcTemplate.query(sql, new Object[] {id, search + "%", search + "%", "%" + search + "%", search + "%", search + "%", search + "%"},
 					new VisitRowMapper());
 		return visits;
 	}

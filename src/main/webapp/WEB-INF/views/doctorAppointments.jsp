@@ -56,6 +56,8 @@
 		<display:table name="visits" id="visit"
 			class="table table-striped table-condensed">
 			<display:column property="health_card" title="Health Card" />
+			<display:column property="patient.firstName" title = "First Name" />
+			<display:column property="patient.lastName" title = "Last Name" />
 			<display:column property="diagnosis" />
 			<display:column property="treatment" />
 			<display:column property="surgery" />
