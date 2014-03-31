@@ -31,7 +31,7 @@ public class FinanceController {
 			model.addAttribute("user", user);
 			return "financeHome";
 		}
-		return "redirect:/user/login";
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "home", method = RequestMethod.POST)

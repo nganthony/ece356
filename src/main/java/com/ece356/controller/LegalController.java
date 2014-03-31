@@ -2,6 +2,8 @@ package com.ece356.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.ece356.domain.User;
 import com.ece356.domain.VisitAudit;
 import com.ece356.service.VisitAuditService;
 
@@ -18,12 +21,15 @@ public class LegalController {
 
 	@Autowired
 	VisitAuditService visitAuditService;
-	
+
 	@RequestMapping(value = "{legalId}/view", method= RequestMethod.GET)
-	public String showAppointmentsPage(@PathVariable("legalId") int legalId, Model model) {
-		
-		List<VisitAudit> visitAudits  = visitAuditService.getAllAuditVisits();
-		model.addAttribute("visitAudits", visitAudits);
-		return "legalView";
+	public String showAppointmentsPage(@PathVariable("legalId") int legalId, Model model,HttpSession session) {
+		if (Util.isValidLegal(session)) {
+			List<VisitAudit> visitAudits  = visitAuditService.getAllAuditVisits();
+			model.addAttribute("visitAudits", visitAudits);
+			return "legalView";
+		}
+		return "redirect:/";
+
 	}
 }

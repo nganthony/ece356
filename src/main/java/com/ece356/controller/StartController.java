@@ -36,6 +36,7 @@ public class StartController {
 		User user = (User) session.getAttribute("user");
 		Patient patient = (Patient) session.getAttribute("patient");
 		if (role == null && patient == null && user == null) {
+			session.invalidate();
 			return new ModelAndView("userLogin");
 		} else {
 			if(user.getRoleId() == 1) {
