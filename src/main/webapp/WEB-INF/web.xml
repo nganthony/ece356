@@ -27,7 +27,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</listener>
 	<filter>
 		<filter-name>noCacheFilter</filter-name>
-		<filter-class>com.filter.NoCacheFilter</filter-class>
+		<filter-class>com.ece356.filter.NoCacheFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>noCacheFilter</filter-name>

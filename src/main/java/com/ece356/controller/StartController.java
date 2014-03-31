@@ -32,27 +32,8 @@ public class StartController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showLoginPage(HttpSession session) {
-		String role =  (String) session.getAttribute("role");
-		User user = (User) session.getAttribute("user");
-		Patient patient = (Patient) session.getAttribute("patient");
-		if (role == null && patient == null && user == null) {
-			session.invalidate();
-			return new ModelAndView("userLogin");
-		} else {
-			if(user.getRoleId() == 1) {
-				return new ModelAndView("redirect:/doctor/" + user.getId() + "/patients");	
-			}
-			else if(user.getRoleId() == 2) {
-				return new ModelAndView("redirect:/staff/" + user.getId() + "/create");
-			} else if (user.getRoleId() == 3) {
-				return new ModelAndView("redirect:/finance/home");
-			} else if (user.getRoleId() == 4) {
-				return new ModelAndView("redirect:/legal/" + user.getId() + "/view");
-			} else {
-				return new ModelAndView("redirect:/patient/home");
-			}
-		}
-		
+
+		return new ModelAndView("userLogin");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
