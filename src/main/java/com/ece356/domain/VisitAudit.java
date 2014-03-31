@@ -14,6 +14,8 @@ public class VisitAudit extends BaseEntity {
 	
 	String treatment;
 	
+	int drug_id;
+	
 	String comment;
 	
 	//@NotNull
@@ -129,6 +131,12 @@ public class VisitAudit extends BaseEntity {
 	}
 	public void setHealth_card(String health_card) {
 		this.health_card = health_card;
+	}
+	public int getDrug_id() {
+		return drug_id;
+	}
+	public void setDrug_id(int drug_id) {
+		this.drug_id = drug_id;
 	}
 
 }

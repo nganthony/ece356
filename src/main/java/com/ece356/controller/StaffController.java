@@ -272,6 +272,7 @@ public class StaffController {
 		visitAudit.setSurgery(visit.getSurgery());
 		visitAudit.setUser_id(visit.getUser_id());
 		visitAudit.setModifiedOn(new Timestamp((new Date()).getTime()));
+		visitAudit.setDrug_id(visit.getDrugId());
 		visitAuditService.insert(visitAudit);
 	}
 }
