@@ -33,7 +33,7 @@
 
 					<li><a
 						href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/doctor/view"
-						onclick="return go(this);">New Appointment</a></li>
+						onclick="return go(this);">Appointments</a></li>
 
 					<li><a
 						href="/1.0.0-BUILD-SNAPSHOT/staff/${staffId}/appointment/view"

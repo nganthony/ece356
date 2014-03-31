@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.validator.cfg.context.ReturnValueConstraintMappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +31,27 @@ public class StartController {
 	PatientService patientService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String showLoginPage() {
-
-		return "userLogin";
+	public ModelAndView showLoginPage(HttpSession session) {
+		String role =  (String) session.getAttribute("role");
+		User user = (User) session.getAttribute("user");
+		Patient patient = (Patient) session.getAttribute("patient");
+		if (role == null && patient == null && user == null) {
+			return new ModelAndView("userLogin");
+		} else {
+			if(user.getRoleId() == 1) {
+				return new ModelAndView("redirect:/doctor/" + user.getId() + "/patients");	
+			}
+			else if(user.getRoleId() == 2) {
+				return new ModelAndView("redirect:/staff/" + user.getId() + "/create");
+			} else if (user.getRoleId() == 3) {
+				return new ModelAndView("redirect:/finance/home");
+			} else if (user.getRoleId() == 4) {
+				return new ModelAndView("redirect:/legal/" + user.getId() + "/view");
+			} else {
+				return new ModelAndView("redirect:/patient/home");
+			}
+		}
+		
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -103,9 +122,10 @@ public class StartController {
 	
 	
 	@RequestMapping(value ="logout",method = RequestMethod.GET)
-	public String logout(HttpSession session) {
+	public ModelAndView logout(HttpSession session) {
 		session.invalidate();
-		return "userLogin";
+		//return new ModelAndView("userLogin");
+		return new ModelAndView("redirect:/");
 	}
 	
 }
