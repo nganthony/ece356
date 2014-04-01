@@ -161,7 +161,6 @@ public class DoctorController {
 			for (Drug drug : drugs) {
 				drugMap.put(drug.getId(), drug.getName());
 			}
-			drugMap.put(null, "");
 			model.addAttribute("drugs", drugMap);
 			model.addAttribute("visit", visit);
 			return "doctorUpdateAppointment";
