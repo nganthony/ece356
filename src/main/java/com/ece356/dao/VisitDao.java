@@ -115,7 +115,7 @@ public class VisitDao {
 					+ "patient.phone_number,patient.city,patient.province,patient.street,patient.postal_code, "
 					+ "patient.number_of_visits FROM `visit`" +
 					" INNER JOIN patient ON visit.health_card = patient.health_card" +
-					" INNER JOIN drug ON visit.drug_id = drug.id" +
+					" LEFT OUTER JOIN drug ON visit.drug_id = drug.id" +
 					" WHERE user_id = ?) as visit" +
 					" WHERE diagnosis LIKE ?" +
 					" OR surgery LIKE ?" +
