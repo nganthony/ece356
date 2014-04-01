@@ -81,10 +81,10 @@ public class DoctorController {
 			if(startTime != "" && endTime != "" && search == "") {
 				startTime += " 00:00:00";
 				endTime += " 00:00:00";
-				
+
 				Timestamp startTimestamp = Timestamp.valueOf(startTime);
 				Timestamp endTimestamp = Timestamp.valueOf(endTime);
-				
+
 				List<Patient> defaultPatients = patientService.getAllPatients(user.getId(), startTimestamp, endTimestamp);
 				List<Patient> visitedPatients = visitService.getVisitedPatients(user.getId(), startTimestamp, endTimestamp);
 				model.addAttribute("defaultPatients", defaultPatients);
@@ -119,11 +119,27 @@ public class DoctorController {
 			HttpServletResponse response, HttpSession session, Model model) {
 		if (Util.isValidDoctor(session)) {
 			String search = request.getParameter("search");
+			String startTime = request.getParameter("startTime");
+			String endTime = request.getParameter("endTime");
 
-			List<Visit> visits = visitService.getDoctorSchedule(doctorId, search);
-			model.addAttribute("visits", visits);
-			model.addAttribute("search", search);
-			model.addAttribute("doctorId", doctorId);
+			if(startTime != "" && endTime != "" && search == "") {
+				startTime += " 00:00:00";
+				endTime += " 00:00:00";
+
+				Timestamp startTimestamp = Timestamp.valueOf(startTime);
+				Timestamp endTimestamp = Timestamp.valueOf(endTime);
+
+				List<Visit> visits = visitService.getDoctorSchedule(doctorId, startTimestamp, endTimestamp);
+				model.addAttribute("visits", visits);
+				model.addAttribute("search", search);
+				model.addAttribute("doctorId", doctorId);
+			}
+			else {
+				List<Visit> visits = visitService.getDoctorSchedule(doctorId, search);
+				model.addAttribute("visits", visits);
+				model.addAttribute("search", search);
+				model.addAttribute("doctorId", doctorId);
+			}
 
 			return "doctorAppointments";
 		}

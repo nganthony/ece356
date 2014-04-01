@@ -113,4 +113,10 @@ public class VisitServiceImpl implements VisitService {
 			Timestamp startTimestamp, Timestamp endTimestamp) {
 		return visitDao.getVisitedPatients(userId, startTimestamp, endTimestamp);
 	}
+
+	@Override
+	public List<Visit> getDoctorSchedule(int doctorId,
+			Timestamp startTimestamp, Timestamp endTimestamp) {
+		return visitDao.getDoctorSchedule(doctorId, startTimestamp, endTimestamp);
+	}
 }
