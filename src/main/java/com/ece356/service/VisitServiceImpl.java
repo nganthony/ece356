@@ -107,4 +107,10 @@ public class VisitServiceImpl implements VisitService {
 	public List<Drug> getDrugs() {
 		return visitDao.getDrugs();
 	}
+
+	@Override
+	public List<Patient> getVisitedPatients(int userId,
+			Timestamp startTimestamp, Timestamp endTimestamp) {
+		return visitDao.getVisitedPatients(userId, startTimestamp, endTimestamp);
+	}
 }

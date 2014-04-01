@@ -331,6 +331,18 @@ public class VisitDao {
 		return patients;
 	}
 	
+	public List<Patient> getVisitedPatients(int userId, Timestamp startTimestamp, Timestamp endTimestamp) {
+		String sql = "SELECT * FROM (SELECT patient.* FROM visit" +
+					" INNER JOIN patient ON visit.health_card = patient.health_card" +
+					" WHERE user_id = ?" +
+					" GROUP BY patient.health_card) as patient" +
+					" WHERE (last_visit_date >= ? AND last_visit_date <= ?)";
+		
+		List<Patient> patients = jdbcTemplate.query(sql, new Object[] {userId, startTimestamp, endTimestamp}, new PatientRowMapper());
+		
+		return patients;
+	}
+	
 	public List<Drug> getDrugs() {
 		String sql = "SELECT * FROM drug;";
 		List<Drug> drugs = jdbcTemplate.query(sql, new Object[] {},	new DrugRowMapper());

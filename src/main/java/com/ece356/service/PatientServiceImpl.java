@@ -1,5 +1,6 @@
 package com.ece356.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,12 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public User getDefaultDoctor(Patient patient) {
 		return userDao.getUser(""+patient.getDefaultDoctorId());
+	}
+
+	@Override
+	public List<Patient> getAllPatients(int defaultDoctorId,
+			Timestamp startTimestamp, Timestamp endTimestamp) {
+		return patientDao.getAllPatients(defaultDoctorId, startTimestamp, endTimestamp);
 	}
 
 }

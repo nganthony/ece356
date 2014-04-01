@@ -1,5 +1,6 @@
 package com.ece356.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.ece356.domain.Patient;
@@ -16,5 +17,6 @@ public interface PatientService {
 	List<Patient> getAllPatients(int defaultDoctorId, String search);
 	public String getCurrentHealth(Patient patient);
 	public User getDefaultDoctor(Patient patient);
+	List<Patient> getAllPatients(int defaultDoctorId, Timestamp startTimestamp, Timestamp endTimestamp);
 	
 }

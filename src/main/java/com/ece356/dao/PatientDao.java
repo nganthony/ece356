@@ -1,5 +1,6 @@
 package com.ece356.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +103,15 @@ public class PatientDao {
 					" OR health_card LIKE ?";
 		
 		List<Patient> patients = jdbcTemplate.query(sql, new Object[]{defaultDoctorId, search + "%", search + "%", search + "%", search + "%"}, new PatientRowMapper());
+		return patients;
+	}
+	
+	public List<Patient> getAllPatients(int defaultDoctorId, Timestamp startTimestamp, Timestamp endTimestamp) {
+		String sql = "SELECT * FROM (" +
+					"SELECT * FROM patient WHERE default_doctor_id = ?) as patient" +
+					" WHERE (last_visit_date >= ? AND last_visit_date <= ?)";
+		
+		List<Patient> patients = jdbcTemplate.query(sql, new Object[]{defaultDoctorId, startTimestamp, endTimestamp}, new PatientRowMapper());
 		return patients;
 	}
 

@@ -28,4 +28,5 @@ public interface VisitService {
 	public boolean verifyScheduleDates(Timestamp startTimestamp,
 			Timestamp endTimestamp, int id, int user_id, String health_card);
 	public List<Drug> getDrugs();
+	public List<Patient> getVisitedPatients(int userId, Timestamp startTimestamp, Timestamp endTimestamp); 
 }

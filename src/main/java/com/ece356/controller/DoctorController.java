@@ -75,11 +75,27 @@ public class DoctorController {
 			model.addAttribute(user);
 
 			String search = request.getParameter("search");
+			String startTime = request.getParameter("startTime");
+			String endTime = request.getParameter("endTime");
 
-			List<Patient> defaultPatients = patientService.getAllPatients(user.getId(), search);
-			List<Patient> visitedPatients = visitService.getVisitedPatients(user.getId(), search);
-			model.addAttribute("defaultPatients", defaultPatients);
-			model.addAttribute("visitedPatients", visitedPatients);
+			if(startTime != "" && endTime != "" && search == "") {
+				startTime += " 00:00:00";
+				endTime += " 00:00:00";
+				
+				Timestamp startTimestamp = Timestamp.valueOf(startTime);
+				Timestamp endTimestamp = Timestamp.valueOf(endTime);
+				
+				List<Patient> defaultPatients = patientService.getAllPatients(user.getId(), startTimestamp, endTimestamp);
+				List<Patient> visitedPatients = visitService.getVisitedPatients(user.getId(), startTimestamp, endTimestamp);
+				model.addAttribute("defaultPatients", defaultPatients);
+				model.addAttribute("visitedPatients", visitedPatients);
+			}
+			else {
+				List<Patient> defaultPatients = patientService.getAllPatients(user.getId(), search);
+				List<Patient> visitedPatients = visitService.getVisitedPatients(user.getId(), search);
+				model.addAttribute("defaultPatients", defaultPatients);
+				model.addAttribute("visitedPatients", visitedPatients);
+			}
 
 			model.addAttribute("search", search);
 

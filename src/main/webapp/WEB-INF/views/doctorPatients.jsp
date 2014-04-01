@@ -11,6 +11,13 @@
 <link type="text/css"
 	href="<%=request.getContextPath()%>/resources/css/bootstrap.css"
 	rel="stylesheet" />
+<link
+	href="<%=request.getContextPath()%>/resources/css/bootstrap-combined.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="<%=request.getContextPath()%>/resources/css/bootstrap-datetimepicker.min.css">
+<script src="resources/javascript/bootstrap.js"></script>
+
 </head>
 <body>
 	<nav class="navbar navbar-default" role="navigation">
@@ -35,7 +42,7 @@
 				<li><a href="appointments">Appointments</a></li>
 				<li><a href="permissions">Permissions</a></li>
 			</ul>
-			
+
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="<%=request.getContextPath()%>/logout">Log Out</a></li>
 			</ul>
@@ -50,10 +57,36 @@
 				<input type="text" class="form-control" name="search"
 					placeholder="Search" value="${search}">
 			</div>
+
+			<br/>
+			
+			<div class="control-group">
+				<label class="control-label">Start Time</label>
+				<div id="datetimepicker" class="input-append date"
+					style="position: relative; left: 20px;">
+					<input type="text" name="startTime" id="startTime"
+						title="STARTTIME"> <span class="add-on"> <i
+						data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+					</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">End Time</label>
+				<div id="datetimepicker1" class="input-append date"
+					style="position: relative; left: 20px;">
+					<input type="text" name="endTime" id="endTime" title="ENDTIME">
+					<span class="add-on"> <i data-time-icon="icon-time"
+						data-date-icon="icon-calendar"></i>
+					</span>
+				</div>
+			</div>
 			<button type="submit" class="btn btn-default">Submit</button>
 		</form>
 	</div>
 
+	<br />
+	
 	<div class="panel panel-default">
 		<div class="panel-heading">Default Patients</div>
 		<display:table name="defaultPatients" id="patient"
@@ -81,6 +114,29 @@
 			</display:column>
 		</display:table>
 	</div>
+
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/resources/javascript/jquery.min.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/resources/javascript/bootstrap.js">
+		
+	</script>
+	<script type="text/javascript"
+		src="<%=request.getContextPath()%>/resources/javascript/bootstrap-datetimepicker.min.js">
+		
+	</script>
+	<script type="text/javascript">
+		$('#datetimepicker').datetimepicker({
+			format : 'yyyy-MM-dd',
+			language : 'pt-EN'
+		});
+		$('#datetimepicker1').datetimepicker({
+			format : 'yyyy-MM-dd',
+			language : 'pt-EN'
+		});
+	</script>
 
 </body>
 </html>
