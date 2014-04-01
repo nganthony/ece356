@@ -127,6 +127,23 @@ public class VisitDao {
 					new VisitWithPatientRowMapper());
 		return visits;
 	}
+	
+	public List<Visit> getDoctorSchedule(int id, Timestamp startTimestamp, Timestamp endTimestamp) {
+		List<Visit> visits = new ArrayList<Visit>();
+
+		String sql = "SELECT * FROM (" +
+					"SELECT visit.*,  patient.first_name, patient.last_name,patient.sin ,patient.password, "
+					+ "patient.last_visit_date,patient.default_doctor_id,patient.current_health_id,patient.deleted, "
+					+ "patient.phone_number,patient.city,patient.province,patient.street,patient.postal_code, "
+					+ "patient.number_of_visits FROM `visit`" +
+					" INNER JOIN patient ON visit.health_card = patient.health_card" +
+					" WHERE user_id = ?) as visit" +
+					" WHERE visit.start >= ? AND visit.start <= ?";
+
+		visits = jdbcTemplate.query(sql, new Object[] {id, startTimestamp, endTimestamp},
+					new VisitWithPatientRowMapper());
+		return visits;
+	}
 
 	public Visit getVisit(int id) {
 		Visit visit = null;

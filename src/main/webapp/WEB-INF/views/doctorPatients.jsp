@@ -58,7 +58,7 @@
 					placeholder="Search" value="${search}">
 			</div>
 
-			<br/>
+			<h3>OR</h3>
 			
 			<div class="control-group">
 				<label class="control-label">Start Time</label>
