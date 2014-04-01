@@ -110,7 +110,10 @@ public class VisitDao {
 		List<Visit> visits = new ArrayList<Visit>();
 
 		String sql = "SELECT * FROM (" +
-					"SELECT visit.*, patient.first_name, patient.last_name FROM `visit`" +
+					"SELECT visit.*,  patient.first_name, patient.last_name,patient.sin ,patient.password, "
+					+ "patient.last_visit_date,patient.default_doctor_id,patient.current_health_id,patient.deleted, "
+					+ "patient.phone_number,patient.city,patient.province,patient.street,patient.postal_code, "
+					+ "patient.number_of_visits FROM `visit`" +
 					" INNER JOIN patient ON visit.health_card = patient.health_card" +
 					" WHERE user_id = ?) as visit" +
 					" WHERE diagnosis LIKE ?" +
@@ -121,7 +124,7 @@ public class VisitDao {
 					" OR last_name LIKE ?";
 
 		visits = jdbcTemplate.query(sql, new Object[] {id, search + "%", search + "%", "%" + search + "%", search + "%", search + "%", search + "%"},
-					new VisitRowMapper());
+					new VisitWithPatientRowMapper());
 		return visits;
 	}
 
