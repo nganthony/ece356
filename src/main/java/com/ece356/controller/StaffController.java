@@ -247,7 +247,6 @@ public class StaffController {
 				visit.setEnd(getVisit.getEnd());
 				visit.setId(id);
 			}
-			visit.setHealth_card("124323432123");
 			visit.setDuration(1);
 			visit.setUser_id(user_id);
 			model.addAttribute("staffId", staffId);
