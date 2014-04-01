@@ -35,7 +35,6 @@ public class StartController {
 		User user = (User) session.getAttribute("user");
 		Patient patient = (Patient) session.getAttribute("patient");
 		if (patient == null && user == null) {
-			session.invalidate();
 			return new ModelAndView("userLogin");
 		} else {
 			if (user != null) {
@@ -48,6 +47,8 @@ public class StartController {
 					return new ModelAndView("redirect:/finance/home");
 				} else if (user.getRoleId() == 4) {
 					return new ModelAndView("redirect:/legal/" + user.getId() + "/view");
+				} else if (user.getRoleId() == 5) {
+					return new ModelAndView("redirect:/admin/" +user.getId() + "/view");
 				}
 			} else {
 				return new ModelAndView("redirect:/patient/home");
@@ -112,6 +113,8 @@ public class StartController {
 				return new ModelAndView("redirect:/finance/home");
 			} else if (user.getRoleId() == 4) {
 				return new ModelAndView("redirect:/legal/" + user.getId() + "/view");
+			} else if (user.getRoleId() == 5) {
+				return new ModelAndView("redirect:/admin/" + user.getId() + "/home");
 			}
 		} else if (patient != null && patient.getPassword().equals(password)){
 			map.put("errorMessage", "Logged in as patient");
