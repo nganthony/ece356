@@ -27,16 +27,16 @@ public class VisitAuditDao {
 	}
 	
 	public void insert(VisitAudit visitAudit) {
-		String sql = "INSERT INTO visit_audit (id,diagnosis, surgery, treatment,drug_id," +
+		String sql = "INSERT INTO visit_audit (id,diagnosis, surgery, treatment," +
 					"comment, start, end, duration, user_id, "+
-					"health_card, modified_on, modified_by_id, modified_type, visit_id)" +
+					"health_card, modified_on, modified_by_id, modified_type, visit_id,drug_id)" +
 					"VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		jdbcTemplate.update(
 				sql,
-				new Object[] {null,visitAudit.getDiagnosis(), visitAudit.getSurgery(), visitAudit.getTreatment(), visitAudit.getDrug_id(),
+				new Object[] {null,visitAudit.getDiagnosis(), visitAudit.getSurgery(), visitAudit.getTreatment(),
 						visitAudit.getComment(), visitAudit.getStart(), visitAudit.getEnd(), visitAudit.getDuration(),
 						visitAudit.getUser_id(), visitAudit.getHealth_card(), visitAudit.getModifiedOn(),
-						visitAudit.getModifiedById(), visitAudit.getModifiedType(),visitAudit.getVisitId()});
+						visitAudit.getModifiedById(), visitAudit.getModifiedType(),visitAudit.getVisitId(), visitAudit.getDrug_id()});
 	}
 
 	public List<VisitAudit> getAllAuditVisits() {
